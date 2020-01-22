@@ -35,24 +35,9 @@
 	-fx-background-color:radial-gradient(  center 50% 50%, radius 80%, rgb(205,90,245)15% , rgb(185,0,255) 75%)
 }
 
-#speedS{
+#speed{
 	-fx-text-fill:black;
 	-fx-font-size: 17.0 ;
-	-fx-font-weight: bold;
- 	-fx-font-family: 'Comic Sans MS';
- 	-fx-background-color:radial-gradient(  center 50% 50%, radius 80%, rgb(150,255,235)15% , rgb(1,230,230) 75%);
-	-fx-min-width: 55.0px; 
-	-fx-min-height: 40.0px;  
-	-fx-pref-width: 35.0px;
-	-fx-pref-height: 20.0px;
-	-fx-background-repeat: no-repeat no-repeat;   
-	-fx-background-position:center;
-	-fx-border-radius:5.0px; 
-	-fx-effect: dropshadow( three-pass-box , rgba(10,10,10,10) , 3, 1 ,1, 1);
-}
-#speedF{
-	-fx-text-fill:black;
-	-fx-font-size: 20.0 ;
 	-fx-font-weight: bold;
  	-fx-font-family: 'Comic Sans MS';
  	-fx-background-color:radial-gradient(  center 50% 50%, radius 80%, rgb(150,255,235)15% , rgb(1,230,230) 75%);

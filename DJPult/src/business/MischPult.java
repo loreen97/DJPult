@@ -1,13 +1,17 @@
 package business;
 
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Observable;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-public class MischPult {
-	
-	//private static MediaPlayer player;
+public class MischPult extends Observable {
+
+	//test
+	private static MediaPlayer player;
+	private static Media media;
 
 	/*private MediaPlayer[] mediaPlayer;
 	private Media[] media;
@@ -39,11 +43,27 @@ public class MischPult {
 		 * lot of files or if the files are large. 
 		 * http://what-when-how.com/javafx-2/working-with-audio-clips-using-the-media-classes-javafx-2/
 		 */
+		
+		//test
+		media = new Media(Paths.get("BringMichNachHause.mp3").toUri().toString());
+		player = new MediaPlayer(media);
 	}
 	
+	
+	
+	
 	public void play() {
-		player1.play();
+		player.play();
+		setChanged();
+		notifyObservers();
 	}
+	
+	//nur als Test eingesetzt
+	public void pause() {
+		player.pause();
+	}
+	
+	
 	
 	//name als key aus der hashmap um richtigen Player zu aktivieren
 		public void play(String name) {
@@ -87,5 +107,11 @@ public class MischPult {
 		player = new MediaPlayer(media);
 		return player;
 	}*/
-	
+		
+		
+		public void speed(double value) {
+			player.setRate(value);
+		}
+		
+		
 }

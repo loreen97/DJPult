@@ -12,7 +12,7 @@ public class Player {
 	private String name;
 	private Media media;
 	private Playlist list;
-	//double currVolume;
+	private double currVolume;
 	int posInList; //Evtl in Playlist statt in Players
 
 	public Player(String name) {
@@ -26,6 +26,7 @@ public class Player {
 	}
 
 	public void play() {
+		setVolume(currVolume);
 		mediaPlayer.play();
 	}
 
@@ -68,6 +69,7 @@ public class Player {
 	}
 
 	public void setVolume(double val) {
+		currVolume = val;
 		mediaPlayer.setVolume(val);
 	}
 
@@ -75,6 +77,20 @@ public class Player {
 		return mediaPlayer.getVolume();
 	}
 
+	public void changeBySlider(double slidervalue) {
+		int songPosition = (int) slidervalue;
+		//mediaPlayer.cue(songPosition);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//Tets methode 
 	// google books Pro JavaFX 8: A 
 	//Definitive Guide to Building Desktop, Mobile, and Embedded ... 

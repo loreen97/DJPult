@@ -10,7 +10,7 @@ public class ControlView extends HBox {
 
 	public Button play;
 	public Button loop;
-	public Button viertel;
+	public Button eineinhalb;
 	public Button halb;
 	public Button normal;
 	public Button doppelt;
@@ -24,17 +24,17 @@ public class ControlView extends HBox {
 		loop = new Button();
 		loop.getStyleClass().addAll("control-button","loop");
 		
-		viertel = new Button("1/4");
-		viertel.setId("speedS");
+		eineinhalb = new Button("1.5");
+		eineinhalb.setId("speed");
 		
-		halb = new Button("1/2");
-		halb.setId("speedS");
+		halb = new Button("0.5");
+		halb.setId("speed");
 		
 		normal = new Button("1");
-		normal.setId("speedF");
+		normal.setId("speed");
 		
 		doppelt = new Button("2");
-		doppelt.setId("speedF");
+		doppelt.setId("speed");
 		
 		
 		
@@ -44,7 +44,7 @@ public class ControlView extends HBox {
 		hbox1.setAlignment(Pos.CENTER);
 		hbox1.setPadding(new Insets(0,30,0,0));
 		hbox2 = new HBox();
-		hbox2.getChildren().addAll(viertel, halb, normal, doppelt);
+		hbox2.getChildren().addAll(halb, normal,eineinhalb, doppelt);
 		hbox2.setSpacing(10);
 		hbox2.setAlignment(Pos.CENTER);
 		
