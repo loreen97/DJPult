@@ -390,7 +390,9 @@ public class PultViewController extends ViewController<Main> implements Observer
 	public void update(Observable arg0, Object arg1) {
 		Platform.runLater(() -> {
 			Track track = (Track) arg1;
-			// titleLeft.setText(track.getTitle());
+			titleLeft.setText(mischPult.getActSong("links").getTitle());
+			titleRight.setText(mischPult.getActSong("rechts").getTitle());
+			//titleLeft.setText(track.getTitle());
 			// titleRight.setText(track.getTitle());
 		});
 	}

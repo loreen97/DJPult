@@ -23,7 +23,7 @@ public class TitleView extends VBox{
 		songSlider.setId("slider");
 		songSlider.setPadding(new Insets(0,5,0,5));
 		
-		title = new Label("Hier steht der Titel.");
+		title = new Label();
 		title.setId("title");
 		
 		this.getChildren().addAll(title,songSlider);
