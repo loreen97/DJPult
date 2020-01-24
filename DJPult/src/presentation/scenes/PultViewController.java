@@ -113,7 +113,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		playLeft.setOnAction(new EventHandler<ActionEvent>() {
+		/*playLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				if (!playing) {
@@ -123,6 +123,24 @@ public class PultViewController extends ViewController<Main> implements Observer
 					playing = true;
 				} else {
 					mischPult.pause();
+					playLeft.getStyleClass().clear();
+					playLeft.getStyleClass().addAll("control-button", "play");
+					playing = false;
+				}
+			}
+		});*/
+		//geht noch nicht
+		playLeft.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if (!playing) {
+					System.out.println("something");
+					mischPult.play("links");
+					playLeft.getStyleClass().clear();
+					playLeft.getStyleClass().addAll("control-button", "pause");
+					playing = true;
+				} else {
+					mischPult.pause("links");
 					playLeft.getStyleClass().clear();
 					playLeft.getStyleClass().addAll("control-button", "play");
 					playing = false;
@@ -176,6 +194,28 @@ public class PultViewController extends ViewController<Main> implements Observer
 					loopRight.getStyleClass().addAll("control-button", "loop");
 					pushed = false;
 				}
+			}
+		});
+		
+		
+		tune2.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (userInteraction)
+				mischPult.changeBass(tune2.getValue());
+		});
+		tune2.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				userInteraction = true;
+				System.out.println(userInteraction);
+			}
+		});
+		tune2.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				userInteraction = false;
+				System.out.println(userInteraction);
 			}
 		});
 
@@ -278,8 +318,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 	public void update(Observable arg0, Object arg1) {
 		Platform.runLater(() -> {
 			Track track = (Track) arg1;
-			titleLeft.setText(track.getTitle());
-			titleRight.setText(track.getTitle());
+			//titleLeft.setText(track.getTitle());
+			//titleRight.setText(track.getTitle());
 		});
 	}
 

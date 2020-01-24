@@ -13,7 +13,11 @@ public class Player {
 	private Media media;
 	private Playlist list;
 	private double currVolume;
-	int posInList; //Evtl in Playlist statt in Players
+	private static final int BAND_COUNT = 3;
+	private static final double Start_FREQ = 250.0;
+	int posInList; //Evtl in Playlist statt in Players, dumm weil man dann nicht die
+	//selbe Playlist doppelt nehmen kann, also hier
+	ObservableList<EqualizerBand> bands;
 
 	public Player(String name) {
 		this. name = name;
@@ -23,10 +27,39 @@ public class Player {
 		//media = new Media(list.getTrack(0).getTitle()); //Nur mit Pfad aufrufbar in Media()
 		media = new Media(Paths.get("BringMichNachHause.mp3").toUri().toString());
 		mediaPlayer = new MediaPlayer(media);
+		bands=mediaPlayer.getAudioEqualizer().getBands();
+		setBands();
+	}
+	
+	//Tets methode 
+	// google books Pro JavaFX 8: A 
+	//Definitive Guide to Building Desktop, Mobile, and Embedded ... 
+	//oder
+	//http://what-when-how.com/javafx-2/playing-audio-using-the-media-classes-javafx-2-part-4/
+	public void setBands() {
+		bands=mediaPlayer.getAudioEqualizer().getBands();
+		bands.clear();
+		mediaPlayer.getAudioEqualizer().getBands();
+		double min = EqualizerBand.MIN_GAIN;
+		double max = EqualizerBand.MAX_GAIN;
+		double mid = (max - min) / 2;
+		double freq = Start_FREQ;
+		for(int i = 0; i < BAND_COUNT; i++) {
+			double t = (double)i / (double)(BAND_COUNT-1)*(2*Math.PI);
+			double scale = 0.4 * (1+Math.cos(t));
+			double gain = min + mid + (mid*scale);
+			bands.add(new EqualizerBand(freq, freq/2, gain));
+			freq *= 2;
+		}
+	}
+	
+	public void bassSlider(double value) {
+		bands.get(1).setGain(50.5);
 	}
 
 	public void play() {
-		setVolume(currVolume);
+		System.out.println("working");
+		//setVolume(currVolume);
 		mediaPlayer.play();
 	}
 
@@ -82,39 +115,12 @@ public class Player {
 		//mediaPlayer.cue(songPosition);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//Tets methode 
-	// google books Pro JavaFX 8: A 
-	//Definitive Guide to Building Desktop, Mobile, and Embedded ... 
-	//oder
-	//http://what-when-how.com/javafx-2/playing-audio-using-the-media-classes-javafx-2-part-4/
-	public void sliderOne() {
-		final int BAND_COUNT = 3; //Im bsp 7, private static
-		final double Start_FREQ = 250.0;
-		ObservableList<EqualizerBand> bands=mediaPlayer.getAudioEqualizer().getBands();
-		bands.clear();
-		mediaPlayer.getAudioEqualizer().getBands();
-		double min = EqualizerBand.MIN_GAIN;
-		double max = EqualizerBand.MAX_GAIN;
-		double mid = (max - min) / 2;
-		double freq = Start_FREQ;
-		//evtl equBands als eigene Klasse?
-		for(int i = 0; i < BAND_COUNT; i++) {
-			double t = (double)i / (double)(BAND_COUNT-1)*(2*Math.PI);
-			double scale = 0.4 * (1+Math.cos(t));
-			double gain = min + mid + (mid*scale);
-			bands.add(new EqualizerBand(freq, freq/2, gain));
-			freq *= 2;
-		}
+	public String getName() {
+		return this.name;
 	}
+	
+	
+
 
 	//Sets the number of bands in the audio spectrum. Must be > 2
 	public void setAudioSpectrumNumBands(int n) {

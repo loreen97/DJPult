@@ -19,21 +19,21 @@ public class MischPult extends Observable {
 	*/
 	
 	//evtl fuer jeden sample button einen...
-		private Player player1;
-		private Player player2;
-		private Player player3;
+		private Player playerLeft;
+		private Player playerRight;
+		private Player playerSamples;
 		private HashMap<String, Player> players = new HashMap<String, Player>();
 
 	
 	public MischPult() {
 		
 		//if Playlist not null
-		player1 = new Player("Links"); 
-		player2 = new Player("Rechts");
-		player3 = new Player("Sample");
-		players.put("links", player1);
-		players.put("rechts", player2);
-		players.put("samples", player3);
+		playerLeft = new Player("links"); 
+		playerRight = new Player("rechts");
+		playerSamples = new Player("samples");
+		players.put(playerLeft.getName(), playerLeft);
+		players.put(playerRight.getName(), playerRight);
+		players.put(playerSamples.getName(), playerSamples);
 
 		/**
 		 * You should also keep in mind that the AudioClip constructor 
@@ -62,12 +62,20 @@ public class MischPult extends Observable {
 	public void pause() {
 		player.pause();
 	}
+	//TEST
+	public void changeBass(double value) {
+		players.get("links").bassSlider(value);
+	}
 	
 	
 	
 	//name als key aus der hashmap um richtigen Player zu aktivieren
 		public void play(String name) {
+			System.out.println("isn't");
 			players.get(name).play();
+			System.out.println(name + players.get(name).getName());
+			setChanged();
+			notifyObservers();
 		}
 	
 		public void pause(String name) {
