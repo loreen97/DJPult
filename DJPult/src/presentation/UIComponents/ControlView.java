@@ -25,16 +25,16 @@ public class ControlView extends HBox {
 		loop.getStyleClass().addAll("control-button","loop");
 		
 		eineinhalb = new Button("1.5");
-		eineinhalb.setId("speed");
+		eineinhalb.getStyleClass().addAll("speedGroup","speed");
 		
 		halb = new Button("0.5");
-		halb.setId("speed");
+		halb.getStyleClass().addAll("speedGroup","speed");
 		
 		normal = new Button("1");
-		normal.setId("speed");
+		normal.getStyleClass().addAll("speedGroup","speed");
 		
 		doppelt = new Button("2");
-		doppelt.setId("speed");
+		doppelt.getStyleClass().addAll("speedGroup","speed");
 		
 		
 		

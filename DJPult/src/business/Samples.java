@@ -12,20 +12,19 @@ public class Samples {
 	private String name;
 	private Media media;
 	private Track track;
-	private Duration dur;
+	//private static Duration dur;
 	
 	public Samples(String name) {
 		this.name = name;
 		//test
 		media = new Media(Paths.get("sms-alert-2-daniel_simon.mp3").toUri().toString());
 		mediaPlayer = new MediaPlayer(media);
-		dur = media.getDuration();
+		//dur = media.getDuration();
 	}
 	
 	public void play() {
-		//setVolume(currVolume);
 		mediaPlayer.play();
-		mediaPlayer.seek(dur.ZERO);
+		mediaPlayer.seek(Duration.ZERO);
 	}
 	
 	public String getName() {

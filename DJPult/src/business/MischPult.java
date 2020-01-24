@@ -122,6 +122,14 @@ public class MischPult extends Observable {
 	public void loop(String name) {
 		players.get(name).loop();
 	}
+	
+	public Player getLeftPlayer() {
+		return this.players.get("links");
+	}
+	
+	public Player getRightPlayer() {
+		return this.players.get("rechts");
+	}
 
 	// Aus Praktikum
 	/*

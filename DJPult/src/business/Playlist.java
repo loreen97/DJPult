@@ -19,6 +19,10 @@ public class Playlist {
 		return this.title;
 	}
 	
+	public String getFirst() {
+		return tracks.get(0).getSoundFile();
+	}
+	
 	public List<Track> getAllTracks() {
 		return this.tracks;
 	}
@@ -27,6 +31,10 @@ public class Playlist {
 		return tracks.size();
 	}
 	
+	public void addSingleSong(String name) {
+		Track temp = new Track(name);
+		tracks.add(temp);
+	}
 	
 	private void createFromFolder(String dir) {
 	

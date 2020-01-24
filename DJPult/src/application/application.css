@@ -35,12 +35,11 @@
 	-fx-background-color:radial-gradient(  center 50% 50%, radius 80%, rgb(205,90,245)15% , rgb(185,0,255) 75%)
 }
 
-#speed{
+.speedGroup{
 	-fx-text-fill:black;
 	-fx-font-size: 17.0 ;
 	-fx-font-weight: bold;
  	-fx-font-family: 'Comic Sans MS';
- 	-fx-background-color:radial-gradient(  center 50% 50%, radius 80%, rgb(150,255,235)15% , rgb(1,230,230) 75%);
 	-fx-min-width: 55.0px; 
 	-fx-min-height: 40.0px;  
 	-fx-pref-width: 35.0px;
@@ -49,7 +48,16 @@
 	-fx-background-position:center;
 	-fx-border-radius:5.0px; 
 	-fx-effect: dropshadow( three-pass-box , rgba(10,10,10,10) , 3, 1 ,1, 1);
+	-fx-alignment: center;
 }
+.speed{
+ 	-fx-background-color:radial-gradient(  center 50% 50%, radius 80%, rgb(150,255,235)15% , rgb(1,230,230) 75%);
+}
+
+.speedPushed{
+	-fx-background-color:radial-gradient(  center 50% 50%, radius 80%, rgb(65,250,215)15% , rgb(5,195,195) 75%);
+}
+
 .control-button{
 	-fx-min-width: 50.0px; 
 	-fx-min-height: 45.0px;  
@@ -70,8 +78,8 @@
 }
 .pushLoop{
 	-fx-background-image: url("/image/loop.png");
-	-fx-min-width: 49.0px; 
-	-fx-min-height: 44.0px;
+	-fx-min-width: 48.0px; 
+	-fx-min-height: 43.0px;
 	-fx-effect: dropshadow( three-pass-box , rgba(10,10,10,10) , 4, 2 ,2, 2);
 	
 }

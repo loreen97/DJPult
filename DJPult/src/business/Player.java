@@ -16,7 +16,7 @@ public class Player {
 	private double currVolume;
 	private static final int BAND_COUNT = 3;
 	private static final double Start_FREQ = 250.0;
-	int posInList; 
+	private int posInList; 
 	//Evtl in Playlist statt in Players, dumm weil man dann nicht die
 	//selbe Playlist doppelt nehmen kann, also hier
 	ObservableList<EqualizerBand> bands;
@@ -25,14 +25,17 @@ public class Player {
 
 	public Player(String name) {
 		this. name = name;
-		this.list = null;
 		posInList = 0;
 		isLooping = false;
+		this.list = new Playlist("first");
+		this.list.addSingleSong("Apache_207");
+		this.list.addSingleSong("02DreiWorte");
+		this.list.addSingleSong("Bring Mich Nach Hause");
 		//if list not null
 		//media = new Media(list.getTrack(0).getTitle()); //Nur mit Pfad aufrufbar in Media()
-		media = new Media(Paths.get("Apache_207.mp3").toUri().toString());
+		media = new Media(Paths.get(list.getFirst()).toUri().toString());
 		mediaPlayer = new MediaPlayer(media);
-		bands=mediaPlayer.getAudioEqualizer().getBands();
+		bands=getMediaPlayer().getAudioEqualizer().getBands();
 		duration = media.getDuration();
 		setBands();
 	}
@@ -44,9 +47,9 @@ public class Player {
 	//http://what-when-how.com/javafx-2/playing-audio-using-the-media-classes-javafx-2-part-4/
 	public void setBands() {
 		//if(name == "links") { //test/ vergleich
-		bands=mediaPlayer.getAudioEqualizer().getBands();
+		bands=getMediaPlayer().getAudioEqualizer().getBands();
 		bands.clear();
-		mediaPlayer.getAudioEqualizer().getBands();
+		getMediaPlayer().getAudioEqualizer().getBands();
 		double min = EqualizerBand.MIN_GAIN;
 		double max = EqualizerBand.MAX_GAIN;
 		double mid = (max - min) / 2;
@@ -76,7 +79,7 @@ public class Player {
 
 	public void play() {
 		//setVolume(currVolume);
-		mediaPlayer.play();
+		getMediaPlayer().play();
 		//irgendwie auf dur.ZERO setzen um das Lied noch mal 
 		//ueber play spielen zu koennen
 		/*if(media.getDuration().equals(dur)) {
@@ -85,11 +88,12 @@ public class Player {
 	}
 
 	public void pause() {
-		mediaPlayer.pause();
+		getMediaPlayer().pause();
 	}
 
 	public void skip() {
-		mediaPlayer.stop();
+		if(!isLooping) {
+		getMediaPlayer().stop();
 		if (posInList == list.getLength()) {
 			posInList = 0; 
 		} else {
@@ -97,10 +101,14 @@ public class Player {
 		}
 		loadSong();
 		play();
+		}
+		else { //selben Song nochmal laden irgendwie
+			play();
+		}
 	}
 
 	public void skipBack() {
-		mediaPlayer.stop();
+		getMediaPlayer().stop();
 		if (posInList != 0) {
 			posInList--;;
 		} else {
@@ -124,16 +132,16 @@ public class Player {
 
 	public void setVolume(double val) {
 		currVolume = val;
-		mediaPlayer.setVolume(val);
+		getMediaPlayer().setVolume(val);
 	}
 
 	public double getVolume() {
-		return mediaPlayer.getVolume();
+		return getMediaPlayer().getVolume();
 	}
 
 	public void changeBySlider(double slidervalue) {
 		int songPosition = (int) slidervalue;
-		mediaPlayer.seek(duration.multiply(slidervalue/100.0));//int songPosition = (int) slidervalue;
+		getMediaPlayer().seek(duration.multiply(slidervalue/100.0));//int songPosition = (int) slidervalue;
 		//mediaPlayer.cue(songPosition);
 	}
 	
@@ -142,11 +150,15 @@ public class Player {
 	}
 	
 	public void setSpeed(double value) {
-		mediaPlayer.setRate(value);
+		getMediaPlayer().setRate(value);
 	}
 	
-	public void loop() {
-		//do something
+	public void loop() { //oder boolean mitgebenm und isLooping = bool;
+		if(isLooping) {
+			this.isLooping = false;
+		} else {
+			this.isLooping = true;
+		}
 	}
 	
 
@@ -154,17 +166,21 @@ public class Player {
 	//Sets the number of bands in the audio spectrum. Must be > 2
 	public void setAudioSpectrumNumBands(int n) {
 		if(n > 2) {
-			this.mediaPlayer.setAudioSpectrumNumBands(n);
+			this.getMediaPlayer().setAudioSpectrumNumBands(n);
 		}
 	}
 
 	//Sets the value of the audio spectrum notification interval in seconds.
 	public void setAudioSpectrumInterval(double value) {
-		this.mediaPlayer.setAudioSpectrumInterval(value);
+		this.getMediaPlayer().setAudioSpectrumInterval(value);
     }
 
 	//The sensitivity threshold in decibels; must be non-positive.
 	public final void setAudioSpectrumThreshold(int value) {
-        this.mediaPlayer.setAudioSpectrumThreshold(value);
+        this.getMediaPlayer().setAudioSpectrumThreshold(value);
     }
+
+	public MediaPlayer getMediaPlayer() {
+		return mediaPlayer;
+	}
 }
