@@ -3,6 +3,7 @@ package presentation.scenes;
 import java.util.Observable;
 import java.util.Observer;
 
+import javafx.beans.InvalidationListener;
 import application.Main;
 import business.MischPult;
 import business.Player;
@@ -46,7 +47,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 
 	private Slider tune2;
 
-	private boolean playing, pushed;
+	private boolean playingLeft, playingRight, pushed;
 	private boolean userInteraction;
 
 	public PultViewController(Main application, MischPult mischPult, Stage primaryStage) {
@@ -94,7 +95,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 		TuneView tuneViewLeft = view.tuneViewLeft;
 		tune2 = tuneViewLeft.tune2;
 
-		playing = false;
+		playingLeft = false;
+		playingRight = false;
 		pushed = false;
 
 		initialize();
@@ -102,7 +104,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 
 	public void initialize() {
 
-		mischPult.addObserver(this);
+		mischPult.addObserver(this); //Das umschreiben?
 
 		setting.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -113,80 +115,46 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		/*playLeft.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				if (!playing) {
-					mischPult.play();
-					playLeft.getStyleClass().clear();
-					playLeft.getStyleClass().addAll("control-button", "pause");
-					playing = true;
-				} else {
-					mischPult.pause();
-					playLeft.getStyleClass().clear();
-					playLeft.getStyleClass().addAll("control-button", "play");
-					playing = false;
-				}
-			}
-		});*/
-		//geht noch nicht
 		playLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if (!playing) {
-					System.out.println("something");
+				if (!playingLeft) {
 					mischPult.play("links");
 					playLeft.getStyleClass().clear();
 					playLeft.getStyleClass().addAll("control-button", "pause");
-					playing = true;
+					playingLeft = true;
 				} else {
 					mischPult.pause("links");
 					playLeft.getStyleClass().clear();
 					playLeft.getStyleClass().addAll("control-button", "play");
-					playing = false;
+					playingLeft = false;
 				}
 			}
 		});
-
-		/*playRight.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				if (!playing) {
-					mischPult.play();
-					playRight.getStyleClass().clear();
-					playRight.getStyleClass().addAll("control-button", "pause");
-					playing = true;
-				} else {
-					mischPult.pause();
-					playRight.getStyleClass().clear();
-					playRight.getStyleClass().addAll("control-button", "play");
-					playing = false;
-				}
-			}
-		});*/
 		
 		playRight.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if (!playing) {
+				if (!playingRight) {
 					mischPult.play("rechts");
 					playRight.getStyleClass().clear();
 					playRight.getStyleClass().addAll("control-button", "pause");
-					playing = true;
+					playingRight = true;
 				} else {
 					mischPult.pause("rechts");
 					playRight.getStyleClass().clear();
 					playRight.getStyleClass().addAll("control-button", "play");
-					playing = false;
+					playingRight = false;
 				}
 			}
 		});
-
+		
+		//LOOP im Mischpult geht noch nicht
 		loopLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				if (!pushed) {
-					// mischPult.loop();
+					mischPult.loop("links");
 					loopLeft.getStyleClass().clear();
 					loopLeft.getStyleClass().addAll("control-button", "pushLoop");
 					pushed = true;
@@ -197,12 +165,13 @@ public class PultViewController extends ViewController<Main> implements Observer
 				}
 			}
 		});
-
+		
+		//LOOP im Mischpult geht noch nicht
 		loopRight.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				if (!pushed) {
-					// mischPult.loop();
+					mischPult.loop("rechts");
 					loopRight.getStyleClass().clear();
 					loopRight.getStyleClass().addAll("control-button", "pushLoop");
 					pushed = true;
@@ -271,60 +240,65 @@ public class PultViewController extends ViewController<Main> implements Observer
 		eineinhalbLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				mischPult.speed(1.5);
+				mischPult.speed("links",1.5);
 			}
 		});
 		eineinhalbRight.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				mischPult.speed(1.5);
+				mischPult.speed("rechts",1.5);
 			}
 		});
 		
 		halbLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				mischPult.speed(.5);
+				mischPult.speed("links",.5);
 			}
 		});
 		halbRight.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				mischPult.speed(.5);
+				mischPult.speed("rechts",.5);
 			}
 		});
 		
 		doppeltLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				mischPult.speed(2);
+				mischPult.speed("links",2);
 			}
 		});
 		doppeltRight.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				mischPult.speed(2);
+				mischPult.speed("rechts",2);
 			}
 		});
 		
 		normalLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				mischPult.speed(1);
+				mischPult.speed("links", 1);
 			}
 		});
 		normalRight.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				mischPult.speed(1);
+				mischPult.speed("rechts",1);
 			}
 		});
 		
+		//test
+		volumeLeft.valueProperty().addListener(new InvalidationListener() {
+			public void invalidated(javafx.beans.Observable ov) {
+				if(volumeLeft.isValueChanging()) {
+					mischPult.setVolume("links", volumeLeft.getValue() / 100.0);
+					//mischPult.volume(volumeLeft.getValue()/100.0);
+				}
+			}
+		});
 		
-		
-		volumeLeft.valueProperty()
-		.addListener((observable, oldValue, newValue) -> mischPult.volume((float) volumeLeft.getValue()));
-
 		
 		volumeRight.valueProperty()
 		.addListener((observable, oldValue, newValue) -> mischPult.volume((float) volumeRight.getValue()));

@@ -71,9 +71,7 @@ public class MischPult extends Observable {
 	
 	//name als key aus der hashmap um richtigen Player zu aktivieren
 		public void play(String name) {
-			System.out.println("isn't");
 			players.get(name).play();
-			System.out.println(name + players.get(name).getName());
 			setChanged();
 			notifyObservers();
 		}
@@ -105,10 +103,11 @@ public class MischPult extends Observable {
 		public double getVolume(String name) {
 			return players.get(name).getVolume();
 		}
-		//test
-		public double getVolume() {
-			return player.getVolume();
+		
+		public void loop(String name) {
+			players.get(name).loop();
 		}
+
 	//Aus Praktikum
 	/*public static MediaPlayer getMediaPlayer() {
 		return player;
@@ -120,8 +119,8 @@ public class MischPult extends Observable {
 	}*/
 		
 		//test
-		public void speed(double value) {
-			player.setRate(value);
+		public void speed(String name, double value) {
+			players.get(name).setSpeed(value);
 		}
 		
 		public void volume(double value) {

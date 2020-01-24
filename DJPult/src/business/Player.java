@@ -15,14 +15,17 @@ public class Player {
 	private double currVolume;
 	private static final int BAND_COUNT = 3;
 	private static final double Start_FREQ = 250.0;
-	int posInList; //Evtl in Playlist statt in Players, dumm weil man dann nicht die
+	int posInList; 
+	//Evtl in Playlist statt in Players, dumm weil man dann nicht die
 	//selbe Playlist doppelt nehmen kann, also hier
 	ObservableList<EqualizerBand> bands;
+	private boolean isLooping;
 
 	public Player(String name) {
 		this. name = name;
 		this.list = null;
 		posInList = 0;
+		isLooping = false;
 		//if list not null
 		//media = new Media(list.getTrack(0).getTitle()); //Nur mit Pfad aufrufbar in Media()
 		media = new Media(Paths.get("BringMichNachHause.mp3").toUri().toString());
@@ -58,7 +61,6 @@ public class Player {
 	}
 
 	public void play() {
-		System.out.println("working");
 		//setVolume(currVolume);
 		mediaPlayer.play();
 	}
@@ -119,6 +121,13 @@ public class Player {
 		return this.name;
 	}
 	
+	public void setSpeed(double value) {
+		mediaPlayer.setRate(value);
+	}
+	
+	public void loop() {
+		//do something
+	}
 	
 
 
