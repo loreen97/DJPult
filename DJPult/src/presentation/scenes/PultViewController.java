@@ -148,7 +148,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		playRight.setOnAction(new EventHandler<ActionEvent>() {
+		/*playRight.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				if (!playing) {
@@ -158,6 +158,23 @@ public class PultViewController extends ViewController<Main> implements Observer
 					playing = true;
 				} else {
 					mischPult.pause();
+					playRight.getStyleClass().clear();
+					playRight.getStyleClass().addAll("control-button", "play");
+					playing = false;
+				}
+			}
+		});*/
+		
+		playRight.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if (!playing) {
+					mischPult.play("rechts");
+					playRight.getStyleClass().clear();
+					playRight.getStyleClass().addAll("control-button", "pause");
+					playing = true;
+				} else {
+					mischPult.pause("rechts");
 					playRight.getStyleClass().clear();
 					playRight.getStyleClass().addAll("control-button", "play");
 					playing = false;
