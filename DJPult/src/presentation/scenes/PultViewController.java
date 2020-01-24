@@ -24,7 +24,7 @@ import presentation.UIComponents.TuneView;
 import presentation.UIComponents.VolumeView;
 
 public class PultViewController extends ViewController<Main> implements Observer {
-
+ //text
 	private Button sample1;
 	private Button sample2;
 	private Button sample3;
