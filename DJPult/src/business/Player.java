@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.media.EqualizerBand;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 
 public class Player {
@@ -20,6 +21,7 @@ public class Player {
 	//selbe Playlist doppelt nehmen kann, also hier
 	ObservableList<EqualizerBand> bands;
 	private boolean isLooping;
+	Duration duration;
 
 	public Player(String name) {
 		this. name = name;
@@ -28,9 +30,10 @@ public class Player {
 		isLooping = false;
 		//if list not null
 		//media = new Media(list.getTrack(0).getTitle()); //Nur mit Pfad aufrufbar in Media()
-		media = new Media(Paths.get("BringMichNachHause.mp3").toUri().toString());
+		media = new Media(Paths.get("Apache_207.mp3").toUri().toString());
 		mediaPlayer = new MediaPlayer(media);
 		bands=mediaPlayer.getAudioEqualizer().getBands();
+		duration = media.getDuration();
 		setBands();
 	}
 	
@@ -40,6 +43,7 @@ public class Player {
 	//oder
 	//http://what-when-how.com/javafx-2/playing-audio-using-the-media-classes-javafx-2-part-4/
 	public void setBands() {
+		//if(name == "links") { //test/ vergleich
 		bands=mediaPlayer.getAudioEqualizer().getBands();
 		bands.clear();
 		mediaPlayer.getAudioEqualizer().getBands();
@@ -47,22 +51,37 @@ public class Player {
 		double max = EqualizerBand.MAX_GAIN;
 		double mid = (max - min) / 2;
 		double freq = Start_FREQ;
+		
 		for(int i = 0; i < BAND_COUNT; i++) {
 			double t = (double)i / (double)(BAND_COUNT-1)*(2*Math.PI);
 			double scale = 0.4 * (1+Math.cos(t));
 			double gain = min + mid + (mid*scale);
 			bands.add(new EqualizerBand(freq, freq/2, gain));
 			freq *= 2;
-		}
+		//}
+	}
+}
+	
+	public void tune1Slider(double value) {
+		bands.get(0).setGain(value);
 	}
 	
-	public void bassSlider(double value) {
-		bands.get(1).setGain(50.5);
+	public void tune2Slider(double value) {
+		bands.get(1).setGain(value);
+	}
+	
+	public void tune3Slider(double value) {
+		bands.get(2).setGain(value);
 	}
 
 	public void play() {
 		//setVolume(currVolume);
 		mediaPlayer.play();
+		//irgendwie auf dur.ZERO setzen um das Lied noch mal 
+		//ueber play spielen zu koennen
+		/*if(media.getDuration().equals(dur)) {
+			mediaPlayer.seek(dur.ZERO);
+		}*/
 	}
 
 	public void pause() {
@@ -114,6 +133,7 @@ public class Player {
 
 	public void changeBySlider(double slidervalue) {
 		int songPosition = (int) slidervalue;
+		mediaPlayer.seek(duration.multiply(slidervalue/100.0));//int songPosition = (int) slidervalue;
 		//mediaPlayer.cue(songPosition);
 	}
 	
