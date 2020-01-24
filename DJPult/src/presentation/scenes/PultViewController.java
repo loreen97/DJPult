@@ -262,6 +262,16 @@ public class PultViewController extends ViewController<Main> implements Observer
 				mischPult.speed(1);
 			}
 		});
+		
+		
+		
+		volumeLeft.valueProperty()
+		.addListener((observable, oldValue, newValue) -> mischPult.volume((float) volumeLeft.getValue()));
+
+		
+		volumeRight.valueProperty()
+		.addListener((observable, oldValue, newValue) -> mischPult.volume((float) volumeRight.getValue()));
+
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class MischPult extends Observable {
 	
 	
 	
-	
+	//test
 	public void play() {
 		player.play();
 		setChanged();
@@ -97,7 +97,10 @@ public class MischPult extends Observable {
 		public double getVolume(String name) {
 			return players.get(name).getVolume();
 		}
-	
+		//test
+		public double getVolume() {
+			return player.getVolume();
+		}
 	//Aus Praktikum
 	/*public static MediaPlayer getMediaPlayer() {
 		return player;
@@ -108,10 +111,12 @@ public class MischPult extends Observable {
 		return player;
 	}*/
 		
-		
+		//test
 		public void speed(double value) {
 			player.setRate(value);
 		}
 		
-		
+		public void volume(double value) {
+			player.setVolume(value);
+		}
 }

@@ -18,6 +18,7 @@ public class VolumeView extends HBox{
 		volume.setMax(50);
 		volume.setValue(25);
 
+		
 		volume.setShowTickMarks(true);
 		volume.setShowTickLabels(false);
 
