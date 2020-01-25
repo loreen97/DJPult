@@ -47,6 +47,13 @@ public class MischPult extends Observable {
 		samples.put(sample5.getName(), sample5);
 		samples.put(sample6.getName(), sample6);
 		
+		manager = new PlaylistManager();
+		Playlist first = new Playlist("first");
+		first.addSingleSong("Apache_207.mp3");
+		first.addSingleSong("02DreiWorte.mp3");
+		first.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
+		first.addSingleSong("Bring Mich Nach Hause.mp3");
+		manager.getAllLists().put("first", first);
 		
 		
 		// players.put(playerSamples.getName(), playerSamples);
@@ -144,11 +151,14 @@ public class MischPult extends Observable {
 		players.get(name).setSpeed(value);
 	}
 
-	public void volume(double value) {
-		player.setVolume(value);
-	}
-	
 	public PlaylistManager getManager() {
 		return this.manager;
+	}
+	
+	//Hier geht noch irgendwas schief
+	//Play button geht dann nicht mehr richtig, er resetted nur
+	//Slider geht kaputt, the usual
+	public void setPlaylist(Playlist name) {
+		players.get("links").setPlaylist(name);
 	}
 }

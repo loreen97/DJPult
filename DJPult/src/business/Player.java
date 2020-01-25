@@ -133,7 +133,10 @@ public class Player {
 	}
 
 	public void loadSong() {
+		mediaPlayer.dispose();
+		mediaPlayer.seek(Duration.ZERO);
 		media = new Media(Paths.get(list.getTrack(posInList).getSoundFile()).toUri().toString());
+		mediaPlayer = new MediaPlayer(media);
 	}
 
 	public Track getActSong() {
@@ -180,6 +183,12 @@ public class Player {
 	
 	public Duration getDuration() {
 		return this.duration;
+	}
+	
+	public void setPlaylist(Playlist name) {
+		this.list = name;
+		posInList = 0;
+		loadSong();
 	}
 	
 

@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class PlaylistManager {
@@ -13,6 +14,7 @@ public class PlaylistManager {
 	
 	public PlaylistManager() {
 		playlists = new HashMap<String, Playlist>();
+		playlistNames =  FXCollections.observableArrayList(); //um NullPointer zu vermeiden
 	}
 	
 	public void createPlaylist(String name, ArrayList<Track> songs) {
@@ -21,8 +23,21 @@ public class PlaylistManager {
 		Playlist tempList = new Playlist(name);
 		for(Track n : songs) {
 				tempList.addSingleTrack(n); 
+				System.out.println(n.getTitle());
 		}
-		playlists.put(name, tempList);
-		playlistNames.add(name);
+		try {
+			playlists.put(name, tempList);
+			playlistNames.add(name);
+		} catch (NullPointerException ez){
+			System.out.println("Something went wrong with the Playlist " + name);
+			}
+		}
+	
+	public Playlist getList(String name) {
+		return playlists.get(name);
+	}
+	
+	public HashMap<String, Playlist> getAllLists() {
+		return playlists;
 	}
 }

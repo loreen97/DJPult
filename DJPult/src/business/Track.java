@@ -16,6 +16,7 @@ public class Track {
 	
 	//fuer Lieder
 	public Track(String title) {
+		//Aktuelles Problem: Wenn kein Tag, dann ist der komplette Pfad der Name.
 		this.title = title; //Titel ist durch erstellen aus Ordner an dieser Stelle noch
 		//mit .mp3 hinten dran also braucht soundfile kein +".mp3"
 		//Falls ID3v2 vorhanden wird titel geändert 

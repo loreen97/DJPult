@@ -85,7 +85,7 @@ public class PlaylistViewController extends ViewController<Main> {
 			} else {
 				System.out.println("Bitte gebe der Playlist einen Titel und mindestens 3 songs");
 			}
-
+			mischPult.setPlaylist(mischPult.getManager().getList(titleInput.getText()));
 		});
 
 		loadMP3.setOnAction(event -> {

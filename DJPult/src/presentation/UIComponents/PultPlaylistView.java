@@ -3,6 +3,7 @@ package presentation.UIComponents;
 import java.util.LinkedList;
 import java.util.List;
 
+import business.MischPult;
 import business.SelectTrack;
 import business.Track;
 import javafx.collections.FXCollections;
@@ -24,15 +25,15 @@ public class PultPlaylistView extends  HBox {
 	public ObservableList<String> songListRight;
 	public VBox vbox1;
 	public VBox vbox2;
-	//public MP3Player mp3Player;
+	public MischPult mischPult;
 
 
 	public PultPlaylistView() {
 
-	//	this.mp3Player = new MP3Player(); 
+		this.mischPult = new MischPult();
 
-		//songList1 = mp3Player.getActPlaylist().getAllSongNames();
-		//songList2 = mp3Player.getActPlaylist().getAllSongNames();
+		songListLeft = mischPult.getLeftPlayer().getPlaylist().getAllTitles();
+		songListRight = mischPult.getRightPlayer().getPlaylist().getAllTitles();
 		songlistViewLeft = new ListView<>(songListLeft);
 		songlistViewLeft.setId("playlist");
 		
