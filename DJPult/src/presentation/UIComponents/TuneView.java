@@ -24,6 +24,7 @@ public class TuneView extends HBox {
 	public VBox right;
 	
 	
+	
 	public TuneView() {
 		tune1 = new Slider();
 		tune1.setOrientation(Orientation.VERTICAL);

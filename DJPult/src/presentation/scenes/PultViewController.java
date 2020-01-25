@@ -1,5 +1,6 @@
 package presentation.scenes;
 
+import java.io.ByteArrayInputStream;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -14,7 +15,9 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import presentation.UIComponents.ControlView;
@@ -24,7 +27,7 @@ import presentation.UIComponents.TuneView;
 import presentation.UIComponents.VolumeView;
 
 public class PultViewController extends ViewController<Main> implements Observer {
- //text
+	// text
 	private Button sample1;
 	private Button sample2;
 	private Button sample3;
@@ -47,9 +50,12 @@ public class PultViewController extends ViewController<Main> implements Observer
 	private Label titleLeft, titleRight;
 	private Slider volumeLeft, volumeRight;
 
-	private Slider tune1;
-	private Slider tune2;
-	private Slider tune3;
+	private Slider tune1Left;
+	private Slider tune2Left;
+	private Slider tune3Left;
+	private Slider tune1Right;
+	private Slider tune2Right;
+	private Slider tune3Right;
 
 	private boolean playingLeft, playingRight, pushed;
 	private boolean userInteraction;
@@ -105,9 +111,14 @@ public class PultViewController extends ViewController<Main> implements Observer
 		volumeRight = volumeViewRight.volume;
 
 		TuneView tuneViewLeft = view.tuneViewLeft;
-		tune1 = tuneViewLeft.tune1;
-		tune2 = tuneViewLeft.tune2;
-		tune3 = tuneViewLeft.tune3;
+		tune1Left = tuneViewLeft.tune1;
+		tune2Left = tuneViewLeft.tune2;
+		tune3Left = tuneViewLeft.tune3;
+
+		TuneView tuneViewRight = view.tuneViewRight;
+		tune1Right = tuneViewRight.tune1;
+		tune2Right = tuneViewRight.tune2;
+		tune3Right = tuneViewRight.tune3;
 
 		playingLeft = false;
 		playingRight = false;
@@ -129,6 +140,30 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
+		mischPult.getLeftPlayer().getMediaPlayer().currentTimeProperty()
+				.addListener((observableValue, oldDuration, newDuration) -> {
+					Duration time = mischPult.getLeftPlayer().getMediaPlayer().getCurrentTime();
+					Duration total = mischPult.getLeftPlayer().getMediaPlayer().getTotalDuration();
+					if (!songSliderLeft.isValueChanging() && total.greaterThan(Duration.ZERO)) {
+						songSliderLeft.setValue(time.toMillis() / total.toMillis() * 100);
+					}
+				});
+		
+		songSliderLeft.setOnMouseClicked(songSlider("links"));
+		songSliderLeft.setOnMouseDragged(songSlider("links"));
+
+		mischPult.getRightPlayer().getMediaPlayer().currentTimeProperty()
+				.addListener((observableValue, oldDuration, newDuration) -> {
+					Duration time = mischPult.getRightPlayer().getMediaPlayer().getCurrentTime();
+					Duration total = mischPult.getRightPlayer().getMediaPlayer().getTotalDuration();
+					if (!songSliderRight.isValueChanging() && total.greaterThan(Duration.ZERO)) {
+						songSliderRight.setValue(time.toMillis() / total.toMillis() * 100);
+					}
+				});
+		
+		songSliderRight.setOnMouseClicked(songSlider("rechts"));
+		songSliderRight.setOnMouseDragged(songSlider("rechts"));
+
 		playLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -137,6 +172,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 					playLeft.getStyleClass().clear();
 					playLeft.getStyleClass().addAll("control-button", "pause");
 					playingLeft = true;
+					mischPult.getLeftPlayer().getMediaPlayer().setOnEndOfMedia(() -> mischPult.skip("links"));
 				} else {
 					mischPult.pause("links");
 					playLeft.getStyleClass().clear();
@@ -154,6 +190,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 					playRight.getStyleClass().clear();
 					playRight.getStyleClass().addAll("control-button", "pause");
 					playingRight = true;
+					mischPult.getRightPlayer().getMediaPlayer().setOnEndOfMedia(() -> mischPult.skip("rechts"));
 				} else {
 					mischPult.pause("rechts");
 					playRight.getStyleClass().clear();
@@ -200,7 +237,6 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		// LOOP im Mischpult geht noch nicht
 		loopLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -210,6 +246,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 					loopLeft.getStyleClass().addAll("control-button", "pushLoop");
 					pushed = true;
 				} else {
+					mischPult.loop("links");
 					loopLeft.getStyleClass().clear();
 					loopLeft.getStyleClass().addAll("control-button", "loop");
 					pushed = false;
@@ -217,7 +254,6 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		// LOOP im Mischpult geht noch nicht
 		loopRight.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -227,6 +263,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 					loopRight.getStyleClass().addAll("control-button", "pushLoop");
 					pushed = true;
 				} else {
+					mischPult.loop("rechts");
 					loopRight.getStyleClass().clear();
 					loopRight.getStyleClass().addAll("control-button", "loop");
 					pushed = false;
@@ -234,11 +271,11 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		tune1.valueProperty().addListener((observable, oldValue, newValue) -> {
+		tune1Left.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (userInteraction)
-				mischPult.changeTune1("links", tune1.getValue());
+				mischPult.changeTune1("links", tune1Left.getValue());
 		});
-		tune1.setOnMousePressed(new EventHandler<MouseEvent>() {
+		tune1Left.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -246,7 +283,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 				System.out.println(userInteraction);
 			}
 		});
-		tune1.setOnMouseReleased(new EventHandler<MouseEvent>() {
+		tune1Left.setOnMouseReleased(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -255,11 +292,11 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		tune2.valueProperty().addListener((observable, oldValue, newValue) -> {
+		tune2Left.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (userInteraction)
-				mischPult.changeTune2("links", tune2.getValue());
+				mischPult.changeTune2("links", tune2Left.getValue());
 		});
-		tune2.setOnMousePressed(new EventHandler<MouseEvent>() {
+		tune2Left.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -267,7 +304,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 				System.out.println(userInteraction);
 			}
 		});
-		tune2.setOnMouseReleased(new EventHandler<MouseEvent>() {
+		tune2Left.setOnMouseReleased(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -276,11 +313,11 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		tune3.valueProperty().addListener((observable, oldValue, newValue) -> {
+		tune3Left.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (userInteraction)
-				mischPult.changeTune3("links", tune3.getValue());
+				mischPult.changeTune3("links", tune3Left.getValue());
 		});
-		tune3.setOnMousePressed(new EventHandler<MouseEvent>() {
+		tune3Left.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -288,7 +325,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 				System.out.println(userInteraction);
 			}
 		});
-		tune3.setOnMouseReleased(new EventHandler<MouseEvent>() {
+		tune3Left.setOnMouseReleased(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -297,24 +334,68 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		// versuch
-		mischPult.getLeftPlayer().getMediaPlayer().currentTimeProperty()
-				.addListener((observableValue, oldDuration, newDuration) -> {
-					Duration time = mischPult.getLeftPlayer().getMediaPlayer().getCurrentTime();
-					Duration total = mischPult.getLeftPlayer().getMediaPlayer().getTotalDuration();
-					if (!songSliderLeft.isValueChanging() && total.greaterThan(Duration.ZERO)) {
-						songSliderLeft.setValue(time.toMillis() / total.toMillis() * 100);
-					}
-				});
+		tune1Right.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (userInteraction)
+				mischPult.changeTune1("rechts", tune1Right.getValue());
+		});
+		tune1Right.setOnMousePressed(new EventHandler<MouseEvent>() {
 
-		mischPult.getRightPlayer().getMediaPlayer().currentTimeProperty()
-				.addListener((observableValue, oldDuration, newDuration) -> {
-					Duration time = mischPult.getRightPlayer().getMediaPlayer().getCurrentTime();
-					Duration total = mischPult.getRightPlayer().getMediaPlayer().getTotalDuration();
-					if (!songSliderRight.isValueChanging() && total.greaterThan(Duration.ZERO)) {
-						songSliderRight.setValue(time.toMillis() / total.toMillis() * 100);
-					}
-				});
+			@Override
+			public void handle(MouseEvent event) {
+				userInteraction = true;
+				System.out.println(userInteraction);
+			}
+		});
+		tune1Right.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				userInteraction = false;
+				System.out.println(userInteraction);
+			}
+		});
+
+		tune2Right.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (userInteraction)
+				mischPult.changeTune2("rechts", tune2Right.getValue());
+		});
+		tune2Right.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				userInteraction = true;
+				System.out.println(userInteraction);
+			}
+		});
+		tune2Right.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				userInteraction = false;
+				System.out.println(userInteraction);
+			}
+		});
+
+		tune3Right.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (userInteraction)
+				mischPult.changeTune3("rechts", tune3Right.getValue());
+		});
+		tune3Right.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				userInteraction = true;
+				System.out.println(userInteraction);
+			}
+		});
+		tune3Right.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				userInteraction = false;
+				System.out.println(userInteraction);
+			}
+		});
 
 		eineinhalbLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -368,7 +449,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		// test
+		volumeLeft.setValue(mischPult.getVolume("links") * 100);
 		volumeLeft.valueProperty().addListener(new InvalidationListener() {
 			public void invalidated(javafx.beans.Observable ov) {
 				if (volumeLeft.isValueChanging()) {
@@ -376,7 +457,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 				}
 			}
 		});
-
+		
+		volumeRight.setValue(mischPult.getVolume("rechts") * 100);
 		volumeRight.valueProperty().addListener(new InvalidationListener() {
 			public void invalidated(javafx.beans.Observable ov) {
 				if (volumeRight.isValueChanging()) {
@@ -384,17 +466,78 @@ public class PultViewController extends ViewController<Main> implements Observer
 				}
 			}
 		});
-	}
+		
+		//Aendern der Titel
+		changeableGuiElements("links", mischPult.getLeftPlayer().getActSong());
+		mischPult.getLeftPlayer().getIndex()
+				.addListener(((observable, oldValue, newValue) -> changeableGuiElements("links",
+						mischPult.getAPlaylist("links").getTrack((Integer) newValue))));
 
+		changeableGuiElements("rechts", mischPult.getRightPlayer().getActSong());
+		mischPult.getRightPlayer().getIndex()
+				.addListener(((observable, oldValue, newValue) -> changeableGuiElements("rechts",
+						mischPult.getAPlaylist("rechts").getTrack((Integer) newValue))));
+	}
+	
+	//Zum Updaten des titels bei Songwechsel
+	public void changeableGuiElements(String name, Track song) {
+		if (name == "links") {
+			try {
+				titleLeft.setText(mischPult.getActSong("links").getTitle());
+				//does nothing:
+				songSliderLeft.setValue(0);
+				songSlider("links");
+			} finally {
+				if (song.getTitle() == null) {
+					titleLeft.setText("Unbekannter Titel");
+				}
+			}
+		} else if (name == "rechts") {
+			try {
+				titleRight.setText(mischPult.getActSong("rechts").getTitle());
+				//does nothing:
+				songSliderRight.setValue(0);
+				songSlider("rechts");
+			} finally {
+				if (song.getTitle() == null) {
+					titleRight.setText("Unbekannter Titel");
+				}
+			}
+		}
+	}
+	
+	//Wahrscheinlich durch die obere Methode ersetzen
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		Platform.runLater(() -> {
-			Track track = (Track) arg1;
+			// Track track = (Track) arg1;
 			titleLeft.setText(mischPult.getActSong("links").getTitle());
 			titleRight.setText(mischPult.getActSong("rechts").getTitle());
-			//titleLeft.setText(track.getTitle());
-			// titleRight.setText(track.getTitle());
 		});
 	}
 
+	//Zum Aendern des Song Progresses anhand des Sliders 
+	private EventHandler<MouseEvent> songSlider(String name) {
+		MediaPlayer m;
+		if(name == "links") {
+			m = mischPult.getLeftPlayer().getMediaPlayer();
+		} else {
+			m = mischPult.getRightPlayer().getMediaPlayer();
+		}
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (m == null) {
+					event.consume();
+				} else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED
+						|| event.getEventType() == MouseEvent.MOUSE_CLICKED) {
+					if(name == "links") {
+						m.seek(m.getTotalDuration().multiply(event.getX() / songSliderLeft.getWidth()));
+					} else {
+						m.seek(m.getTotalDuration().multiply(event.getX() / songSliderRight.getWidth()));
+					}
+				}
+			}
+		};
+	}
 }

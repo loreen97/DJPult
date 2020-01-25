@@ -1,6 +1,8 @@
 package business;
 
 import java.nio.file.Paths;
+
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.media.EqualizerBand;
 import javafx.scene.media.Media;
@@ -17,6 +19,7 @@ public class Player {
 	private static final int BAND_COUNT = 3;
 	private static final double Start_FREQ = 250.0;
 	private int posInList; 
+	private SimpleIntegerProperty index;
 	//Evtl in Playlist statt in Players, dumm weil man dann nicht die
 	//selbe Playlist doppelt nehmen kann, also hier
 	ObservableList<EqualizerBand> bands;
@@ -26,11 +29,13 @@ public class Player {
 	public Player(String name) {
 		this. name = name;
 		posInList = 0;
+		this.index = new SimpleIntegerProperty(0);
 		isLooping = false;
 		this.list = new Playlist("first");
-		this.list.addSingleSong("Apache_207");
-		this.list.addSingleSong("02DreiWorte");
-		this.list.addSingleSong("Bring Mich Nach Hause");
+		this.list.addSingleSong("Apache_207.mp3");
+		this.list.addSingleSong("02DreiWorte.mp3");
+		this.list.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
+		this.list.addSingleSong("Bring Mich Nach Hause.mp3");
 		//if list not null
 		//media = new Media(list.getTrack(0).getTitle()); //Nur mit Pfad aufrufbar in Media()
 		media = new Media(Paths.get(list.getFirst()).toUri().toString());
@@ -78,6 +83,9 @@ public class Player {
 	}
 
 	public void play() {
+		if (mediaPlayer != null){
+			mediaPlayer.stop();
+		}
 		//setVolume(currVolume);
 		getMediaPlayer().play();
 		//irgendwie auf dur.ZERO setzen um das Lied noch mal 
@@ -93,16 +101,20 @@ public class Player {
 
 	public void skip() {
 		if(!isLooping) {
-		getMediaPlayer().stop();
 		if (posInList == list.getLength()) {
 			posInList = 0; 
 		} else {
 			posInList++;
 		}
+		index.set(posInList);
+		mediaPlayer.dispose();
 		loadSong();
+		mediaPlayer.seek(Duration.ZERO);
+		mediaPlayer = new MediaPlayer(media);
 		play();
 		}
 		else { //selben Song nochmal laden irgendwie
+			mediaPlayer.seek(Duration.ZERO);
 			play();
 		}
 	}
@@ -114,12 +126,14 @@ public class Player {
 		} else {
 			posInList = list.getLength();
 		}
+		index.set(posInList);
 		loadSong();
+		mediaPlayer.seek(Duration.ZERO);
 		play();
 	}
 
 	public void loadSong() {
-		media = new Media(list.getTrack(posInList).getTitle()); //richtig? //Nur mit Pfad aufrufbar in Media()
+		media = new Media(Paths.get(list.getTrack(posInList).getSoundFile()).toUri().toString());
 	}
 
 	public Track getActSong() {
@@ -138,10 +152,13 @@ public class Player {
 	public double getVolume() {
 		return getMediaPlayer().getVolume();
 	}
+	
+	public SimpleIntegerProperty getIndex() {
+		return this.index;
+	}
 
 	public void changeBySlider(double slidervalue) {
-		int songPosition = (int) slidervalue;
-		getMediaPlayer().seek(duration.multiply(slidervalue/100.0));//int songPosition = (int) slidervalue;
+		getMediaPlayer().seek(duration.multiply(slidervalue/100.0));
 		//mediaPlayer.cue(songPosition);
 	}
 	
@@ -159,6 +176,10 @@ public class Player {
 		} else {
 			this.isLooping = true;
 		}
+	}
+	
+	public Duration getDuration() {
+		return this.duration;
 	}
 	
 

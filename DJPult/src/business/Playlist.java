@@ -12,7 +12,11 @@ public class Playlist {
 		this.title = name;
 	}
 	public Track getTrack(int no) {
+		try {
 		return this.tracks.get(no);
+		} catch(NullPointerException ez) {
+			System.out.println("Playlist zu Ende");
+		} return null;
 	}
 	
 	public String getTitle() {
@@ -34,6 +38,10 @@ public class Playlist {
 	public void addSingleSong(String name) {
 		Track temp = new Track(name);
 		tracks.add(temp);
+	}
+	
+	public void addSingleTrack(Track name) {
+		tracks.add(name);
 	}
 	
 	private void createFromFolder(String dir) {

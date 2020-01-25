@@ -16,11 +16,13 @@ public class Track {
 	
 	//fuer Lieder
 	public Track(String title) {
-		this.title = title;
-		this.soundFile = title + ".mp3";
+		this.title = title; //Titel ist durch erstellen aus Ordner an dieser Stelle noch
+		//mit .mp3 hinten dran also braucht soundfile kein +".mp3"
+		//Falls ID3v2 vorhanden wird titel geändert 
+		this.soundFile = title;
 		Mp3File mp3File = null;
 		try {
-			mp3File = new Mp3File(soundFile);
+			mp3File = new Mp3File(title);
 		} catch (UnsupportedTagException | InvalidDataException | IOException e) {
 			e.printStackTrace();
 		}
@@ -28,8 +30,12 @@ public class Track {
 			this.length = mp3File.getLengthInMilliseconds();
 			if (mp3File.hasId3v1Tag()) {
 				ID3v2 id3v2Tag = mp3File.getId3v2Tag();
+				try {
 				this.interpret = id3v2Tag.getArtist();
 				this.title = id3v2Tag.getTitle();
+				} catch (NullPointerException ez) {
+					System.out.println(title + " hat ein unvollstaendiges id3v2Tag.");
+				}
 			}
 		}
 	}

@@ -73,11 +73,13 @@ public class PlaylistViewController extends ViewController<Main> {
 		});
 
 		save.setOnAction(event -> {
-
-			// mischPult.playlistManager.createPlaylist(title.getText(),songs);
-
+			//Entweder Playlist-Liste im pManager erstellen (also pName und Pfad fuer Dateien mitgeben)
+			//Oder pList-Liste hier erstellen und an pManager uebergeben (also Name und Liste mit Liedern)
+			//mischPult.getPlaylistManager.createPlaylist(title.getText(, pfad));
+			//Aktuell geben wir wohl eine ArrayList mit?
+			//Wuerde es eher im PManager machen
 			if (titleInput.getText() != null && songs.size() > 2) {
-				// mischPult.playlistManager.createPlaylist(titleInput.getText(),songs);
+				mischPult.getManager().createPlaylist(titleInput.getText(),songs);
 				application.switchScene(Scenes.SETTING_VIEW);
 				System.out.println("Kreiieren der Playlist war erfolgreich");
 			} else {
@@ -95,10 +97,11 @@ public class PlaylistViewController extends ViewController<Main> {
 			if (list != null) {
 				for (File file : list) {
 					try {
-						Track newSong = new Track(file.getAbsolutePath());
-						songs.add(newSong);
-						//songNames.add(newSong.getTitle());
-						songlistView.setItems(songNames);
+							Track newSong = new Track(file.getAbsolutePath());
+							songs.add(newSong);
+							songNames.add(newSong); //Hatte vorher noch .getTitle ist aber eine Track List
+							songlistView.setItems(songNames);
+						
 					} catch(Exception e){
 						
 					}

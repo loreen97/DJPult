@@ -21,6 +21,7 @@ public class MischPult extends Observable {
 	// evtl fuer jeden sample button einen...
 	private Player playerLeft;
 	private Player playerRight;
+	private PlaylistManager manager;
 	private Samples sample1, sample2, sample3, sample4, sample5, sample6;
 	private HashMap<String, Player> players = new HashMap<String, Player>();
 	private HashMap<String, Samples> samples = new  HashMap<String, Samples>();
@@ -32,7 +33,7 @@ public class MischPult extends Observable {
 		playerRight = new Player("rechts");
 		players.put(playerLeft.getName(), playerLeft);
 		players.put(playerRight.getName(), playerRight);
-		
+		manager = new PlaylistManager();
 		sample1 = new Samples("sample1");
 		sample2 = new Samples("sample2");
 		sample3 = new Samples("sample3");
@@ -145,5 +146,9 @@ public class MischPult extends Observable {
 
 	public void volume(double value) {
 		player.setVolume(value);
+	}
+	
+	public PlaylistManager getManager() {
+		return this.manager;
 	}
 }
