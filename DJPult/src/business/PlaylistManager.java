@@ -23,7 +23,7 @@ public class PlaylistManager {
 		Playlist tempList = new Playlist(name);
 		for(Track n : songs) {
 				tempList.addSingleTrack(n); 
-				System.out.println(n.getTitle());
+				//System.out.println(n.getTitle());
 		}
 		try {
 			playlists.put(name, tempList);

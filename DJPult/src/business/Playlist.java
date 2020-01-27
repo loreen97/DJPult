@@ -28,9 +28,10 @@ public class Playlist {
 		return this.title;
 	}
 	
-	public String getFirst() {
-		return tracks.get(0).getSoundFile();
+	public Track getFirst() {
+		return tracks.get(0);
 	}
+
 	
 	public List<Track> getAllTracks() {
 		return this.tracks;

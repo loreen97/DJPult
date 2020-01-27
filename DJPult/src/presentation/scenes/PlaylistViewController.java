@@ -96,14 +96,15 @@ public class PlaylistViewController extends ViewController<Main> {
 			List<File> list = fChooser.showOpenMultipleDialog(stage);
 			if (list != null) {
 				for (File file : list) {
-					try {
+					try {	//wegene abs. Path haben die Titel wsl den Pfad als namen
+							//fixen? 
 							Track newSong = new Track(file.getAbsolutePath());
 							songs.add(newSong);
 							songNames.add(newSong); //Hatte vorher noch .getTitle ist aber eine Track List
 							songlistView.setItems(songNames);
 						
 					} catch(Exception e){
-						
+						e.printStackTrace();
 					}
 					/*catch (InvalidDataException e) {
 						e.printStackTrace();

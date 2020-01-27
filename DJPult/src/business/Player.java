@@ -9,7 +9,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-
 public class Player {
 	private MediaPlayer mediaPlayer;
 	private String name;
@@ -18,81 +17,77 @@ public class Player {
 	private double currVolume;
 	private static final int BAND_COUNT = 3;
 	private static final double Start_FREQ = 250.0;
-	private int posInList; 
+	private int posInList;
 	private SimpleIntegerProperty index;
-	//Evtl in Playlist statt in Players, dumm weil man dann nicht die
-	//selbe Playlist doppelt nehmen kann, also hier
+	// Evtl in Playlist statt in Players, dumm weil man dann nicht die
+	// selbe Playlist doppelt nehmen kann, also hier
 	ObservableList<EqualizerBand> bands;
 	private boolean isLooping;
-	Duration duration;
+	private Duration duration;
 
 	public Player(String name) {
-		this. name = name;
+		this.name = name;
 		posInList = 0;
 		this.index = new SimpleIntegerProperty(0);
 		isLooping = false;
 		this.list = new Playlist("first");
-		this.list.addSingleSong("Apache_207.mp3");
 		this.list.addSingleSong("02DreiWorte.mp3");
-		this.list.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
 		this.list.addSingleSong("Bring Mich Nach Hause.mp3");
-		//if list not null
-		//media = new Media(list.getTrack(0).getTitle()); //Nur mit Pfad aufrufbar in Media()
-		media = new Media(Paths.get(list.getFirst()).toUri().toString());
+		this.list.addSingleSong("Apache_207.mp3");
+		this.list.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
+		// if list not null
+		media = new Media(Paths.get(list.getFirst().getSoundFile()).toUri().toString());
 		mediaPlayer = new MediaPlayer(media);
-		bands=getMediaPlayer().getAudioEqualizer().getBands();
+		bands = getMediaPlayer().getAudioEqualizer().getBands();
 		duration = media.getDuration();
+		currVolume = this.getVolume();
 		setBands();
 	}
-	
-	//Tets methode 
-	// google books Pro JavaFX 8: A 
-	//Definitive Guide to Building Desktop, Mobile, and Embedded ... 
-	//oder
-	//http://what-when-how.com/javafx-2/playing-audio-using-the-media-classes-javafx-2-part-4/
+
+	// Tets methode
+	// google books Pro JavaFX 8: A
+	// Definitive Guide to Building Desktop, Mobile, and Embedded ...
+	// oder
+	// http://what-when-how.com/javafx-2/playing-audio-using-the-media-classes-javafx-2-part-4/
 	public void setBands() {
-		//if(name == "links") { //test/ vergleich
-		bands=getMediaPlayer().getAudioEqualizer().getBands();
+		// if(name == "links") { //test/ vergleich
+		bands = getMediaPlayer().getAudioEqualizer().getBands();
 		bands.clear();
 		getMediaPlayer().getAudioEqualizer().getBands();
 		double min = EqualizerBand.MIN_GAIN;
 		double max = EqualizerBand.MAX_GAIN;
 		double mid = (max - min) / 2;
 		double freq = Start_FREQ;
-		
-		for(int i = 0; i < BAND_COUNT; i++) {
-			double t = (double)i / (double)(BAND_COUNT-1)*(2*Math.PI);
-			double scale = 0.4 * (1+Math.cos(t));
-			double gain = min + mid + (mid*scale);
-			bands.add(new EqualizerBand(freq, freq/2, gain));
+
+		for (int i = 0; i < BAND_COUNT; i++) {
+			double t = (double) i / (double) (BAND_COUNT - 1) * (2 * Math.PI);
+			double scale = 0.4 * (1 + Math.cos(t));
+			double gain = min + mid + (mid * scale);
+			bands.add(new EqualizerBand(freq, freq / 2, gain));
 			freq *= 2;
-		//}
+			// }
+		}
 	}
-}
-	
+
 	public void tune1Slider(double value) {
 		bands.get(0).setGain(value);
 	}
-	
+
 	public void tune2Slider(double value) {
 		bands.get(1).setGain(value);
 	}
-	
+
 	public void tune3Slider(double value) {
 		bands.get(2).setGain(value);
 	}
 
 	public void play() {
-		if (mediaPlayer != null){
-			mediaPlayer.stop();
+		if (mediaPlayer != null) {
+			//mediaPlayer.stop(); //Wenn das drin ist geht loop nicht, evtl && looping
 		}
-		//setVolume(currVolume);
-		getMediaPlayer().play();
-		//irgendwie auf dur.ZERO setzen um das Lied noch mal 
-		//ueber play spielen zu koennen
-		/*if(media.getDuration().equals(dur)) {
-			mediaPlayer.seek(dur.ZERO);
-		}*/
+		setVolume(currVolume);
+		this.mediaPlayer.play();
+		this.mediaPlayer.setOnEndOfMedia(() -> this.skip());
 	}
 
 	public void pause() {
@@ -100,29 +95,31 @@ public class Player {
 	}
 
 	public void skip() {
-		if(!isLooping) {
-		if (posInList == list.getLength()) {
-			posInList = 0; 
-		} else {
-			posInList++;
-		}
-		index.set(posInList);
-		mediaPlayer.dispose();
-		loadSong();
-		mediaPlayer.seek(Duration.ZERO);
-		mediaPlayer = new MediaPlayer(media);
-		play();
-		}
-		else { //selben Song nochmal laden irgendwie
+		if (!isLooping) {
+			if (posInList == (list.getLength() - 1)) {
+				posInList = 0;
+			} else {
+				posInList++;
+			}
+			index.set(posInList);
+			mediaPlayer.dispose(); //evtl nicht notwendig einen neuen zu erstellen
+			loadSong();
+			
+			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.seek(Duration.ZERO);
-			play();
+			setVolume(currVolume);
+			this.play();
+		} else { // selben Song nochmal laden irgendwie
+			mediaPlayer.seek(Duration.ZERO);
+			this.play();
 		}
 	}
 
+	// überflüssig?
 	public void skipBack() {
 		getMediaPlayer().stop();
 		if (posInList != 0) {
-			posInList--;;
+			posInList--;
 		} else {
 			posInList = list.getLength();
 		}
@@ -133,10 +130,14 @@ public class Player {
 	}
 
 	public void loadSong() {
-		mediaPlayer.dispose();
-		mediaPlayer.seek(Duration.ZERO);
-		media = new Media(Paths.get(list.getTrack(posInList).getSoundFile()).toUri().toString());
-		mediaPlayer = new MediaPlayer(media);
+		try {
+			mediaPlayer.dispose();
+			mediaPlayer.seek(Duration.ZERO);
+			media = new Media(Paths.get(list.getTrack(posInList).getSoundFile()).toUri().toString());
+			mediaPlayer = new MediaPlayer(media);
+		} catch (NullPointerException ez) {
+			System.out.println("Es gibt noch keinen Media Player oder keinen Song, welchen er spielen könnte!");
+		}
 	}
 
 	public Track getActSong() {
@@ -155,60 +156,57 @@ public class Player {
 	public double getVolume() {
 		return getMediaPlayer().getVolume();
 	}
-	
+
 	public SimpleIntegerProperty getIndex() {
 		return this.index;
 	}
 
 	public void changeBySlider(double slidervalue) {
-		getMediaPlayer().seek(duration.multiply(slidervalue/100.0));
-		//mediaPlayer.cue(songPosition);
+		getMediaPlayer().seek(duration.multiply(slidervalue / 100.0));
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public void setSpeed(double value) {
 		getMediaPlayer().setRate(value);
 	}
-	
-	public void loop() { //oder boolean mitgebenm und isLooping = bool;
-		if(isLooping) {
+
+	public void loop() { // oder boolean mitgebenm und isLooping = bool;
+		if (isLooping) {
 			this.isLooping = false;
 		} else {
 			this.isLooping = true;
 		}
 	}
-	
+
 	public Duration getDuration() {
 		return this.duration;
 	}
-	
+
 	public void setPlaylist(Playlist name) {
 		this.list = name;
 		posInList = 0;
 		loadSong();
 	}
-	
 
-
-	//Sets the number of bands in the audio spectrum. Must be > 2
+	// Sets the number of bands in the audio spectrum. Must be > 2
 	public void setAudioSpectrumNumBands(int n) {
-		if(n > 2) {
+		if (n > 2) {
 			this.getMediaPlayer().setAudioSpectrumNumBands(n);
 		}
 	}
 
-	//Sets the value of the audio spectrum notification interval in seconds.
+	// Sets the value of the audio spectrum notification interval in seconds.
 	public void setAudioSpectrumInterval(double value) {
 		this.getMediaPlayer().setAudioSpectrumInterval(value);
-    }
+	}
 
-	//The sensitivity threshold in decibels; must be non-positive.
+	// The sensitivity threshold in decibels; must be non-positive.
 	public final void setAudioSpectrumThreshold(int value) {
-        this.getMediaPlayer().setAudioSpectrumThreshold(value);
-    }
+		this.getMediaPlayer().setAudioSpectrumThreshold(value);
+	}
 
 	public MediaPlayer getMediaPlayer() {
 		return mediaPlayer;

@@ -8,11 +8,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 public class MischPult extends Observable {
-
-	// test
-	private static MediaPlayer player;
-	private static Media media;
-
 	/*
 	 * private MediaPlayer[] mediaPlayer; private Media[] media; private Playlist[]
 	 * lists; //statt 3 einzelne Playlists
@@ -34,12 +29,14 @@ public class MischPult extends Observable {
 		players.put(playerLeft.getName(), playerLeft);
 		players.put(playerRight.getName(), playerRight);
 		manager = new PlaylistManager();
+		
 		sample1 = new Samples("sample1");
 		sample2 = new Samples("sample2");
 		sample3 = new Samples("sample3");
 		sample4 = new Samples("sample4");
 		sample5 = new Samples("sample5");
 		sample6 = new Samples("sample6");
+		
 		samples.put(sample1.getName(), sample1);
 		samples.put(sample2.getName(), sample2);
 		samples.put(sample3.getName(), sample3);
@@ -54,9 +51,6 @@ public class MischPult extends Observable {
 		first.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
 		first.addSingleSong("Bring Mich Nach Hause.mp3");
 		manager.getAllLists().put("first", first);
-		
-		
-		// players.put(playerSamples.getName(), playerSamples);
 
 		/**
 		 * You should also keep in mind that the AudioClip constructor will block the
@@ -65,17 +59,12 @@ public class MischPult extends Observable {
 		 * loading a lot of files or if the files are large.
 		 * http://what-when-how.com/javafx-2/working-with-audio-clips-using-the-media-classes-javafx-2/
 		 */
-
-		// test
-		media = new Media(Paths.get("BringMichNachHause.mp3").toUri().toString());
-		player = new MediaPlayer(media);
 	}
 
 	public void playSample(String name) {
 		samples.get(name).play();
 	}
 
-	// TEST
 	public void changeTune1(String name, double value) {
 		players.get(name).tune1Slider(value);
 	}
@@ -146,7 +135,6 @@ public class MischPult extends Observable {
 	 * MediaPlayer(media); return player; }
 	 */
 
-	// test
 	public void speed(String name, double value) {
 		players.get(name).setSpeed(value);
 	}

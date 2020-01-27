@@ -1,6 +1,8 @@
 package business;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -8,7 +10,7 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
 public class Track {
-	private String title;
+	private String title; //hat aktuell noch .mp3 hintendran
 	private String interpret;
 	private Mp3File mp3File;
 	private String soundFile;
@@ -35,10 +37,24 @@ public class Track {
 				this.interpret = id3v2Tag.getArtist();
 				this.title = id3v2Tag.getTitle();
 				} catch (NullPointerException ez) {
-					System.out.println(title + " hat ein unvollstaendiges id3v2Tag.");
+					Path path = Paths.get(title);
+					this.title = path.getFileName().toString();
+					System.out.println(this.title);
+					System.out.println(this.title + " hat ein unvollstaendiges id3v2Tag.");
 				}
+			} else {
+				//Um beim Erstellen einer Playlist nicht den 
+				//gesamten Pfad als Namen zu haben
+				//funktioniert solala
+				Path path = Paths.get(title);
+				this.title = path.getFileName().toString();
+				System.out.println(this.title);
 			}
-		}
+			//wegene abs. Path haben die Titel wsl den Pfad als namen
+			//fixen? 
+			//In PlaylistViewControl
+			//Wenn keine Tags enthält name noch mit .mp3 am ende fixen
+		} 
 	}
 
 	public Track (String title, String interpret) {
