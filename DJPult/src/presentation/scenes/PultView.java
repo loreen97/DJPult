@@ -12,8 +12,8 @@ import presentation.UIComponents.SamplesView;
 import presentation.UIComponents.PultPlaylistView2;
 import presentation.UIComponents.TitleView;
 import presentation.UIComponents.TuneView;
+import presentation.UIComponents.Visualizer;
 import presentation.UIComponents.VolumeView;
-import presentation.UIComponents.WavesView;
 
 public class PultView extends BorderPane {
 
@@ -23,7 +23,8 @@ public class PultView extends BorderPane {
 	TuneView tuneViewLeft, tuneViewRight;
 	VolumeView volumeViewLeft, volumeViewRight;
 	PultPlaylistView2 pPlaylistView2;
-	WavesView wavesViewLeft, wavesViewRight;
+	
+	Visualizer visualizerLeft,visualizerRight;
 	
 	public Button setting;
 	public Button platteLeft, platteRight;
@@ -42,8 +43,8 @@ public class PultView extends BorderPane {
 		volumeViewLeft = new VolumeView();
 		volumeViewRight = new VolumeView();
 		pPlaylistView2 = new PultPlaylistView2();
-		wavesViewLeft = new WavesView();
-		wavesViewRight = new WavesView();
+		visualizerLeft = new Visualizer();
+		visualizerRight = new Visualizer();
 		
 		setting = new Button();
 		setting.setId("setting");
@@ -84,8 +85,8 @@ public class PultView extends BorderPane {
 		boxWavesLeft = new VBox();
 		boxWavesRight = new VBox();
 		
-		boxWavesLeft.getChildren().addAll(wavesViewLeft,titleViewLeft);
-		boxWavesRight.getChildren().addAll(wavesViewRight,titleViewRight);
+		boxWavesLeft.getChildren().addAll(visualizerLeft,titleViewLeft);
+		boxWavesRight.getChildren().addAll(visualizerRight,titleViewRight);
 		
 		hboxLeftTop = new HBox();
 		hboxLeftTop.getChildren().addAll(boxWavesLeft,tuneViewLeft);

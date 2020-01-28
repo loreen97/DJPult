@@ -39,7 +39,6 @@ public class Track {
 				} catch (NullPointerException ez) {
 					Path path = Paths.get(title);
 					this.title = path.getFileName().toString();
-					System.out.println(this.title);
 					System.out.println(this.title + " hat ein unvollstaendiges id3v2Tag.");
 				}
 			} else {
@@ -48,13 +47,17 @@ public class Track {
 				//funktioniert solala
 				Path path = Paths.get(title);
 				this.title = path.getFileName().toString();
-				System.out.println(this.title);
 			}
 			//wegene abs. Path haben die Titel wsl den Pfad als namen
-			//fixen? 
+			//fixen? //Sollte fixed sein
 			//In PlaylistViewControl
 			//Wenn keine Tags enthält name noch mit .mp3 am ende fixen
 		} 
+		
+		if(title.endsWith(".mp3")) {
+			title = title.substring(0, title.length()-4);
+			System.out.println(title);
+		}
 	}
 
 	public Track (String title, String interpret) {

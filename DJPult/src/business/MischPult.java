@@ -22,10 +22,17 @@ public class MischPult extends Observable {
 	private HashMap<String, Samples> samples = new  HashMap<String, Samples>();
 
 	public MischPult() {
-
+		manager = new PlaylistManager();
+		Playlist first = new Playlist("first");
+		first.addSingleSong("Apache_207.mp3");
+		first.addSingleSong("02DreiWorte.mp3");
+		first.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
+		first.addSingleSong("Bring Mich Nach Hause.mp3");
+		manager.getAllLists().put("first", first);
+		
 		// if Playlist not null
-		playerLeft = new Player("links");
-		playerRight = new Player("rechts");
+		playerLeft = new Player("links", manager.getAllLists().get("first"));
+		playerRight = new Player("rechts", manager.getAllLists().get("first"));
 		players.put(playerLeft.getName(), playerLeft);
 		players.put(playerRight.getName(), playerRight);
 		manager = new PlaylistManager();
@@ -43,14 +50,6 @@ public class MischPult extends Observable {
 		samples.put(sample4.getName(), sample4);
 		samples.put(sample5.getName(), sample5);
 		samples.put(sample6.getName(), sample6);
-		
-		manager = new PlaylistManager();
-		Playlist first = new Playlist("first");
-		first.addSingleSong("Apache_207.mp3");
-		first.addSingleSong("02DreiWorte.mp3");
-		first.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
-		first.addSingleSong("Bring Mich Nach Hause.mp3");
-		manager.getAllLists().put("first", first);
 
 		/**
 		 * You should also keep in mind that the AudioClip constructor will block the

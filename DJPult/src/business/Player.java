@@ -25,16 +25,12 @@ public class Player {
 	private boolean isLooping;
 	private Duration duration;
 
-	public Player(String name) {
+	public Player(String name, Playlist list) {
 		this.name = name;
 		posInList = 0;
 		this.index = new SimpleIntegerProperty(0);
 		isLooping = false;
-		this.list = new Playlist("first");
-		this.list.addSingleSong("Apache_207.mp3");
-		this.list.addSingleSong("02DreiWorte.mp3");
-		this.list.addSingleSong("Bring Mich Nach Hause.mp3");
-		this.list.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
+		this.list = list;
 		// if list not null
 		media = new Media(Paths.get(list.getFirst().getSoundFile()).toUri().toString());
 		mediaPlayer = new MediaPlayer(media);

@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -24,6 +25,7 @@ import presentation.UIComponents.ControlView;
 import presentation.UIComponents.SamplesView;
 import presentation.UIComponents.TitleView;
 import presentation.UIComponents.TuneView;
+import presentation.UIComponents.Visualizer;
 import presentation.UIComponents.VolumeView;
 
 public class PultViewController extends ViewController<Main> implements Observer {
@@ -60,6 +62,9 @@ public class PultViewController extends ViewController<Main> implements Observer
 
 	private boolean playingLeft, playingRight, pushed;
 	private boolean userInteraction;
+	
+	Visualizer visualizerLeft, visualizerRight;
+	AnchorPane paneL, paneR;
 
 	public PultViewController(Main application, MischPult mischPult, Stage primaryStage) {
 		super(application);
@@ -124,6 +129,14 @@ public class PultViewController extends ViewController<Main> implements Observer
 		playingLeft = false;
 		playingRight = false;
 		pushed = false;
+		
+		visualizerLeft = new Visualizer();
+		visualizerRight = new Visualizer();
+		Visualizer visualizerLeft = view.visualizerLeft;
+		paneL = visualizerLeft.pane;
+		
+		Visualizer visualizerRight = view.visualizerRight;
+		paneR = visualizerRight.pane;
 
 		initialize();
 	}
@@ -131,7 +144,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 	public void initialize() {
 
 		mischPult.addObserver(this); // Das umschreiben? Pro Player Seite, aber eher nicht
-
+		visualizerLeft.start(30, paneL);
+		visualizerRight.start(30, paneR);
 		setting.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -171,6 +185,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 					playLeft.getStyleClass().clear();
 					playLeft.getStyleClass().addAll("control-button", "pause");
 					playingLeft = true;
+					waves("links");
 					//mischPult.getLeftPlayer().getMediaPlayer().setOnEndOfMedia(() -> reset Slider zeug irgendwie aber nicht hier... weil sonst nur wenn play pressed
 				} else {
 					mischPult.pause("links");
@@ -189,6 +204,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 					playRight.getStyleClass().clear();
 					playRight.getStyleClass().addAll("control-button", "pause");
 					playingRight = true;
+					waves("rechts");
 				} else {
 					mischPult.pause("rechts");
 					playRight.getStyleClass().clear();
@@ -461,4 +477,31 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		};
 	}
+
+public void waves(String name) {
+	MediaPlayer m;
+	Visualizer v;
+	AnchorPane p;
+	if(name == "rechts") {
+		m = mischPult.getRightPlayer().getMediaPlayer();
+		v = visualizerRight;
+		p = paneR;
+	} else {
+		m = mischPult.getLeftPlayer().getMediaPlayer();
+		v = visualizerLeft;
+		p = paneL;
+	}
+	v.start(30, p);
+
+	Duration duration =m.getTotalDuration();
+	Duration ct = m.getCurrentTime();
+	
+	m.setAudioSpectrumNumBands(100);
+	m.setAudioSpectrumInterval(0.05);
+	m.setAudioSpectrumListener(
+			(double timestamp, double durations, float[] magnitudes, float[] phases) -> {
+				v.wavesUpdate(timestamp, durations, magnitudes, phases, m);
+			});
+}
+
 }
