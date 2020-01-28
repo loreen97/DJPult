@@ -50,7 +50,7 @@ public class ControlView extends HBox {
 		
 		this.getChildren().addAll(hbox1, hbox2);
 		this.setSpacing(10);
-		this.setPadding(new Insets(10,0,10,0));
+		this.setPadding(new Insets(10,0,20,0));
 		this.setAlignment(Pos.CENTER);
 	}
 }

@@ -11,7 +11,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
-
+/**
+ * Die PlaylistLeftView
+ * Die mit Cells arbeiten soll
+ * Darum SelectTrack in den Listen 
+ * @author evolk001
+ *
+ */
 public class SettingPlaylistRightView2 extends HBox {
 	public ListView<String> rightPlaylistView;
 	public ObservableList<String> rightPlaylistList;

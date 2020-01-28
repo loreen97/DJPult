@@ -106,7 +106,7 @@
 	-fx-background-image: url("/image/platte.png");
 	-fx-background-size: 300px 300px;
     -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
+    -fx-background-position: top;
     -fx-min-width: 350.0px; 
 	-fx-min-height: 350.0px; 
 	-fx-background-color: transparent;

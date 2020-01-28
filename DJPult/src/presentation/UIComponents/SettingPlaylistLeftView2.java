@@ -1,6 +1,7 @@
 package presentation.UIComponents;
 
 import business.SelectTrack;
+import business.Track;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -11,7 +12,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
-
+	/**
+	 * Die PlaylistLeftView
+	 * Die mit Cells arbeiten soll
+	 * Darum SelectTrack in den Listen 
+	 * @author evolk001
+	 *
+	 */
 public class SettingPlaylistLeftView2 extends HBox {
 	public ListView<String> leftPlaylistView;
 	public ObservableList<String> leftPlaylistList;
@@ -19,6 +26,8 @@ public class SettingPlaylistLeftView2 extends HBox {
 	
 	public ListView<SelectTrack> leftSongView;
 	public ObservableList<SelectTrack> leftSongList;
+	//Test Ding
+	public ObservableList<Track> leftSongList2;
 	
 	public Button check;
 	public Button delete;
@@ -35,7 +44,7 @@ public class SettingPlaylistLeftView2 extends HBox {
 		leftPlaylistView = new ListView<>(leftPlaylistList);
 		leftPlaylistView.setId("settingPlaylist");
 		
-		leftPlaylistList = FXCollections.observableArrayList("Playlist 1", "Playlist 2","Playlist 3");
+		leftPlaylistList = FXCollections.observableArrayList();
 		leftPlaylistView.setItems(leftPlaylistList);
 		
 		leftSongView = new ListView<SelectTrack>();
@@ -52,6 +61,9 @@ public class SettingPlaylistLeftView2 extends HBox {
 		
 		leftSongList = FXCollections.observableArrayList();
 		leftSongView.setItems(leftSongList);
+		
+		//Test Ding
+		leftSongList2 = FXCollections.observableArrayList();
 		
 		
 		playlistLabel = new Label("Playlists");

@@ -18,7 +18,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import presentation.UIComponents.ControlView;
@@ -36,7 +38,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 	private Button sample4;
 	private Button sample5;
 	private Button sample6;
-	
+
 	private Button setting;
 	private Button playLeft, playRight;
 	private Button loopLeft, loopRight;
@@ -62,9 +64,10 @@ public class PultViewController extends ViewController<Main> implements Observer
 
 	private boolean playingLeft, playingRight, pushed;
 	private boolean userInteraction;
-	
+
 	Visualizer visualizerLeft, visualizerRight;
-	AnchorPane paneL, paneR;
+	Pane paneL;
+	Pane paneR;
 
 	public PultViewController(Main application, MischPult mischPult, Stage primaryStage) {
 		super(application);
@@ -129,12 +132,12 @@ public class PultViewController extends ViewController<Main> implements Observer
 		playingLeft = false;
 		playingRight = false;
 		pushed = false;
-		
+
 		visualizerLeft = new Visualizer();
 		visualizerRight = new Visualizer();
 		Visualizer visualizerLeft = view.visualizerLeft;
 		paneL = visualizerLeft.pane;
-		
+
 		Visualizer visualizerRight = view.visualizerRight;
 		paneR = visualizerRight.pane;
 
@@ -157,8 +160,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 		
 		// Song Slider, für links testweise in methode ausgelagert
 		updateSlider();
-		
-		
+
 		songSliderLeft.setOnMouseClicked(songSlider("links"));
 		songSliderLeft.setOnMouseDragged(songSlider("links"));
 
@@ -168,15 +170,15 @@ public class PultViewController extends ViewController<Main> implements Observer
 					Duration total = mischPult.getRightPlayer().getMediaPlayer().getTotalDuration();
 					if (!songSliderRight.isValueChanging() && total.greaterThan(Duration.ZERO)) {
 						songSliderRight.setValue(time.toMillis() / total.toMillis() * 100);
-					} 
+					}
 					// evtl wenn ende erreicht neu setzen? aber dann sicher wieder skip probleme
-					//evtl setOnStopped verwenden
+					// evtl setOnStopped verwenden
 				});
-		
+
 		songSliderRight.setOnMouseClicked(songSlider("rechts"));
 		songSliderRight.setOnMouseDragged(songSlider("rechts"));
-		
-		//Play Song
+
+		// Play Song
 		playLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -186,7 +188,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 					playLeft.getStyleClass().addAll("control-button", "pause");
 					playingLeft = true;
 					waves("links");
-					//mischPult.getLeftPlayer().getMediaPlayer().setOnEndOfMedia(() -> reset Slider zeug irgendwie aber nicht hier... weil sonst nur wenn play pressed
+					// mischPult.getLeftPlayer().getMediaPlayer().setOnEndOfMedia(() -> reset Slider
+					// zeug irgendwie aber nicht hier... weil sonst nur wenn play pressed
 				} else {
 					mischPult.pause("links");
 					playLeft.getStyleClass().clear();
@@ -214,7 +217,11 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 		
-		//Samples 
+		/*if(mischPult.getLeftPlayer().getMediaPlayer().getStatus() != Status.PLAYING) {
+			mischPult.getLeftPlayer().getMediaPlayer().(mischPult.getLeftPlayer().getMediaPlayer().currentTimeProperty());
+		}*/
+
+		// Samples
 		sample1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -251,8 +258,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 				mischPult.playSample("sample6");
 			}
 		});
-		
-		//Loop
+
+		// Loop
 		loopLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -286,32 +293,25 @@ public class PultViewController extends ViewController<Main> implements Observer
 				}
 			}
 		});
-		
-		//Tune Slider
+
+		// Tune Slider
 		tune1Left.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (userInteraction)
 				mischPult.changeTune1("links", tune1Left.getValue());
 		});
-		/*tune1Left.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = true;
-				System.out.println(userInteraction);
-			}
-		});
-		tune1Left.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = false;
-				System.out.println(userInteraction);
-			}
-		});*/
+		/*
+		 * tune1Left.setOnMousePressed(new EventHandler<MouseEvent>() {
+		 * 
+		 * @Override public void handle(MouseEvent event) { userInteraction = true;
+		 * System.out.println(userInteraction); } }); tune1Left.setOnMouseReleased(new
+		 * EventHandler<MouseEvent>() {
+		 * 
+		 * @Override public void handle(MouseEvent event) { userInteraction = false;
+		 * System.out.println(userInteraction); } });
+		 */
 		tune1Left.setOnMousePressed(event -> userInteraction = true);
 		tune1Left.setOnMouseReleased(event -> userInteraction = false);
-		
-		
+
 		tune2Left.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (userInteraction)
 				mischPult.changeTune2("links", tune2Left.getValue());
@@ -340,7 +340,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 			if (userInteraction)
 				mischPult.changeTune2("rechts", tune2Right.getValue());
 		});
-		
+
 		tune2Right.setOnMousePressed(event -> userInteraction = true);
 		tune2Right.setOnMouseReleased(event -> userInteraction = false);
 
@@ -348,22 +348,22 @@ public class PultViewController extends ViewController<Main> implements Observer
 			if (userInteraction)
 				mischPult.changeTune3("rechts", tune3Right.getValue());
 		});
-		
+
 		tune3Right.setOnMousePressed(event -> userInteraction = true);
 		tune3Right.setOnMouseReleased(event -> userInteraction = false);
-		
-		//Geschwindigkeit
-		/*eineinhalbLeft.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				mischPult.speed("links", 1.5);
-			}
-		});*/
-		
+
+		// Geschwindigkeit
+		/*
+		 * eineinhalbLeft.setOnAction(new EventHandler<ActionEvent>() {
+		 * 
+		 * @Override public void handle(ActionEvent event) { mischPult.speed("links",
+		 * 1.5); } });
+		 */
+
 		eineinhalbLeft.setOnAction(event -> mischPult.speed("links", 1.5));
 		eineinhalbRight.setOnAction(event -> mischPult.speed("rechts", 1.5));
 
-		halbLeft.setOnAction(event -> mischPult.speed("links", .5));	
+		halbLeft.setOnAction(event -> mischPult.speed("links", .5));
 		halbRight.setOnAction(event -> mischPult.speed("rechts", .5));
 
 		doppeltLeft.setOnAction(event -> mischPult.speed("links", 2));
@@ -371,8 +371,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 
 		normalLeft.setOnAction(event -> mischPult.speed("links", 1));
 		normalRight.setOnAction(event -> mischPult.speed("rechts", 1));
-		
-		//Lautstaerke
+
+		// Lautstaerke
 		volumeLeft.setValue(mischPult.getVolume("links") * 100);
 		volumeLeft.valueProperty().addListener(new InvalidationListener() {
 			public void invalidated(javafx.beans.Observable ov) {
@@ -381,7 +381,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 				}
 			}
 		});
-		
+
 		volumeRight.setValue(mischPult.getVolume("rechts") * 100);
 		volumeRight.valueProperty().addListener(new InvalidationListener() {
 			public void invalidated(javafx.beans.Observable ov) {
@@ -390,8 +390,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 				}
 			}
 		});
-		
-		//Aendern der Titel
+
+		// Aendern der Titel
 		changeableGuiElements("links", mischPult.getLeftPlayer().getActSong());
 		mischPult.getLeftPlayer().getIndex()
 				.addListener(((observable, oldValue, newValue) -> changeableGuiElements("links",
@@ -402,14 +402,14 @@ public class PultViewController extends ViewController<Main> implements Observer
 				.addListener(((observable, oldValue, newValue) -> changeableGuiElements("rechts",
 						mischPult.getAPlaylist("rechts").getTrack((Integer) newValue))));
 	}
-	
-	//Zum Updaten des titels bei Songwechsel
+
+	// Zum Updaten des titels bei Songwechsel
 	public void changeableGuiElements(String name, Track song) {
 		if (name == "links") {
 			try {
 				titleLeft.setText(mischPult.getActSong("links").getTitle());
 				songSlider("links");
-				//Nur eine optische Änderung: 
+				// Nur eine optische Änderung:
 				songSliderLeft.setValue(0);
 			} finally {
 				if (song.getTitle() == null) {
@@ -427,23 +427,23 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		}
 	}
-	
-	//nutzlos
+
+	// nutzlos
 	private void updateSlider() {
-		//Soll den Slider updaten bzw resetten wenn Lied vorbei
-		//Sollte ein update aus dem player bekommen
+		// Soll den Slider updaten bzw resetten wenn Lied vorbei
+		// Sollte ein update aus dem player bekommen
 		mischPult.getLeftPlayer().getMediaPlayer().seek(Duration.ZERO);
 		mischPult.getLeftPlayer().getMediaPlayer().currentTimeProperty()
-		.addListener((observableValue, oldDuration, newDuration) -> {
-			Duration time = mischPult.getLeftPlayer().getMediaPlayer().getCurrentTime();
-			Duration total = mischPult.getLeftPlayer().getMediaPlayer().getTotalDuration();
-			if (!songSliderLeft.isValueChanging() && total.greaterThan(Duration.ZERO)) {
-				songSliderLeft.setValue(time.toMillis() / total.toMillis() * 100);
-			}
-		});
+				.addListener((observableValue, oldDuration, newDuration) -> {
+					Duration time = mischPult.getLeftPlayer().getMediaPlayer().getCurrentTime();
+					Duration total = mischPult.getLeftPlayer().getMediaPlayer().getTotalDuration();
+					if (!songSliderLeft.isValueChanging() && total.greaterThan(Duration.ZERO)) {
+						songSliderLeft.setValue(time.toMillis() / total.toMillis() * 100);
+					}
+				});
 	}
-	
-	//Wahrscheinlich durch die obere Methode ersetzen
+
+	// Wahrscheinlich durch die obere Methode ersetzen
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		Platform.runLater(() -> {
@@ -453,10 +453,10 @@ public class PultViewController extends ViewController<Main> implements Observer
 		});
 	}
 
-	//Zum Aendern des Song Progresses anhand des Sliders 
+	// Zum Aendern des Song Progresses anhand des Sliders
 	private EventHandler<MouseEvent> songSlider(String name) {
 		MediaPlayer m;
-		if(name == "links") {
+		if (name == "links") {
 			m = mischPult.getLeftPlayer().getMediaPlayer();
 		} else {
 			m = mischPult.getRightPlayer().getMediaPlayer();
@@ -468,7 +468,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 					event.consume();
 				} else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED
 						|| event.getEventType() == MouseEvent.MOUSE_CLICKED) {
-					if(name == "links") {
+					if (name == "links") {
 						m.seek(m.getTotalDuration().multiply(event.getX() / songSliderLeft.getWidth()));
 					} else {
 						m.seek(m.getTotalDuration().multiply(event.getX() / songSliderRight.getWidth()));
@@ -478,30 +478,28 @@ public class PultViewController extends ViewController<Main> implements Observer
 		};
 	}
 
-public void waves(String name) {
-	MediaPlayer m;
-	Visualizer v;
-	AnchorPane p;
-	if(name == "rechts") {
-		m = mischPult.getRightPlayer().getMediaPlayer();
-		v = visualizerRight;
-		p = paneR;
-	} else {
-		m = mischPult.getLeftPlayer().getMediaPlayer();
-		v = visualizerLeft;
-		p = paneL;
+	public void waves(String name) {
+		MediaPlayer m;
+		Visualizer v;
+		Pane p;
+		if (name == "rechts") {
+			m = mischPult.getRightPlayer().getMediaPlayer();
+			v = visualizerRight;
+			p = paneR;
+		} else {
+			m = mischPult.getLeftPlayer().getMediaPlayer();
+			v = visualizerLeft;
+			p = paneL;
+		}
+		v.start(30, p);
+
+		Duration duration = m.getTotalDuration();
+		Duration ct = m.getCurrentTime();
+
+		m.setAudioSpectrumNumBands(100);
+		m.setAudioSpectrumInterval(0.05);
+		m.setAudioSpectrumListener((double timestamp, double durations, float[] magnitudes, float[] phases) -> {
+			v.wavesUpdate(timestamp, durations, magnitudes, phases, m);
+		});
 	}
-	v.start(30, p);
-
-	Duration duration =m.getTotalDuration();
-	Duration ct = m.getCurrentTime();
-	
-	m.setAudioSpectrumNumBands(100);
-	m.setAudioSpectrumInterval(0.05);
-	m.setAudioSpectrumListener(
-			(double timestamp, double durations, float[] magnitudes, float[] phases) -> {
-				v.wavesUpdate(timestamp, durations, magnitudes, phases, m);
-			});
-}
-
 }

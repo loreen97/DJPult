@@ -8,6 +8,7 @@ import business.MischPult;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -20,9 +21,9 @@ import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Visualizer extends AnchorPane {
+public class Visualizer extends Pane {
 
-	public AnchorPane pane;
+	public Pane pane;
 	Ellipse[] ellipses;
 
 	int numBands;
@@ -34,25 +35,24 @@ public class Visualizer extends AnchorPane {
 		numBands = 30;
 
 		ellipses = new Ellipse[numBands];
-		pane = new AnchorPane();
-		bandHeight = 0.0;
-		bandWidth = 0.0;
-		halfBandHeight = 0.0;
-		pane.setPrefHeight(100);
-		pane.setPrefWidth(250);
-		pane.setLayoutX(36);
-		pane.setLayoutY(6);
-
+		pane = new Pane();
+		bandHeight = 150;
+		bandWidth = 5.0;
+		halfBandHeight = bandHeight/2;
+		pane.setPrefHeight(10);
+		pane.setPrefWidth(5);
+		pane.setLayoutX(50);
+		pane.setLayoutY(-80);
+		pane.setPadding(new Insets(0,0,200,0));
+		
 		this.getChildren().add(pane);
 	}
 
-	public void start(Integer numBands, AnchorPane pane) {
+	public void start(Integer numBands, Pane pane) {
 
 		this.numBands = numBands;
-		//this.pane = pane;
+		this.pane = pane;
 
-		sizes(pane);
-		
 		for (int i = 0; i < numBands; i++) {
 			Ellipse ellipse = new Ellipse();
 			ellipse.setCenterX(bandWidth / 2 + bandWidth * i);
@@ -60,17 +60,12 @@ public class Visualizer extends AnchorPane {
 			ellipse.setRadiusX(bandWidth / 2);
 			ellipse.setRadiusY(10.0);
 			ellipse.setFill(Color.hsb(190, 1.0, 1.0, 1.0));
+			ellipse.setOpacity(0.6);
 			pane.getChildren().addAll(ellipse);//geht hier nicht mehr weiter
 			ellipses[i] = ellipse;
 			
 		}
 
-	}
-
-	public void sizes(AnchorPane pane) {
-		bandHeight = 150;
-		bandWidth = 5.0;
-		halfBandHeight = bandHeight / 2;
 	}
 
 
@@ -87,6 +82,7 @@ public class Visualizer extends AnchorPane {
 			for (int i = 0; i < num; i++) {
 				ellipses[i].setRadiusY(((60.0 + magnitudes[i]) / 60.0) * halfBandHeight + 10);
 				ellipses[i].setFill(Color.hsb(190 - (magnitudes[i] * -6.0), 1.0, 1.0, 1.0));
+				ellipses[i].setOpacity(0.8);
 			}
 	}
 }

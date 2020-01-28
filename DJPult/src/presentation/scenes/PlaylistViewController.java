@@ -24,7 +24,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class PlaylistViewController extends ViewController<Main> {
-
+	
+	/**
+	 * Controlle für die 3. Seite
+	 * Zum Erstellen neuer Playlists
+	 */
+	
 	private Stage stage;
 	private Button back;
 	private Button save, loadMP3;
@@ -102,9 +107,8 @@ public class PlaylistViewController extends ViewController<Main> {
 							songs.add(newSong);
 							songNames.add(newSong); //Hatte vorher noch .getTitle ist aber eine Track List
 							songlistView.setItems(songNames);
-						
 					} catch(Exception e){
-						e.printStackTrace();
+						e.printStackTrace(); //evtl catchen einer general exception nicht gut
 					}
 					/*catch (InvalidDataException e) {
 						e.printStackTrace();

@@ -34,12 +34,15 @@ public class PlaylistView extends BorderPane {
 	public HBox  hbox;
 	public VBox vbox;
 	
+	/**
+	 * Die 3. Seite, also zum Erstellen von neuen Playlists
+	 * Nur die Box mit den Song Titeln sowie der Button zum Öffnen
+	 * des System Explorers
+	 */
 	public PlaylistView() {
-		
 		
 		back = new Button();
 		back.setId("back");
-		
 		
 		save = new Button();
 		save.setId("save");
@@ -55,11 +58,9 @@ public class PlaylistView extends BorderPane {
 		songlistView.setId("createPlaylist");
 		songList = null;
 
-		
 		textArea = new TextArea();
 	    textArea.setMinHeight(70);
 		
-	    
 		hbox = new HBox();
 		hbox.getChildren().addAll(playlistName, title, loadMP3,save);
 		hbox.setSpacing(30);
@@ -69,8 +70,6 @@ public class PlaylistView extends BorderPane {
 		vbox.getChildren().addAll(hbox, songlistView);
 		vbox.setSpacing(20);
 		vbox.setAlignment(Pos.CENTER);
-		
-		
 		
 		this.setTop(back);
 		this.setCenter(vbox);

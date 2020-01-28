@@ -1,7 +1,10 @@
 package presentation.scenes;
 
 import javafx.scene.layout.Pane;
-
+	/**
+	 * View der 2. Seite
+	 *
+	 */
 
 public abstract class ViewController<T> {
 
@@ -11,6 +14,7 @@ public abstract class ViewController<T> {
 	public ViewController() {
 		
 	}
+	
 	public ViewController (T application) {
 		this.application = application;
 	}
