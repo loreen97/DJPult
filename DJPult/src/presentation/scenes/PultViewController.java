@@ -154,7 +154,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 					Duration total = mischPult.getRightPlayer().getMediaPlayer().getTotalDuration();
 					if (!songSliderRight.isValueChanging() && total.greaterThan(Duration.ZERO)) {
 						songSliderRight.setValue(time.toMillis() / total.toMillis() * 100);
-					} // evtl wenn ende erreicht neu setzen? aber dann sicher wieder skip probleme
+					} 
+					// evtl wenn ende erreicht neu setzen? aber dann sicher wieder skip probleme
 					//evtl setOnStopped verwenden
 				});
 		
@@ -275,7 +276,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 			if (userInteraction)
 				mischPult.changeTune1("links", tune1Left.getValue());
 		});
-		tune1Left.setOnMousePressed(new EventHandler<MouseEvent>() {
+		/*tune1Left.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -290,165 +291,70 @@ public class PultViewController extends ViewController<Main> implements Observer
 				userInteraction = false;
 				System.out.println(userInteraction);
 			}
-		});
-
+		});*/
+		tune1Left.setOnMousePressed(event -> userInteraction = true);
+		tune1Left.setOnMouseReleased(event -> userInteraction = false);
+		
+		
 		tune2Left.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (userInteraction)
 				mischPult.changeTune2("links", tune2Left.getValue());
 		});
-		tune2Left.setOnMousePressed(new EventHandler<MouseEvent>() {
 
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = true;
-				System.out.println(userInteraction);
-			}
-		});
-		tune2Left.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = false;
-				System.out.println(userInteraction);
-			}
-		});
+		tune2Left.setOnMousePressed(event -> userInteraction = true);
+		tune2Left.setOnMouseReleased(event -> userInteraction = false);
 
 		tune3Left.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (userInteraction)
 				mischPult.changeTune3("links", tune3Left.getValue());
 		});
-		tune3Left.setOnMousePressed(new EventHandler<MouseEvent>() {
 
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = true;
-				System.out.println(userInteraction);
-			}
-		});
-		tune3Left.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = false;
-				System.out.println(userInteraction);
-			}
-		});
+		tune3Left.setOnMousePressed(event -> userInteraction = true);
+		tune3Left.setOnMouseReleased(event -> userInteraction = false);
 
 		tune1Right.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (userInteraction)
 				mischPult.changeTune1("rechts", tune1Right.getValue());
 		});
-		tune1Right.setOnMousePressed(new EventHandler<MouseEvent>() {
 
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = true;
-				System.out.println(userInteraction);
-			}
-		});
-		tune1Right.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = false;
-				System.out.println(userInteraction);
-			}
-		});
+		tune1Right.setOnMousePressed(event -> userInteraction = true);
+		tune1Right.setOnMouseReleased(event -> userInteraction = false);
 
 		tune2Right.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (userInteraction)
 				mischPult.changeTune2("rechts", tune2Right.getValue());
 		});
-		tune2Right.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = true;
-				System.out.println(userInteraction);
-			}
-		});
-		tune2Right.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = false;
-				System.out.println(userInteraction);
-			}
-		});
+		
+		tune2Right.setOnMousePressed(event -> userInteraction = true);
+		tune2Right.setOnMouseReleased(event -> userInteraction = false);
 
 		tune3Right.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (userInteraction)
 				mischPult.changeTune3("rechts", tune3Right.getValue());
 		});
-		tune3Right.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = true;
-				System.out.println(userInteraction);
-			}
-		});
-		tune3Right.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				userInteraction = false;
-				System.out.println(userInteraction);
-			}
-		});
+		
+		tune3Right.setOnMousePressed(event -> userInteraction = true);
+		tune3Right.setOnMouseReleased(event -> userInteraction = false);
 		
 		//Geschwindigkeit
-		eineinhalbLeft.setOnAction(new EventHandler<ActionEvent>() {
+		/*eineinhalbLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				mischPult.speed("links", 1.5);
 			}
-		});
-		eineinhalbRight.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				mischPult.speed("rechts", 1.5);
-			}
-		});
+		});*/
+		
+		eineinhalbLeft.setOnAction(event -> mischPult.speed("links", 1.5));
+		eineinhalbRight.setOnAction(event -> mischPult.speed("rechts", 1.5));
 
-		halbLeft.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				mischPult.speed("links", .5);
-			}
-		});
-		halbRight.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				mischPult.speed("rechts", .5);
-			}
-		});
+		halbLeft.setOnAction(event -> mischPult.speed("links", .5));	
+		halbRight.setOnAction(event -> mischPult.speed("rechts", .5));
 
-		doppeltLeft.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				mischPult.speed("links", 2);
-			}
-		});
-		doppeltRight.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				mischPult.speed("rechts", 2);
-			}
-		});
+		doppeltLeft.setOnAction(event -> mischPult.speed("links", 2));
+		doppeltRight.setOnAction(event -> mischPult.speed("rechts", 2));
 
-		normalLeft.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				mischPult.speed("links", 1);
-			}
-		});
-		normalRight.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				mischPult.speed("rechts", 1);
-			}
-		});
+		normalLeft.setOnAction(event -> mischPult.speed("links", 1));
+		normalRight.setOnAction(event -> mischPult.speed("rechts", 1));
 		
 		//Lautstaerke
 		volumeLeft.setValue(mischPult.getVolume("links") * 100);
