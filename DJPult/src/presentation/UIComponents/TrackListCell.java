@@ -1,11 +1,12 @@
 package presentation.UIComponents;
 
 import business.SelectTrack;
+import business.Track;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
 
-public class TrackListCell extends ListCell<SelectTrack>{
+public class TrackListCell extends ListCell<Track>{
 
 	private Label title;
 	private Label interpret;
@@ -20,12 +21,12 @@ public class TrackListCell extends ListCell<SelectTrack>{
 		
 	}
 	
-	protected void updateItem(SelectTrack item, boolean empty) {
+	protected void updateItem(Track item, boolean empty) {
 		super.updateItem(item, empty);
 		
 		if(!empty) {
-			title.setText(item.trackModel.getTitle());
-			interpret.setText(item.trackModel.getInterpret());
+			title.setText(item.getTitle());
+			interpret.setText(item.getInterpret());
 			
 			this.setGraphic(vbox);
 		}else {

@@ -1,6 +1,7 @@
 package presentation.UIComponents;
 
-import business.SelectTrack;
+import business.MischPult;
+import business.Track;
 import business.Track;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +16,7 @@ import javafx.util.Callback;
 	/**
 	 * Die PlaylistLeftView
 	 * Die mit Cells arbeiten soll
-	 * Darum SelectTrack in den Listen 
+	 * Darum Track in den Listen 
 	 * @author evolk001
 	 *
 	 */
@@ -24,10 +25,8 @@ public class SettingPlaylistLeftView2 extends HBox {
 	public ObservableList<String> leftPlaylistList;
 	
 	
-	public ListView<SelectTrack> leftSongView;
-	public ObservableList<SelectTrack> leftSongList;
-	//Test Ding
-	public ObservableList<Track> leftSongList2;
+	public ListView<Track> leftSongView;
+	public ObservableList<Track> leftSongList;
 	
 	public Button check;
 	public Button delete;
@@ -40,31 +39,33 @@ public class SettingPlaylistLeftView2 extends HBox {
 	public VBox boxLeft;
 	public VBox boxRight;
 	
-	public SettingPlaylistLeftView2() {
+	public SettingPlaylistLeftView2(MischPult mischPult) {
+		//evtl uebergeben
+		
 		leftPlaylistView = new ListView<>(leftPlaylistList);
 		leftPlaylistView.setId("settingPlaylist");
 		
-		leftPlaylistList = FXCollections.observableArrayList();
-		leftPlaylistView.setItems(leftPlaylistList);
-		
-		leftSongView = new ListView<SelectTrack>();
+		leftSongView = new ListView<Track>();
 		leftSongView.setId("settingPlaylist");
 		
 		
-		leftSongView.setCellFactory(new Callback<ListView<SelectTrack>, ListCell<SelectTrack>>() {
+		leftSongView.setCellFactory(new Callback<ListView<Track>, ListCell<Track>>() {
 			@Override
-			public ListCell<SelectTrack> call(ListView<SelectTrack> param) {
-				// TODO Auto-generated method stub
+			public ListCell<Track> call(ListView<Track> param) {
+			
 				return new TrackListCell();
 			}
 		});
 		
+		leftPlaylistList = FXCollections.observableArrayList();
+		leftPlaylistList = mischPult.getManager().getAllNames();
+
+		leftPlaylistView.setItems(leftPlaylistList);
+		
 		leftSongList = FXCollections.observableArrayList();
+		//Test
+		leftSongList = mischPult.getManager().getList("first").getAllObsTracks();
 		leftSongView.setItems(leftSongList);
-		
-		//Test Ding
-		leftSongList2 = FXCollections.observableArrayList();
-		
 		
 		playlistLabel = new Label("Playlists");
 		playlistLabel.setId("labels");

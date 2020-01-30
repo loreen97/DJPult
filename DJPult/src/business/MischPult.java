@@ -29,6 +29,7 @@ public class MischPult extends Observable {
 		first.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
 		first.addSingleSong("Bring Mich Nach Hause.mp3");
 		this.manager.getAllLists().put("first", first);
+		this.manager.getAllNames().add("first");
 
 		
 		// if Playlist not null
@@ -206,5 +207,11 @@ public class MischPult extends Observable {
 	//Slider geht kaputt, the usual
 	public void setPlaylist(Playlist name) {
 		players.get("links").setPlaylist(name);
+	}
+	
+	//useless
+	public MischPult getMischPult() {
+		// TODO Auto-generated method stub
+		return this;
 	}
 }

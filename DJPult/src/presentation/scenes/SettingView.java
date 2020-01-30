@@ -1,5 +1,6 @@
 package presentation.scenes;
 
+import business.MischPult;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -41,6 +42,7 @@ public class SettingView extends BorderPane{
 	public HBox bottom,center;
 	
 	public SettingView() {
+		MischPult mischPult = new MischPult();
 		samplesView = new SamplesView();
 		sPlaylistView2 = new SamplePlaylistView2();
 		
@@ -54,8 +56,8 @@ public class SettingView extends BorderPane{
 		vbox.setPadding(new Insets(0,0,30,0));
 		vbox.setAlignment(Pos.BOTTOM_RIGHT);
 		
-		sPLView2 = new SettingPlaylistLeftView2();
-		sPRView2 = new SettingPlaylistRightView2();
+		sPLView2 = new SettingPlaylistLeftView2(mischPult);
+		sPRView2 = new SettingPlaylistRightView2(mischPult);
 		
 		bottom= new HBox();
 		bottom.getChildren().addAll(samplesView, sPlaylistView2, vbox);

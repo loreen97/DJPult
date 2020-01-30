@@ -1,6 +1,8 @@
 package presentation.UIComponents;
 
-import business.SelectTrack;
+import business.MischPult;
+import business.Track;
+import business.Track;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -11,19 +13,20 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
-/**
- * Die PlaylistLeftView
- * Die mit Cells arbeiten soll
- * Darum SelectTrack in den Listen 
- * @author evolk001
- *
- */
+	/**
+	 * Die PlaylistRightView
+	 * Die mit Cells arbeiten soll
+	 * Darum Track in den Listen 
+	 * @author evolk001
+	 *
+	 */
 public class SettingPlaylistRightView2 extends HBox {
 	public ListView<String> rightPlaylistView;
 	public ObservableList<String> rightPlaylistList;
 	
-	public ListView<SelectTrack> rightSongView;
-	public ObservableList<SelectTrack> rightSongList;
+	
+	public ListView<Track> rightSongView;
+	public ObservableList<Track> rightSongList;
 	
 	public Button check;
 	public Button delete;
@@ -36,28 +39,33 @@ public class SettingPlaylistRightView2 extends HBox {
 	public VBox boxLeft;
 	public VBox boxRight;
 	
-	public SettingPlaylistRightView2() {
+	public SettingPlaylistRightView2(MischPult mischPult) {
+		//evtl uebergeben
+		
 		rightPlaylistView = new ListView<>(rightPlaylistList);
 		rightPlaylistView.setId("settingPlaylist");
 		
-		rightPlaylistList = FXCollections.observableArrayList("Playlist 1", "Playlist 2","Playlist 3");
-		rightPlaylistView.setItems(rightPlaylistList);
-		
-		rightSongView = new ListView<>(rightSongList);
+		rightSongView = new ListView<Track>();
 		rightSongView.setId("settingPlaylist");
 		
-		rightSongView.setCellFactory(new Callback<ListView<SelectTrack>, ListCell<SelectTrack>>() {
+		
+		rightSongView.setCellFactory(new Callback<ListView<Track>, ListCell<Track>>() {
 			@Override
-			public ListCell<SelectTrack> call(ListView<SelectTrack> param) {
-				// TODO Auto-generated method stub
+			public ListCell<Track> call(ListView<Track> param) {
+			
 				return new TrackListCell();
 			}
 		});
 		
+		rightPlaylistList = FXCollections.observableArrayList();
+		rightPlaylistList = mischPult.getManager().getAllNames();
+
+		rightPlaylistView.setItems(rightPlaylistList);
 		
 		rightSongList = FXCollections.observableArrayList();
+		//Test
+		rightSongList = mischPult.getManager().getList("first").getAllObsTracks();
 		rightSongView.setItems(rightSongList);
-		
 		
 		playlistLabel = new Label("Playlists");
 		playlistLabel.setId("labels");
@@ -87,4 +95,5 @@ public class SettingPlaylistRightView2 extends HBox {
 		this.setPadding(new Insets(0,10,0,10));
 		this.setSpacing(5);
 	}
+
 }

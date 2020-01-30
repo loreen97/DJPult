@@ -27,7 +27,7 @@ public class PlaylistManager {
 		}
 		try {
 			playlists.put(name, tempList);
-			playlistNames.add(name);
+			this.playlistNames.add(name);
 		} catch (NullPointerException ez){
 			System.out.println("Something went wrong with the Playlist " + name);
 			}
@@ -40,4 +40,9 @@ public class PlaylistManager {
 	public HashMap<String, Playlist> getAllLists() {
 		return playlists;
 	}
+	
+	public ObservableList<String> getAllNames() {
+		return playlistNames;
+	}
+	
 }

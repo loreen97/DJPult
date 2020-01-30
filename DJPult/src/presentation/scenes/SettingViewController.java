@@ -5,6 +5,7 @@ import business.MischPult;
 import business.SelectTrack;
 import business.Track;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -44,9 +45,8 @@ public class SettingViewController extends ViewController<Main> {
 		back = headerView.back;
 		folder = headerView.folder;
 		
-		
+		leftSongList = FXCollections.observableArrayList();
 		SettingPlaylistLeftView2 leftView = view.sPLView2;
-		leftSongList = leftView.leftSongList2;
 		initialize();
 	}
 	@Override

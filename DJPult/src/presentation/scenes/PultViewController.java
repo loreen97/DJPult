@@ -5,6 +5,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import application.Main;
 import business.MischPult;
 import business.Player;
@@ -14,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -24,6 +27,7 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import presentation.UIComponents.ControlView;
+import presentation.UIComponents.PultPlaylistView2;
 import presentation.UIComponents.SamplesView;
 import presentation.UIComponents.TitleView;
 import presentation.UIComponents.TuneView;
@@ -64,6 +68,9 @@ public class PultViewController extends ViewController<Main> implements Observer
 
 	private boolean playingLeft, playingRight, pushed;
 	private boolean userInteraction;
+	
+	ListView<Track> trackListViewLeft;
+	ListView<Track> trackListViewRight;
 
 	Visualizer visualizerLeft, visualizerRight;
 	Pane paneL;
@@ -140,7 +147,11 @@ public class PultViewController extends ViewController<Main> implements Observer
 
 		Visualizer visualizerRight = view.visualizerRight;
 		paneR = visualizerRight.pane;
-
+		
+		PultPlaylistView2 pPV2 = view.pPlaylistView2;
+		trackListViewLeft = pPV2.trackListViewLeft;
+		trackListViewRight = pPV2.trackListViewRight;
+		
 		initialize();
 	}
 
@@ -157,6 +168,26 @@ public class PultViewController extends ViewController<Main> implements Observer
 				}
 			}
 		});
+		
+		trackListViewLeft.setItems(mischPult.getLeftPlayer().getPlaylist().getAllObsTracks());
+		trackListViewRight.setItems(mischPult.getRightPlayer().getPlaylist().getAllObsTracks());
+		
+		
+		//Soll irgendwie den Titel als Text annehmen und in der Playlist suchen oder so
+		/*trackListViewLeft.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> oV, String oldValue, String newValue) {
+
+				/*if (mischPult.getLeftPlayer().getMediaPlayer().getStatus().PLAYING) {
+					mischPult.getLeftPlayer().stop();
+				
+				mischPult.getLeftPlayer().getPlaylist().getTrackByTitle();
+				mischPult.getLeftPlayer().play();
+
+				play.getStyleClass().clear();
+				play.getStyleClass().addAll("control-button", "pause-button");
+				playing = true;
+			}
+		});*/
 		
 		// Song Slider, für links testweise in methode ausgelagert
 		updateSlider();

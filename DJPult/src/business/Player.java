@@ -81,6 +81,7 @@ public class Player {
 		if (mediaPlayer != null) {
 			//mediaPlayer.stop(); //Wenn das drin ist geht loop nicht, evtl && looping
 		}
+		
 		setVolume(currVolume);
 		this.mediaPlayer.play();
 		this.mediaPlayer.setOnEndOfMedia(() -> this.skip());

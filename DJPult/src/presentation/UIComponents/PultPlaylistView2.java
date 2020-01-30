@@ -3,7 +3,7 @@ package presentation.UIComponents;
 import java.util.LinkedList;
 import java.util.List;
 
-import business.SelectTrack;
+import business.Track;
 import business.Track;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,36 +15,37 @@ import javafx.util.Callback;
 
 public class PultPlaylistView2 extends HBox {
 	//List<Track> trackList;
-	//List<SelectTrack> selectTrackList;
-	ListView<SelectTrack> trackListViewLeft,trackListViewRight;
-	ObservableList<SelectTrack> trackPlaylistLeft, trackPlaylistRight;
+	//List<Track> selectTrackList;
+	public ListView<Track> trackListViewLeft;
+	public ListView<Track> trackListViewRight;
+	public ObservableList<Track> trackPlaylistLeft, trackPlaylistRight;
 
 	public PultPlaylistView2() {
 		//trackList = new LinkedList<Track>();
-		//selectTrackList = new LinkedList<SelectTrack>();
-		trackListViewLeft = new ListView<SelectTrack>();
+		//selectTrackList = new LinkedList<Track>();
+		trackListViewLeft = new ListView<Track>();
 		trackListViewLeft.setId("playlist");
-		trackListViewRight = new ListView<SelectTrack>();
+		trackListViewRight = new ListView<Track>();
 		trackListViewRight.setId("playlist");
 		
 		/*for (Track currentTrack : trackList) {
-			SelectTrack uiTrack = new SelectTrack();
+			Track uiTrack = new Track();
 			uiTrack.trackModel = currentTrack;
 			uiTrack.selected = false;
 			selectTrackList.add(uiTrack);
 		}*/
 
-		trackListViewLeft.setCellFactory(new Callback<ListView<SelectTrack>, ListCell<SelectTrack>>() {
+		trackListViewLeft.setCellFactory(new Callback<ListView<Track>, ListCell<Track>>() {
 			@Override
-			public ListCell<SelectTrack> call(ListView<SelectTrack> param) {
+			public ListCell<Track> call(ListView<Track> param) {
 				// TODO Auto-generated method stub
 				return new TrackListCell();
 			}
 		});
 		
-		trackListViewRight.setCellFactory(new Callback<ListView<SelectTrack>,ListCell<SelectTrack>>(){
+		trackListViewRight.setCellFactory(new Callback<ListView<Track>,ListCell<Track>>(){
 			@Override
-			public ListCell<SelectTrack> call(ListView<SelectTrack> param) {
+			public ListCell<Track> call(ListView<Track> param) {
 				// TODO Auto-generated method stub
 				return new TrackListCell();
 			}

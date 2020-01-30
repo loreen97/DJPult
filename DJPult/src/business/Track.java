@@ -14,18 +14,21 @@ public class Track {
 	private String interpret;
 	private Mp3File mp3File;
 	private String soundFile;
+	private Path mPath;
 	private long length;
 	
 	//fuer Lieder
-	public Track(String title) {
+	//evtl einen split ("-") um Interpret von Titel zu trennen
+	public Track(String path) {
 		//Aktuelles Problem: Wenn kein Tag, dann ist der komplette Pfad der Name.
-		this.title = title; //Titel ist durch erstellen aus Ordner an dieser Stelle noch
+		this.mPath = Paths.get(path); //Titel ist durch erstellen aus Ordner an dieser Stelle noch
 		//mit .mp3 hinten dran also braucht soundfile kein +".mp3"
 		//Falls ID3v2 vorhanden wird titel geändert 
-		this.soundFile = title;
+		this.soundFile = path;
 		Mp3File mp3File = null;
 		try {
-			mp3File = new Mp3File(title);
+			//erwartet einen Pfad aber  als String
+			mp3File = new Mp3File(path);
 		} catch (UnsupportedTagException | InvalidDataException | IOException e) {
 			e.printStackTrace();
 		}
@@ -37,26 +40,26 @@ public class Track {
 				this.interpret = id3v2Tag.getArtist();
 				this.title = id3v2Tag.getTitle();
 				} catch (NullPointerException ez) {
-					Path path = Paths.get(title);
-					this.title = path.getFileName().toString();
+					this.title = mPath.getFileName().toString();
 					System.out.println(this.title + " hat ein unvollstaendiges id3v2Tag.");
 				}
 			} else {
 				//Um beim Erstellen einer Playlist nicht den 
 				//gesamten Pfad als Namen zu haben
 				//funktioniert solala
-				Path path = Paths.get(title);
-				this.title = path.getFileName().toString();
+				this.title = mPath.getFileName().toString();
+			}
+			if(interpret == null) {
+				this.interpret = "Unbekannter Interpret";
 			}
 			//wegene abs. Path haben die Titel wsl den Pfad als namen
 			//fixen? //Sollte fixed sein
 			//In PlaylistViewControl
 			//Wenn keine Tags enthält name noch mit .mp3 am ende fixen
 		} 
-		
 		if(title.endsWith(".mp3")) {
-			title = title.substring(0, title.length()-4);
-			System.out.println(title);
+			this.title = title.substring(0, title.length()-4);
+			System.out.println(this.title);
 		}
 	}
 
@@ -89,4 +92,5 @@ public class Track {
 	public String toString() {
 		return title;
 	}
+
 }

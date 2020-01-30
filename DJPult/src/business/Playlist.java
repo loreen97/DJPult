@@ -11,17 +11,29 @@ public class Playlist {
 	private String title;
 	private LinkedList<Track> tracks = new LinkedList<Track>();
 	ObservableList<String> songNames;
+	ObservableList<Track> obsTracks;
 	
 	public Playlist(String name) {
 		this.title = name;
+		obsTracks = FXCollections.observableArrayList();
 		songNames =  FXCollections.observableArrayList(); 
 	}
+	
 	public Track getTrack(int no) {
 		try {
-		return this.tracks.get(no);
+			return this.tracks.get(no);
 		} catch(NullPointerException ez) {
 			System.out.println("Playlist zu Ende");
 		} return null;
+	}
+	
+	//??????
+	public Track getTrackByTitle(String stitle) {
+		if(songNames.contains(stitle)) {
+			return this.getTrack(songNames.indexOf(stitle));
+		} else {
+			return null;
+		}
 	}
 	
 	public String getTitle() {
@@ -37,6 +49,10 @@ public class Playlist {
 		return this.tracks;
 	}
 	
+	public ObservableList<Track> getAllObsTracks() {
+		return this.obsTracks;
+	}
+	
 	public int getLength() {
 		return tracks.size();
 	}
@@ -44,6 +60,7 @@ public class Playlist {
 	public void addSingleSong(String name) {
 		Track temp = new Track(name);
 		tracks.add(temp);
+		obsTracks.add(temp);
 	}
 	
 	public void addSingleTrack(Track name) {
@@ -53,13 +70,4 @@ public class Playlist {
 	public ObservableList<String> getAllTitles() {
 		return songNames;
 	}
-	
-	private void createFromFolder(String dir) {
-	
-	}
-	
-	private void readTracks(String title) throws IOException {
-		
-	}
-	
 }

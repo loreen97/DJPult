@@ -1,6 +1,6 @@
 package presentation.UIComponents;
 
-import business.SelectTrack;
+import business.Track;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -14,17 +14,17 @@ import javafx.util.Callback;
 
 public class SamplePlaylistView2 extends VBox{
 	
-	public ListView<SelectTrack> sampleListView;
-	public ObservableList<SelectTrack> sampleList;
+	public ListView<Track> sampleListView;
+	public ObservableList<Track> sampleList;
 	public Label sampleLabel;
 
 	public SamplePlaylistView2() {
-		sampleListView = new ListView<SelectTrack>();
+		sampleListView = new ListView<Track>();
 		sampleListView.setId("settingPlaylist");
 		
-		sampleListView.setCellFactory(new Callback<ListView<SelectTrack>, ListCell<SelectTrack>>() {
+		sampleListView.setCellFactory(new Callback<ListView<Track>, ListCell<Track>>() {
 			@Override
-			public ListCell<SelectTrack> call(ListView<SelectTrack> param) {
+			public ListCell<Track> call(ListView<Track> param) {
 				return new TrackListCell();
 			}
 		});
