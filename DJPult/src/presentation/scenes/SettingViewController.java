@@ -53,7 +53,7 @@ public class SettingViewController extends ViewController<Main> {
 	public void initialize() {
 		//Alles egal so lange wir an Select Track nichts machen
 		try {
-			leftSongList.addAll(mischPult.getManager().getList("first").getAllTracks());
+			leftSongList.addAll(mischPult.getManager().getList("first").getAllObsTracks());
 		} catch (NullPointerException ez) {
 			ez.printStackTrace();
 		} 

@@ -1,6 +1,7 @@
 package presentation.UIComponents;
 
 import business.MischPult;
+import business.Playlist;
 import business.Track;
 import business.Track;
 import javafx.collections.FXCollections;
@@ -21,8 +22,8 @@ import javafx.util.Callback;
 	 *
 	 */
 public class SettingPlaylistLeftView2 extends HBox {
-	public ListView<String> leftPlaylistView;
-	public ObservableList<String> leftPlaylistList;
+	public ListView<Playlist> leftPlaylistView;
+	public ObservableList<Playlist> leftPlaylistList;
 	
 	
 	public ListView<Track> leftSongView;
@@ -42,7 +43,7 @@ public class SettingPlaylistLeftView2 extends HBox {
 	public SettingPlaylistLeftView2(MischPult mischPult) {
 		//evtl uebergeben
 		
-		leftPlaylistView = new ListView<>(leftPlaylistList);
+		leftPlaylistView = new ListView<Playlist>(leftPlaylistList);
 		leftPlaylistView.setId("settingPlaylist");
 		
 		leftSongView = new ListView<Track>();
@@ -57,7 +58,6 @@ public class SettingPlaylistLeftView2 extends HBox {
 			}
 		});
 		
-		leftPlaylistList = FXCollections.observableArrayList();
 		leftPlaylistList = mischPult.getManager().getAllNames();
 
 		leftPlaylistView.setItems(leftPlaylistList);

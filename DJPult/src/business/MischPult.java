@@ -3,16 +3,20 @@ package business;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.Observer;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-public class MischPult extends Observable {
+public class MischPult extends Observable implements Observer {
 	/*
 	 * private MediaPlayer[] mediaPlayer; private Media[] media; private Playlist[]
 	 * lists; //statt 3 einzelne Playlists
 	 */
 
+	private SimpleObjectProperty<Player> pla;
+	
 	// evtl fuer jeden sample button einen...
 	private Player playerLeft;
 	private Player playerRight;
@@ -29,7 +33,6 @@ public class MischPult extends Observable {
 		first.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
 		first.addSingleSong("Bring Mich Nach Hause.mp3");
 		this.manager.getAllLists().put("first", first);
-		this.manager.getAllNames().add("first");
 
 		
 		// if Playlist not null
@@ -37,6 +40,9 @@ public class MischPult extends Observable {
 		playerRight = new Player("rechts", manager.getAllLists().get("first"));
 		players.put(playerLeft.getName(), playerLeft);
 		players.put(playerRight.getName(), playerRight);
+		
+		playerLeft.addObserver(this);
+		playerRight.addObserver(this);
 		
 		sample1 = new Samples("sample1");
 		sample2 = new Samples("sample2");
@@ -211,7 +217,12 @@ public class MischPult extends Observable {
 	
 	//useless
 	public MischPult getMischPult() {
-		// TODO Auto-generated method stub
 		return this;
+	}
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		setChanged();
+		notifyObservers(arg);
 	}
 }

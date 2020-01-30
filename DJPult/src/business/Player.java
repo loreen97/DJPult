@@ -1,15 +1,17 @@
 package business;
 
 import java.nio.file.Paths;
+import java.util.Observable;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.media.EqualizerBand;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-public class Player {
+public class Player extends Observable {
 	private MediaPlayer mediaPlayer;
 	private String name;
 	private Media media;
@@ -24,6 +26,8 @@ public class Player {
 	ObservableList<EqualizerBand> bands;
 	private boolean isLooping;
 	private Duration duration;
+	
+ 
 
 	public Player(String name, Playlist list) {
 		this.name = name;
@@ -98,16 +102,15 @@ public class Player {
 			} else {
 				posInList++;
 			}
-			index.set(posInList);
-			mediaPlayer.dispose(); //evtl nicht notwendig einen neuen zu erstellen
+			this.index.set(posInList);
 			loadSong();
-			
-			mediaPlayer = new MediaPlayer(media);
-			mediaPlayer.seek(Duration.ZERO);
 			setVolume(currVolume);
+			setChanged();
+			notifyObservers("neu");
 			this.play();
+
 		} else { // selben Song nochmal laden irgendwie
-			mediaPlayer.seek(Duration.ZERO);
+			this.mediaPlayer.seek(Duration.ZERO);
 			this.play();
 		}
 	}
@@ -130,8 +133,8 @@ public class Player {
 		try {
 			mediaPlayer.dispose();
 			mediaPlayer.seek(Duration.ZERO);
-			media = new Media(Paths.get(list.getTrack(posInList).getSoundFile()).toUri().toString());
-			mediaPlayer = new MediaPlayer(media);
+			this.media = new Media(Paths.get(list.getTrack(posInList).getSoundFile()).toUri().toString());
+			this.mediaPlayer = new MediaPlayer(media);
 		} catch (NullPointerException ez) {
 			System.out.println("Es gibt noch keinen Media Player oder keinen Song, welchen er spielen könnte!");
 		}

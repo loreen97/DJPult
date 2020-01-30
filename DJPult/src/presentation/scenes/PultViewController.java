@@ -80,7 +80,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 		super(application);
 
 		this.mischPult = mischPult;
-
+		
 		rootView = new PultView();
 
 		PultView view = (PultView) rootView;
@@ -158,8 +158,10 @@ public class PultViewController extends ViewController<Main> implements Observer
 	public void initialize() {
 
 		mischPult.addObserver(this); // Das umschreiben? Pro Player Seite, aber eher nicht
+		
 		visualizerLeft.start(30, paneL);
 		visualizerRight.start(30, paneR);
+		
 		setting.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -189,22 +191,15 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});*/
 		
-		// Song Slider, für links testweise in methode ausgelagert
-		updateSlider();
+		// Song Slider, testweise in methode ausgelagert
+		updateSlider("links");
 
 		songSliderLeft.setOnMouseClicked(songSlider("links"));
 		songSliderLeft.setOnMouseDragged(songSlider("links"));
 
-		mischPult.getRightPlayer().getMediaPlayer().currentTimeProperty()
-				.addListener((observableValue, oldDuration, newDuration) -> {
-					Duration time = mischPult.getRightPlayer().getMediaPlayer().getCurrentTime();
-					Duration total = mischPult.getRightPlayer().getMediaPlayer().getTotalDuration();
-					if (!songSliderRight.isValueChanging() && total.greaterThan(Duration.ZERO)) {
-						songSliderRight.setValue(time.toMillis() / total.toMillis() * 100);
-					}
-					// evtl wenn ende erreicht neu setzen? aber dann sicher wieder skip probleme
-					// evtl setOnStopped verwenden
-				});
+		updateSlider("rechts");
+		// evtl wenn ende erreicht neu setzen? aber dann sicher wieder skip probleme
+		// evtl setOnStopped verwenden
 
 		songSliderRight.setOnMouseClicked(songSlider("rechts"));
 		songSliderRight.setOnMouseDragged(songSlider("rechts"));
@@ -460,16 +455,25 @@ public class PultViewController extends ViewController<Main> implements Observer
 	}
 
 	// nutzlos
-	private void updateSlider() {
+	private void updateSlider(String name) {
+		MediaPlayer m;
+		Slider s;
+		if (name == "links") {
+			m = mischPult.getLeftPlayer().getMediaPlayer();
+			s = songSliderLeft;
+		} else {
+			m = mischPult.getRightPlayer().getMediaPlayer();
+			s = songSliderRight;
+		}
 		// Soll den Slider updaten bzw resetten wenn Lied vorbei
 		// Sollte ein update aus dem player bekommen
-		mischPult.getLeftPlayer().getMediaPlayer().seek(Duration.ZERO);
-		mischPult.getLeftPlayer().getMediaPlayer().currentTimeProperty()
+		m.seek(Duration.ZERO);
+		m.currentTimeProperty()
 				.addListener((observableValue, oldDuration, newDuration) -> {
-					Duration time = mischPult.getLeftPlayer().getMediaPlayer().getCurrentTime();
-					Duration total = mischPult.getLeftPlayer().getMediaPlayer().getTotalDuration();
-					if (!songSliderLeft.isValueChanging() && total.greaterThan(Duration.ZERO)) {
-						songSliderLeft.setValue(time.toMillis() / total.toMillis() * 100);
+					Duration time = m.getCurrentTime();
+					Duration total = m.getTotalDuration();
+					if (!s.isValueChanging() && total.greaterThan(Duration.ZERO)) {
+						s.setValue(time.toMillis() / total.toMillis() * 100);
 					}
 				});
 	}
@@ -477,11 +481,22 @@ public class PultViewController extends ViewController<Main> implements Observer
 	// Wahrscheinlich durch die obere Methode ersetzen
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		Platform.runLater(() -> {
-			// Track track = (Track) arg1;
-			titleLeft.setText(mischPult.getActSong("links").getTitle());
-			titleRight.setText(mischPult.getActSong("rechts").getTitle());
-		});
+		if (arg1 == "neu") {
+			updateSlider("links");	
+			songSliderLeft.setOnMouseClicked(songSlider("links"));
+			songSliderLeft.setOnMouseDragged(songSlider("links"));
+			waves("links");
+			updateSlider("rechts");
+			songSliderRight.setOnMouseClicked(songSlider("rechts"));
+			songSliderRight.setOnMouseDragged(songSlider("rechts"));
+			waves("rechts");
+		} else {
+			Platform.runLater(() -> {
+				// Track track = (Track) arg1;
+				titleLeft.setText(mischPult.getActSong("links").getTitle());
+				titleRight.setText(mischPult.getActSong("rechts").getTitle());
+			});
+		}
 	}
 
 	// Zum Aendern des Song Progresses anhand des Sliders

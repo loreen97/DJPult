@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 
 public class PlaylistManager {
 	private HashMap<String, Playlist> playlists;
-	ObservableList<String> playlistNames;
+	ObservableList<Playlist> playlistNames;
 	
 	public PlaylistManager() {
 		playlists = new HashMap<String, Playlist>();
@@ -27,7 +27,7 @@ public class PlaylistManager {
 		}
 		try {
 			playlists.put(name, tempList);
-			this.playlistNames.add(name);
+			this.playlistNames.add(tempList);
 		} catch (NullPointerException ez){
 			System.out.println("Something went wrong with the Playlist " + name);
 			}
@@ -41,7 +41,7 @@ public class PlaylistManager {
 		return playlists;
 	}
 	
-	public ObservableList<String> getAllNames() {
+	public ObservableList<Playlist> getAllNames() {
 		return playlistNames;
 	}
 	

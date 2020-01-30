@@ -32,8 +32,8 @@ public class PultPlaylistView extends  HBox {
 
 		this.mischPult = new MischPult();
 
-		songListLeft = mischPult.getLeftPlayer().getPlaylist().getAllTitles();
-		songListRight = mischPult.getRightPlayer().getPlaylist().getAllTitles();
+		//songListLeft = mischPult.getLeftPlayer().getPlaylist().getAllTitles();
+	//	songListRight = mischPult.getRightPlayer().getPlaylist().getAllTitles();
 		songlistViewLeft = new ListView<>(songListLeft);
 		songlistViewLeft.setId("playlist");
 		
