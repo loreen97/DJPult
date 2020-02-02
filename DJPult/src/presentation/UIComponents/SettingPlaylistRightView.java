@@ -22,7 +22,7 @@ import presentation.scenes.PlaylistListCell;
 	 * @author evolk001
 	 *
 	 */
-public class SettingPlaylistRightView2 extends HBox {
+public class SettingPlaylistRightView extends HBox {
 	public ListView<Playlist> rightPlaylistView;
 	public ObservableList<Playlist> rightPlaylistList;
 	
@@ -41,7 +41,7 @@ public class SettingPlaylistRightView2 extends HBox {
 	public VBox boxLeft;
 	public VBox boxRight;
 	
-	public SettingPlaylistRightView2(MischPult mischPult) {
+	public SettingPlaylistRightView(MischPult mischPult) {
 		//evtl uebergeben
 		
 		rightPlaylistView = new ListView<>(rightPlaylistList);

@@ -25,6 +25,8 @@ public class ThirdView extends BorderPane {
 	public Button loadMP3;
 	public Label playlistName;
 	public TextField title;
+	public Label infoLabel;
+	public VBox info;
 	//public ArrayList<Track> songs;
 	public ObservableList<Track> songNames;
 	public ListView<Track> songlistView;
@@ -61,6 +63,15 @@ public class ThirdView extends BorderPane {
 		textArea = new TextArea();
 	    textArea.setMinHeight(70);
 		
+	    info = new VBox();
+		infoLabel = new Label("Bitte gebe der Playlist einen Titel \n und mindestens 3 Songs. ");
+		infoLabel.setId("info");
+		infoLabel.setOpacity(0);
+		info.getChildren().addAll(infoLabel);
+		info.setAlignment(Pos.CENTER);
+		info.setPadding(new Insets(0, 80, 0, 0));
+		
+		
 		hbox = new HBox();
 		hbox.getChildren().addAll(playlistName, title, loadMP3,save);
 		hbox.setSpacing(30);
@@ -70,9 +81,11 @@ public class ThirdView extends BorderPane {
 		vbox.getChildren().addAll(hbox, songlistView);
 		vbox.setSpacing(20);
 		vbox.setAlignment(Pos.CENTER);
+		vbox.setPadding(new Insets(0, 0, 0, 380));
 		
 		this.setTop(back);
 		this.setCenter(vbox);
+		this.setRight(info);
 		this.setPadding(new Insets(10));
 		
 		this.getStyleClass().add("background");

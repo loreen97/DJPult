@@ -1,6 +1,7 @@
 package presentation.scenes;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,6 +13,8 @@ import business.MischPult;
 import business.Player;
 import business.Playlist;
 import business.Track;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -29,7 +33,7 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import presentation.UIComponents.ControlView;
-import presentation.UIComponents.PultPlaylistView2;
+import presentation.UIComponents.PultPlaylistView;
 import presentation.UIComponents.SamplesView;
 import presentation.UIComponents.TitleView;
 import presentation.UIComponents.TuneView;
@@ -78,7 +82,10 @@ public class PultViewController extends ViewController<Main> implements Observer
 	Pane paneL;
 	Pane paneR;
 
-	public PultViewController(Main application, MischPult mischPult, Stage primaryStage) {
+	RotateTransition rotateLeft, rotateRight;
+	ImageView imgViewLeft, imgViewRight;
+	
+	public PultViewController(Main application, MischPult mischPult, Stage primaryStage) throws FileNotFoundException {
 		super(application);
 
 		this.mischPult = mischPult;
@@ -89,7 +96,10 @@ public class PultViewController extends ViewController<Main> implements Observer
 		this.stage = primaryStage;
 
 		setting = view.setting;
-
+		imgViewLeft = view.imgViewLeft;
+		imgViewRight = view.imgViewRight;
+		
+		
 		ControlView controlViewLeft = view.controlViewLeft;
 		playLeft = controlViewLeft.play;
 		loopLeft = controlViewLeft.loop;
@@ -150,10 +160,26 @@ public class PultViewController extends ViewController<Main> implements Observer
 		Visualizer visualizerRight = view.visualizerRight;
 		paneR = visualizerRight.pane;
 
-		PultPlaylistView2 pPV2 = view.pPlaylistView2;
-		trackListViewLeft = pPV2.trackListViewLeft;
-		trackListViewRight = pPV2.trackListViewRight;
+		PultPlaylistView pPV = view.pPlaylistView;
+		trackListViewLeft = pPV.trackListViewLeft;
+		trackListViewRight = pPV.trackListViewRight;
 
+		
+		Duration total = mischPult.getLeftPlayer().getMediaPlayer().getTotalDuration();
+		rotateLeft = new RotateTransition(Duration.seconds(total.toSeconds()), imgViewLeft);
+		rotateLeft.setFromAngle(0);
+		rotateLeft.setToAngle(360);
+		rotateLeft.setCycleCount(Timeline.INDEFINITE);
+		rotateLeft.setRate(2.0);
+		
+		Duration total2 = mischPult.getRightPlayer().getMediaPlayer().getTotalDuration();
+		rotateRight = new RotateTransition(Duration.seconds(total2.toSeconds()), imgViewRight);
+		rotateRight.setFromAngle(0);
+		rotateRight.setToAngle(360);
+		rotateRight.setCycleCount(Timeline.INDEFINITE);
+		rotateRight.setRate(2.0);
+		
+		
 		initialize();
 	}
 
@@ -200,6 +226,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 		songSliderLeft.setOnMouseClicked(songSlider("links"));
 		songSliderLeft.setOnMouseDragged(songSlider("links"));
 
+		selectSong("rechts");
 		updateSlider("rechts");
 
 		songSliderRight.setOnMouseClicked(songSlider("rechts"));
@@ -215,6 +242,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 					playLeft.getStyleClass().addAll("control-button", "pause");
 					playingLeft = true;
 					waves("links");
+					rotateLeft.play();
 					// mischPult.getLeftPlayer().getMediaPlayer().setOnEndOfMedia(() -> reset Slider
 					// zeug irgendwie aber nicht hier... weil sonst nur wenn play pressed
 				} else {
@@ -222,6 +250,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 					playLeft.getStyleClass().clear();
 					playLeft.getStyleClass().addAll("control-button", "play");
 					playingLeft = false;
+					rotateLeft.pause();
 				}
 			}
 		});
@@ -235,11 +264,13 @@ public class PultViewController extends ViewController<Main> implements Observer
 					playRight.getStyleClass().addAll("control-button", "pause");
 					playingRight = true;
 					waves("rechts");
+					rotateRight.play();
 				} else {
 					mischPult.pause("rechts");
 					playRight.getStyleClass().clear();
 					playRight.getStyleClass().addAll("control-button", "play");
 					playingRight = false;
+					rotateRight.pause();
 				}
 			}
 		});
@@ -523,6 +554,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 			waves("rechts");
 		} else if(arg1 == "new Playlist"){
 			trackListViewLeft.setItems(mischPult.getLeftPlayer().getPlaylist().getAllObsTracks());
+			//läd in beide rein
+			trackListViewRight.setItems(mischPult.getRightPlayer().getPlaylist().getAllObsTracks());
 		}
 		Platform.runLater(() -> {
 			// Track track = (Track) arg1;

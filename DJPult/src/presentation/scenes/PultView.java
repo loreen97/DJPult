@@ -1,15 +1,20 @@
 package presentation.scenes;
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import presentation.UIComponents.ControlView;
 import presentation.UIComponents.SamplesView;
-import presentation.UIComponents.PultPlaylistView2;
+import presentation.UIComponents.PultPlaylistView;
 import presentation.UIComponents.TitleView;
 import presentation.UIComponents.TuneView;
 import presentation.UIComponents.Visualizer;
@@ -22,17 +27,19 @@ public class PultView extends BorderPane {
 	ControlView controlViewLeft,controlViewRight;
 	TuneView tuneViewLeft, tuneViewRight;
 	VolumeView volumeViewLeft, volumeViewRight;
-	PultPlaylistView2 pPlaylistView2;
+	PultPlaylistView pPlaylistView;
 	
 	Visualizer visualizerLeft,visualizerRight;
 	
 	public Button setting;
-	public Button platteLeft, platteRight;
+	
+	public Image imgLeft, imgRight;
+	public ImageView imgViewLeft, imgViewRight;
 	
 	public HBox hboxTop,hboxLeftTop,hboxRightTop,hboxCenter,hboxBottom,hboxLeft,hboxRight;
 	public VBox boxWavesLeft, boxWavesRight;
 
-	public PultView() {
+	public PultView() throws FileNotFoundException {
 		samplesView = new SamplesView();
 		titleViewLeft = new TitleView();
 		titleViewRight = new TitleView();
@@ -42,18 +49,23 @@ public class PultView extends BorderPane {
 		tuneViewRight = new TuneView();
 		volumeViewLeft = new VolumeView();
 		volumeViewRight = new VolumeView();
-		pPlaylistView2 = new PultPlaylistView2();
+		pPlaylistView = new PultPlaylistView();
 		visualizerLeft = new Visualizer();
 		visualizerRight = new Visualizer();
 		
 		setting = new Button();
 		setting.setId("setting");
 
-		platteLeft = new Button();
-		platteLeft.setId("platte");
+		imgLeft = new Image(new FileInputStream("C:\\Users\\loree\\git\\DJPult3\\DJPult\\src\\image\\platte.png"));
+		imgViewLeft = new ImageView(imgLeft);
+		imgViewLeft.setFitHeight(300);
+		imgViewLeft.setFitWidth(300);
 		
-		platteRight = new Button();
-		platteRight.setId("platte");
+		imgRight = new Image(new FileInputStream("C:\\Users\\loree\\git\\DJPult3\\DJPult\\src\\image\\platte.png"));
+		imgViewRight = new ImageView(imgRight);	
+		imgViewRight.setFitHeight(300);
+		imgViewRight.setFitWidth(300);
+	
 		
 		this.setTop(HBoxTop());
 		this.setCenter(HBoxCenter());
@@ -66,18 +78,19 @@ public class PultView extends BorderPane {
 	
 	public HBox HBoxBottom() {
 		hboxLeft = new HBox();
-		hboxLeft.getChildren().addAll(platteLeft, volumeViewLeft);
+		hboxLeft.getChildren().addAll(imgViewLeft, volumeViewLeft);
 		
 		hboxLeft.setSpacing(50);
 		
 		hboxRight = new HBox();
-		hboxRight.getChildren().addAll(volumeViewRight, platteRight);
+		hboxRight.getChildren().addAll(volumeViewRight, imgViewRight);
 		hboxRight.setSpacing(50);
 		
 		hboxBottom = new HBox();
 		hboxBottom.getChildren().addAll(hboxLeft,samplesView,hboxRight);
 		hboxBottom.setAlignment(Pos.CENTER);
 		hboxBottom.setSpacing(100);
+		hboxBottom.setPadding(new Insets(0,0,15,0));
 		return hboxBottom;
 	}
 	
@@ -99,9 +112,9 @@ public class PultView extends BorderPane {
 		hboxRightTop.setPadding(new Insets(0,10,0,0));
 		
 		hboxTop = new HBox();
-		hboxTop.getChildren().addAll(hboxLeftTop,pPlaylistView2,hboxRightTop);
+		hboxTop.getChildren().addAll(hboxLeftTop,pPlaylistView,hboxRightTop);
 		hboxTop.setSpacing(25);
-		hboxTop.setPadding(new Insets(10,10,10,10));
+		hboxTop.setPadding(new Insets(10,10,0,10));
 		hboxTop.setAlignment(Pos.CENTER);
 		return hboxTop;
 	}
@@ -111,7 +124,7 @@ public class PultView extends BorderPane {
 		hboxCenter.getChildren().addAll(controlViewLeft,setting,controlViewRight);
 		hboxCenter.setAlignment(Pos.CENTER);
 		hboxCenter.setSpacing(200);
-		hboxCenter.setPadding(new Insets(10,10,20,10));
+		hboxCenter.setPadding(new Insets(5,10,5,10));
 		return hboxCenter;
 	}
 }

@@ -15,8 +15,9 @@ public class TrackListCell extends ListCell<Track>{
 	public TrackListCell() {
 		vbox = new VBox();
 		title = new Label();
+		title.setId("playlist-title");
 		interpret = new Label();
-		
+		interpret.setId("playlist-interpret");
 		vbox.getChildren().addAll(title,interpret);
 		
 	}

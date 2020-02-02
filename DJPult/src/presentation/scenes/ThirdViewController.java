@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -35,7 +36,8 @@ public class ThirdViewController extends ViewController<Main>{
 	private Button back;
 	private Button save, loadMP3;
 	private TextField titleInput;
-
+	private Label infoLabel;
+	
 	private ArrayList<Track> songs;
 	private ObservableList<Track> songNames;
 	private ListView<Track> songlistView;
@@ -60,6 +62,7 @@ public class ThirdViewController extends ViewController<Main>{
 		save = view.save;
 		loadMP3 = view.loadMP3;
 		titleInput = view.title;
+		infoLabel = view.infoLabel;
 
 		this.songs = new ArrayList<Track>();
 		this.songNames = view.songNames;
@@ -76,6 +79,7 @@ public class ThirdViewController extends ViewController<Main>{
 		back.setOnAction(event -> {
 			application.switchScene(Scenes.SETTING_VIEW);
 			titleInput.clear();
+			infoLabel.setOpacity(0);
 		});
 
 		save.setOnAction(event -> {
@@ -84,10 +88,10 @@ public class ThirdViewController extends ViewController<Main>{
 				mischPult.getManager().createPlaylist(titleInput.getText(),songs);
 				application.switchScene(Scenes.SETTING_VIEW);
 				titleInput.clear();
-				
+				infoLabel.setOpacity(0);
 				System.out.println("Kreieren der Playlist war erfolgreich");
 			} else {
-				System.out.println("Bitte gebe der Playlist einen Titel und mindestens 3 songs");
+				infoLabel.setOpacity(1);
 			}
 			//mischPult.setPlaylist(mischPult.getManager().getList(titleInput.getText()), "links"); //Test, soll ja eig nicht automatisch setzen 
 			setChanged();

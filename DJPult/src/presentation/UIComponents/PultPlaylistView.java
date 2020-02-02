@@ -13,14 +13,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
-public class PultPlaylistView2 extends HBox {
+public class PultPlaylistView extends HBox {
 	//List<Track> trackList;
 	//List<Track> selectTrackList;
 	public ListView<Track> trackListViewLeft;
 	public ListView<Track> trackListViewRight;
 	public ObservableList<Track> trackPlaylistLeft, trackPlaylistRight;
 
-	public PultPlaylistView2() {
+	public PultPlaylistView() {
 		//trackList = new LinkedList<Track>();
 		//selectTrackList = new LinkedList<Track>();
 		trackListViewLeft = new ListView<Track>();

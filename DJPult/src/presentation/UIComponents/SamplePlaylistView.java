@@ -12,13 +12,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
-public class SamplePlaylistView2 extends VBox{
+public class SamplePlaylistView extends VBox{
 	
 	public ListView<Track> sampleListView;
 	public ObservableList<Track> sampleList;
 	public Label sampleLabel;
 
-	public SamplePlaylistView2() {
+	public SamplePlaylistView() {
 		sampleListView = new ListView<Track>();
 		sampleListView.setId("settingPlaylist");
 		

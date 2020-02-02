@@ -25,7 +25,7 @@ import presentation.scenes.PlaylistListCell;
 	 * @author evolk001
 	 *
 	 */
-public class SettingPlaylistLeftView2 extends HBox {
+public class SettingPlaylistLeftView extends HBox {
 	public ListView<Playlist> leftPlaylistView;
 	public ObservableList<Playlist> leftPlaylistList;
 	
@@ -45,7 +45,7 @@ public class SettingPlaylistLeftView2 extends HBox {
 	
 	private MischPult mischPult;
 	
-	public SettingPlaylistLeftView2(MischPult mischPult) {
+	public SettingPlaylistLeftView(MischPult mischPult) {
 		//In SecondViewController setzen wir die Elemente auch in die Liste, doppelt haelt besser
 		this.mischPult = mischPult;
 		

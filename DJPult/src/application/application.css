@@ -99,18 +99,10 @@
 
 #tuneName{
 	-fx-font-size: 16.0 ;
- 	-fx-font-family: 'Comic Sans MS';
+ 	-fx-font-family: 'Courgette';
  	-fx-text-fill:rgb(0,255,205);
 }
-#platte{
-	-fx-background-image: url("/image/platte.png");
-	-fx-background-size: 300px 300px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: top;
-    -fx-min-width: 350.0px; 
-	-fx-min-height: 350.0px; 
-	-fx-background-color: transparent;
-}
+
 #volume .thumb{
 	-fx-background-image :url("/image/regulator.png"); 
     -fx-background-color: transparent;
@@ -135,30 +127,34 @@
 	-fx-max-height:300px;
 	-fx-pref-height: 200;
     -fx-pref-width:130;
-    -fx-font-size: 15.0 ;
- 	-fx-font-family: 'Comic Sans MS';
- 	-fx-text-fill:white;
+    -fx-font-size: 12.0 ;
+ 	-fx-font-family: 'Lucida Bright';
  	-fx-control-inner-background:black;
 	-fx-effect: dropshadow( three-pass-box , rgb(0,255,205) , 2, 0.5 ,0.5, 0.5);
 }
 
+#playlist-title{
+	-fx-text-fill:blue;	
+}
+#playlist-interpret{
+	-fx-text-fill:darkgrey;
+}
 #settingPlaylist{
 	-fx-max-width:300px;
 	-fx-max-height:370px;
     -fx-pref-width:200;
     -fx-pref-height: 270;
     -fx-font-size: 15.0 ;
- 	-fx-font-family: 'Comic Sans MS';
- 	-fx-text-fill:white;
+ 	-fx-font-family: 'Lucida Bright';
  	-fx-control-inner-background:black;
 	-fx-effect: dropshadow( three-pass-box , rgb(0,255,205) , 2, 0.5 ,0.5, 0.5);
 	
 }
 #title{
 	-fx-font-size: 15.0 ;
- 	-fx-font-family: 'Comic Sans MS';
+ 	-fx-font-family: 'Lucida Bright';
  	-fx-text-fill:white;
-	-fx-background-color: rgba(0, 255, 205, 0.2);
+	
 }
 #slider .track{
 	-fx-background-color:radial-gradient(  center 50% 50%, radius 80%, rgb(150,255,235)15% , rgb(0,255,205) 75%);
@@ -229,7 +225,7 @@
 #labels{
 	-fx-text-fill: grey;
 	-fx-font-size: 12.0 ;
- 	-fx-font-family: 'Comic Sans MS';
+ 	-fx-font-family: 'Courgette';
 }
 #folder{
 	-fx-background-image: url("/image/folder.png");
@@ -243,32 +239,13 @@
 	-fx-background-color: transparent;
 }
 
-#areaChart{
-	-fx-background-color: transparent;
-	-fx-pref-height: 200.0px;
-	-fx-pref-width: 250.0px;
-	
-}
-#areaChart .chart-series-area-line{
-	-fx-stroke: blue;
-}
-#areaChart .chart-series-area-fill{
-	-fx-fill:radial-gradient(  center 50% 50%, radius 80%, rgb(65,65,170)15% , rgb(0,0,150) 75%)
-
-}
-#areaChart .chart-plot-background{
-	-fx-background-color:transparent;
-}
-#areaChart .axis{
-    -fx-border-color: transparent;
-}
 #createPlaylist{
 	-fx-max-width:530px;
 	-fx-max-height:600px;
     -fx-pref-width:430;
     -fx-pref-height: 500;
     -fx-font-size: 18.0 ;
- 	-fx-font-family: 'Comic Sans MS';
+ 	-fx-font-family: 'Lucida Bright';
  	-fx-text-fill:white;
  	-fx-control-inner-background:black;
 	-fx-effect: dropshadow( three-pass-box , rgb(0,255,205) , 2, 0.5 ,0.5, 0.5);
@@ -276,9 +253,13 @@
 #playlistLabel{
 	-fx-text-fill: grey;
 	-fx-font-size: 18.0 ;
- 	-fx-font-family: 'Comic Sans MS';
+ 	-fx-font-family: 'Courgette';
 }
-
+#info{
+	-fx-font-size: 18.0 ;
+ 	-fx-font-family: 'Courgette';
+ 	-fx-text-fill:rgb(0, 255, 205);	
+}
 
 
 
