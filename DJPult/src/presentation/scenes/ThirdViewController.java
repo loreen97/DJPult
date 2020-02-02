@@ -11,6 +11,7 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 import application.Main;
 import business.MischPult;
 import business.Track;
+import javafx.beans.InvalidationListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,7 +24,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class PlaylistViewController extends ViewController<Main> {
+public class ThirdViewController extends ViewController<Main>{
 	
 	/**
 	 * Controlle für die 3. Seite
@@ -44,14 +45,14 @@ public class PlaylistViewController extends ViewController<Main> {
 
 	private MischPult mischPult;
 
-	public PlaylistViewController(Main application, MischPult mischPult, Stage primaryStage) {
+	public ThirdViewController(Main application, MischPult mischPult, Stage primaryStage) {
 		super(application);
 
 		this.mischPult = mischPult;
 
-		rootView = new PlaylistView();
+		rootView = new ThirdView();
 
-		PlaylistView view = (PlaylistView) rootView;
+		ThirdView view = (ThirdView) rootView;
 		this.stage = primaryStage;
 
 		back = view.back;
@@ -74,23 +75,25 @@ public class PlaylistViewController extends ViewController<Main> {
 	public void initialize() {
 		back.setOnAction(event -> {
 			application.switchScene(Scenes.SETTING_VIEW);
-
+			titleInput.clear();
 		});
 
 		save.setOnAction(event -> {
-			//Entweder Playlist-Liste im pManager erstellen (also pName und Pfad fuer Dateien mitgeben)
-			//Oder pList-Liste hier erstellen und an pManager uebergeben (also Name und Liste mit Liedern)
-			//mischPult.getPlaylistManager.createPlaylist(title.getText(, pfad));
-			//Aktuell geben wir wohl eine ArrayList mit?
-			//Wuerde es eher im PManager machen
+
 			if (titleInput.getText() != null && songs.size() > 2) {
 				mischPult.getManager().createPlaylist(titleInput.getText(),songs);
 				application.switchScene(Scenes.SETTING_VIEW);
-				System.out.println("Kreiieren der Playlist war erfolgreich");
+				titleInput.clear();
+				
+				System.out.println("Kreieren der Playlist war erfolgreich");
 			} else {
 				System.out.println("Bitte gebe der Playlist einen Titel und mindestens 3 songs");
 			}
-			mischPult.setPlaylist(mischPult.getManager().getList(titleInput.getText()));
+			//mischPult.setPlaylist(mischPult.getManager().getList(titleInput.getText()), "links"); //Test, soll ja eig nicht automatisch setzen 
+			setChanged();
+			notifyObservers("Neue Playlist");
+			songs.clear();
+			songNames.removeAll(songNames); 
 		});
 
 		loadMP3.setOnAction(event -> {
@@ -119,6 +122,7 @@ public class PlaylistViewController extends ViewController<Main> {
 					}*/
 				}
 			}
+			//super klasse ViewController extended Observable hierfuer
 		});
 	}
 

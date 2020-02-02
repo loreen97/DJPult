@@ -1,5 +1,8 @@
 package presentation.UIComponents;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import business.MischPult;
 import business.Playlist;
 import business.Track;
@@ -14,6 +17,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import presentation.scenes.PlaylistListCell;
 	/**
 	 * Die PlaylistLeftView
 	 * Die mit Cells arbeiten soll
@@ -24,7 +28,6 @@ import javafx.util.Callback;
 public class SettingPlaylistLeftView2 extends HBox {
 	public ListView<Playlist> leftPlaylistView;
 	public ObservableList<Playlist> leftPlaylistList;
-	
 	
 	public ListView<Track> leftSongView;
 	public ObservableList<Track> leftSongList;
@@ -40,31 +43,40 @@ public class SettingPlaylistLeftView2 extends HBox {
 	public VBox boxLeft;
 	public VBox boxRight;
 	
+	private MischPult mischPult;
+	
 	public SettingPlaylistLeftView2(MischPult mischPult) {
-		//evtl uebergeben
+		//In SecondViewController setzen wir die Elemente auch in die Liste, doppelt haelt besser
+		this.mischPult = mischPult;
 		
 		leftPlaylistView = new ListView<Playlist>(leftPlaylistList);
 		leftPlaylistView.setId("settingPlaylist");
 		
 		leftSongView = new ListView<Track>();
 		leftSongView.setId("settingPlaylist");
+
 		
 		
 		leftSongView.setCellFactory(new Callback<ListView<Track>, ListCell<Track>>() {
 			@Override
 			public ListCell<Track> call(ListView<Track> param) {
-			
 				return new TrackListCell();
 			}
 		});
 		
+		leftPlaylistView.setCellFactory(new Callback<ListView<Playlist>, ListCell<Playlist>>() {
+			@Override
+			public ListCell<Playlist> call(ListView<Playlist> param) {
+				return new PlaylistListCell();
+			}
+		});
+		
 		leftPlaylistList = mischPult.getManager().getAllNames();
-
 		leftPlaylistView.setItems(leftPlaylistList);
 		
 		leftSongList = FXCollections.observableArrayList();
-		//Test
-		leftSongList = mischPult.getManager().getList("first").getAllObsTracks();
+		//Test, muesste so geaendert werden dass es nur Namen anzeigt wenn uasgewaehlt
+		//leftSongList = mischPult.getManager().getList("first").getAllObsTracks();
 		leftSongView.setItems(leftSongList);
 		
 		playlistLabel = new Label("Playlists");
@@ -77,9 +89,7 @@ public class SettingPlaylistLeftView2 extends HBox {
 		
 		boxLeft.getChildren().addAll(playlistLabel, leftPlaylistView);
 		boxRight.getChildren().addAll(songLabel, leftSongView);
-		
-		
-		
+
 		check = new Button();
 		check.setId("check");
 		
@@ -95,5 +105,7 @@ public class SettingPlaylistLeftView2 extends HBox {
 		this.setPadding(new Insets(0,10,0,10));
 		this.setSpacing(5);
 	}
+	
+	
 
 }

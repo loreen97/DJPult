@@ -4,11 +4,12 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observable;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class PlaylistManager {
+public class PlaylistManager extends Observable{
 	private HashMap<String, Playlist> playlists;
 	ObservableList<Playlist> playlistNames;
 	
@@ -26,23 +27,35 @@ public class PlaylistManager {
 				//System.out.println(n.getTitle());
 		}
 		try {
-			playlists.put(name, tempList);
+			this.playlists.put(name, tempList);
 			this.playlistNames.add(tempList);
 		} catch (NullPointerException ez){
 			System.out.println("Something went wrong with the Playlist " + name);
 			}
+		
+		setChanged();
+		notifyObservers("neue playlist");
 		}
 	
-	public Playlist getList(String name) {
-		return playlists.get(name);
+	public Playlist getList(Playlist newValue) {
+		return playlists.get(newValue.getTitle());
 	}
-	
+
 	public HashMap<String, Playlist> getAllLists() {
 		return playlists;
 	}
 	
 	public ObservableList<Playlist> getAllNames() {
-		return playlistNames;
+		return this.playlistNames;
+	}
+	
+	public Playlist getSampleList() {
+		try {
+		return playlists.get("Samples");
+		} catch (NullPointerException ez) {
+			ez.printStackTrace();
+		}
+		return null;
 	}
 	
 }

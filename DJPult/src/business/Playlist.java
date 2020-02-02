@@ -31,6 +31,10 @@ public class Playlist {
 		return this.title;
 	}
 	
+	public Playlist getList() {
+		return this;
+	}
+	
 	public Track getFirst() {
 		return obsTracks.get(0);
 	}
@@ -51,4 +55,5 @@ public class Playlist {
 	public void addSingleTrack(Track name) {
 		obsTracks.add(name);
 	}
+	
 }

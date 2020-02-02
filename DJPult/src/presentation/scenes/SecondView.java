@@ -1,6 +1,7 @@
 package presentation.scenes;
 
 import business.MischPult;
+import business.Samples;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,15 +12,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import presentation.UIComponents.HeaderView;
-import presentation.UIComponents.SamplePlaylistView;
 import presentation.UIComponents.SamplePlaylistView2;
 import presentation.UIComponents.SamplesView;
-import presentation.UIComponents.SettingPlaylistLeftView;
 import presentation.UIComponents.SettingPlaylistLeftView2;
-import presentation.UIComponents.SettingPlaylistRightView;
 import presentation.UIComponents.SettingPlaylistRightView2;
 
-public class SettingView extends BorderPane{
+public class SecondView extends BorderPane{
 	
 	/**
 	 * Die Übersicht der Settings
@@ -35,23 +33,25 @@ public class SettingView extends BorderPane{
 	HeaderView headerView;
 	
 	public Button save;
-	public ChoiceBox cBox;
 	public VBox vbox;
-	
+	public Button loadMP3;
 	
 	public HBox bottom,center;
 	
-	public SettingView() {
+	
+	public SecondView() {
 		MischPult mischPult = new MischPult();
 		samplesView = new SamplesView();
 		sPlaylistView2 = new SamplePlaylistView2();
 		
 		save= new Button();
 		save.setId("save");
-		cBox = new ChoiceBox(FXCollections.observableArrayList("Sample 1","Sample 2","Sample 3","Sample 4","Sample 5","Sample 6"));
-		cBox.setId("choiceBox");
+	
+		loadMP3 = new Button();
+		loadMP3.setId("loadFile");
+		
 		vbox= new VBox();
-		vbox.getChildren().addAll(cBox, save);
+		vbox.getChildren().addAll(loadMP3, save);
 		vbox.setSpacing(20);
 		vbox.setPadding(new Insets(0,0,30,0));
 		vbox.setAlignment(Pos.BOTTOM_RIGHT);

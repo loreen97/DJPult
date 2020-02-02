@@ -14,7 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class PlaylistView extends BorderPane {
+public class ThirdView extends BorderPane {
 
 	
 	public Button back;
@@ -39,7 +39,7 @@ public class PlaylistView extends BorderPane {
 	 * Nur die Box mit den Song Titeln sowie der Button zum Öffnen
 	 * des System Explorers
 	 */
-	public PlaylistView() {
+	public ThirdView() {
 		
 		back = new Button();
 		back.setId("back");

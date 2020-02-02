@@ -105,8 +105,8 @@ public class Player extends Observable {
 			this.index.set(posInList);
 			loadSong();
 			setVolume(currVolume);
-			setChanged();
-			notifyObservers("neu");
+			/*setChanged();
+			notifyObservers("neu");*/
 			this.play();
 
 		} else { // selben Song nochmal laden irgendwie
@@ -135,9 +135,16 @@ public class Player extends Observable {
 			mediaPlayer.seek(Duration.ZERO);
 			this.media = new Media(Paths.get(list.getTrack(posInList).getSoundFile()).toUri().toString());
 			this.mediaPlayer = new MediaPlayer(media);
+			setChanged();
+			notifyObservers("neu");
 		} catch (NullPointerException ez) {
 			System.out.println("Es gibt noch keinen Media Player oder keinen Song, welchen er spielen könnte!");
 		}
+	}
+	
+	public void loadFromIndex(int n) {
+		this.posInList = n;
+		loadSong();
 	}
 
 	public Track getActSong() {
@@ -188,7 +195,9 @@ public class Player extends Observable {
 	public void setPlaylist(Playlist name) {
 		this.list = name;
 		posInList = 0;
-		loadSong();
+		setChanged();
+		notifyObservers("new Playlist");
+		loadSong();	
 	}
 
 	// Sets the number of bands in the audio spectrum. Must be > 2

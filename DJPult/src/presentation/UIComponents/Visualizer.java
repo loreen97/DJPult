@@ -76,7 +76,6 @@ public class Visualizer extends Pane {
 			if (ellipses == null) {
 				return;
 			}
-
 			Integer num = min(ellipses.length, magnitudes.length);
 
 			for (int i = 0; i < num; i++) {

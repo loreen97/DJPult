@@ -203,27 +203,7 @@
 	-fx-background-position:center;
 	-fx-background-color: transparent;
 }
-#choiceBox{
-	-fx-background-color: black;
-  	-fx-mark-color: rgb(0,255,205);
- 
-}
-#choiceBox > .label { 
-	-fx-text-fill: white;
-	-fx-font-size: 15.0 ;
- 	-fx-font-family: 'Comic Sans MS';
-}
-#choiceBox .context-menu { 
-	-fx-background-color: black;
-}
-#choiceBox .menu-item:focused { 
-	-fx-background-color: rgb(0,255,205);
-}
-#choiceBox .menu-item > .label {
-	-fx-text-fill: white;
-	-fx-font-size: 15.0 ;
- 	-fx-font-family: 'Comic Sans MS';
-}
+
 #back{
 	-fx-background-image: url("/image/back.png");
  	-fx-background-size:30,30;

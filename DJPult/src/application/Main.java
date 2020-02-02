@@ -5,10 +5,10 @@ import java.util.HashMap;
 import business.MischPult;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import presentation.scenes.PlaylistViewController;
+import presentation.scenes.ThirdViewController;
 import presentation.scenes.PultViewController;
 import presentation.scenes.Scenes;
-import presentation.scenes.SettingViewController;
+import presentation.scenes.SecondViewController;
 import presentation.scenes.ViewController;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -42,10 +42,10 @@ public class Main extends Application {
 			controller = new PultViewController(this, mischPult,primaryStage);
 			scenes.put(Scenes.PULT_VIEW, controller.getRootView());
 			
-			controller = new SettingViewController(this,mischPult, primaryStage);
+			controller = new SecondViewController(this,mischPult, primaryStage);
 			scenes.put(Scenes.SETTING_VIEW, controller.getRootView());
 			
-			controller = new PlaylistViewController(this, mischPult,primaryStage);
+			controller = new ThirdViewController(this, mischPult,primaryStage);
 			scenes.put(Scenes.PLAYLIST_VIEW, controller.getRootView());
 			
 			

@@ -17,14 +17,23 @@ public class Samples {
 	public Samples(String name) {
 		this.name = name;
 		//test
-		media = new Media(Paths.get("sms-alert-2-daniel_simon.mp3").toUri().toString());
+		//media = new Media(Paths.get("sms-alert-2-daniel_simon.mp3").toUri().toString());
+		//mediaPlayer = new MediaPlayer(media);
+	}
+	
+	public void setSample(String name) {
+		mediaPlayer.dispose();
+		media = new Media(Paths.get(name).toUri().toString());
 		mediaPlayer = new MediaPlayer(media);
-		//dur = media.getDuration();
 	}
 	
 	public void play() {
+		try {
 		mediaPlayer.play();
 		mediaPlayer.seek(Duration.ZERO);
+		} catch (NullPointerException ez) {
+			System.out.println("Es sind noch keine Samples ausgewaehlt!");
+		}
 	}
 	
 	public String getName() {

@@ -33,7 +33,12 @@ public class MischPult extends Observable implements Observer {
 		first.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
 		first.addSingleSong("Bring Mich Nach Hause.mp3");
 		this.manager.getAllLists().put("first", first);
-
+		this.manager.getAllNames().add(first);
+		
+		//evtl aus Playlists fuer Player rausnehmen
+		Playlist sampleList = new Playlist("Samples");
+		this.manager.getAllLists().put("Samples", sampleList);
+		this.manager.getAllNames().add(sampleList);
 		
 		// if Playlist not null
 		playerLeft = new Player("links", manager.getAllLists().get("first"));
@@ -43,6 +48,7 @@ public class MischPult extends Observable implements Observer {
 		
 		playerLeft.addObserver(this);
 		playerRight.addObserver(this);
+		manager.addObserver(this);
 		
 		sample1 = new Samples("sample1");
 		sample2 = new Samples("sample2");
@@ -210,9 +216,8 @@ public class MischPult extends Observable implements Observer {
 	 */
 	//Hier geht noch irgendwas schief
 	//Play button geht dann nicht mehr richtig, er resetted nur
-	//Slider geht kaputt, the usual
-	public void setPlaylist(Playlist name) {
-		players.get("links").setPlaylist(name);
+	public void setPlaylist(Playlist list, String name) {
+		players.get(name).setPlaylist(list);
 	}
 	
 	//useless
