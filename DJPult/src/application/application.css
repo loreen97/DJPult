@@ -165,6 +165,7 @@
 #slider{
 	-fx-min-width:100;
 	-fx-pref-width: 250;
+	-fx-max-width: 260;
 }
 #loadFile{
 	-fx-background-image: url("/image/input.png");

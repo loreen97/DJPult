@@ -1,7 +1,7 @@
 package presentation.scenes;
 
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import javafx.geometry.Insets;
@@ -55,13 +55,16 @@ public class PultView extends BorderPane {
 		
 		setting = new Button();
 		setting.setId("setting");
-
-		imgLeft = new Image(new FileInputStream("C:\\Users\\loree\\git\\DJPult3\\DJPult\\src\\image\\platte.png"));
+		
+		File imgfile = new File("image/platte.png");
+		String pfad = imgfile.getPath();
+		
+		imgLeft = new Image(pfad);
 		imgViewLeft = new ImageView(imgLeft);
 		imgViewLeft.setFitHeight(300);
 		imgViewLeft.setFitWidth(300);
 		
-		imgRight = new Image(new FileInputStream("C:\\Users\\loree\\git\\DJPult3\\DJPult\\src\\image\\platte.png"));
+		imgRight = new Image(pfad);
 		imgViewRight = new ImageView(imgRight);	
 		imgViewRight.setFitHeight(300);
 		imgViewRight.setFitWidth(300);

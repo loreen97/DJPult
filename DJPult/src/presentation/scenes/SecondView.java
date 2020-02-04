@@ -1,7 +1,7 @@
 package presentation.scenes;
 
 import business.MischPult;
-import business.Samples;
+import business.Sample;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

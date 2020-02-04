@@ -8,9 +8,7 @@ import java.util.Observer;
 import application.Main;
 import business.MischPult;
 import business.Playlist;
-import business.SelectTrack;
 import business.Track;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -19,7 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseButton;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import presentation.UIComponents.HeaderView;
@@ -67,6 +64,8 @@ public class SecondViewController extends ViewController<Main> implements Observ
 	public Button sample4;
 	public Button sample5;
 	public Button sample6;
+	
+	private int lastClicked = -1;
 
 	public SecondViewController(Main application, MischPult mischPult, Stage primaryStage) {
 		super(application);
@@ -135,7 +134,7 @@ public class SecondViewController extends ViewController<Main> implements Observ
 				try {
 					leftSongView.setItems(mischPult.getManager().getList(newValue).getAllObsTracks());
 				} catch (NullPointerException ez) {
-					ez.printStackTrace();
+					System.out.println("Die Playlist scheint es nicht zu geben! Es konnten keine Lieder geladen werden.");
 				}
 			}
 
@@ -148,7 +147,7 @@ public class SecondViewController extends ViewController<Main> implements Observ
 				try {
 					rightSongView.setItems(mischPult.getManager().getList(newValue).getAllObsTracks());
 				} catch (NullPointerException ez) {
-					ez.printStackTrace();
+					System.out.println("Die Playlist scheint es nicht zu geben! Es konnten keine Lieder geladen werden.");
 				}
 			}
 
@@ -160,8 +159,8 @@ public class SecondViewController extends ViewController<Main> implements Observ
 			@Override
 			public void handle(ActionEvent event) {
 				if (selected) {
-					mischPult.getManager().deletePlaylist("first");
-					System.out.println("löschen");
+					mischPult.getManager().deletePlaylist(leftPlaylistView.getSelectionModel().getSelectedItem());
+					System.out.println("loeschen");
 				}
 			}
 
@@ -172,8 +171,8 @@ public class SecondViewController extends ViewController<Main> implements Observ
 			@Override
 			public void handle(ActionEvent event) {
 				if (selected) {
-					mischPult.getManager().deletePlaylist("first");
-					System.out.println("löschen");
+					mischPult.getManager().deletePlaylist(rightPlaylistView.getSelectionModel().getSelectedItem());
+					System.out.println("loeschen");
 				}
 			}
 
@@ -182,9 +181,13 @@ public class SecondViewController extends ViewController<Main> implements Observ
 			@Override
 			public void handle(ActionEvent event) {
 				if (selected) {
-					System.out.println(leftPlaylistView.getSelectionModel().getSelectedItem().getTitle());
+					//System.out.println(leftPlaylistView.getSelectionModel().getSelectedItem().getTitle());
+					try {
 					mischPult.getLeftPlayer()
 							.setPlaylist(leftPlaylistView.getSelectionModel().getSelectedItem().getList());
+					} catch (NullPointerException ez) {
+						System.out.println("Es ist keine Playlist vorhanden, die geladen werden koennte!");
+					}
 					// working
 				}
 			}
@@ -194,23 +197,16 @@ public class SecondViewController extends ViewController<Main> implements Observ
 			public void handle(ActionEvent event) {
 				if (selected) {
 					System.out.println(rightPlaylistView.getSelectionModel().getSelectedItem().getTitle());
-					mischPult.getRightPlayer()
+					try{
+						mischPult.getRightPlayer()
 							.setPlaylist(rightPlaylistView.getSelectionModel().getSelectedItem().getList());
-					// working
+					} catch (NullPointerException ez) {
+						System.out.println("Es ist keine Playlist vorhanden, die geladen werden koennte!");
+					}
 				}
 			}
 		});
-		save.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				if (sampleListSelected && sampleSelected) {
-
-				}
-
-			}
-
-		});
+		
 		back.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -238,60 +234,67 @@ public class SecondViewController extends ViewController<Main> implements Observ
 				for (File file : list) {
 					try {
 						Track newSong = new Track(file.getAbsolutePath());
-						mischPult.getManager().getSampleList().addSingleTrack(newSong);
+						mischPult.getSampleList().addSingleTrack(newSong);
 						sampleList.add(newSong); // Hatte vorher noch .getTitle ist aber eine Track List
 						sampleListView.setItems(sampleList);
 					} catch (Exception e) {
 						e.printStackTrace(); // evtl catchen einer general exception nicht gut
 					}
-					/*
-					 * catch (InvalidDataException e) { e.printStackTrace(); } catch (IOException e)
-					 * { e.printStackTrace(); } catch (UnsupportedTagException e) {
-					 * e.printStackTrace(); }
-					 */
 				}
 			}
 		});
 		
-		//kann noch nix
 		sample1.setOnAction(event -> {
-			sampleSelected = true;
+			lastClicked = 1;
 		});
 		sample2.setOnAction(event -> {
-			sampleSelected = true;
+			lastClicked = 2;
 		});
 		sample3.setOnAction(event -> {
-			sampleSelected = true;
+			lastClicked = 3;
 		});
 		sample4.setOnAction(event -> {
-			sampleSelected = true;
+			lastClicked = 4;
 		});
 		sample5.setOnAction(event -> {
-			sampleSelected = true;
+			lastClicked = 5;
 		});
 		sample6.setOnAction(event -> {
-			sampleSelected = true;
+			lastClicked = 6;
 		});
 
 		sampleListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Track>() {
 			@Override
 			public void changed(ObservableValue<? extends Track> observable, Track oldValue, Track newValue) {
 				sampleListSelected = true;
+				selectSample(lastClicked, newValue);
 			}
-
 		});
 	}
-
-	public void selectPlaylist() {
-
+	
+	public void deletePlaylist(Playlist list) {
+		mischPult.getManager().deletePlaylist(list);
 	}
-
+	
+	public void selectSample(int num, Track tname) {
+		save.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				if (sampleListSelected && lastClicked > 0) {
+					mischPult.getSample("sample"+num).setSample(tname);
+					System.out.println("Sample" +num + " gesetzt!");
+					lastClicked = -1;
+				}
+			}
+		});
+	}
+	
 	public void updatePlaylists() {
 		try {
-			leftPlaylistList = mischPult.getManager().getAllNames();
+			leftPlaylistList = mischPult.getManager().getAllLists();
 			leftPlaylistView.setItems(leftPlaylistList);
 
-			rightPlaylistList = mischPult.getManager().getAllNames();
+			rightPlaylistList = mischPult.getManager().getAllLists();
 			rightPlaylistView.setItems(rightPlaylistList);
 
 			// Und mit bestimmter Playlist aufgerufen werden soll
@@ -305,8 +308,6 @@ public class SecondViewController extends ViewController<Main> implements Observ
 		if (arg == "neue playlist") {
 			updatePlaylists();
 		}
-		// Evtl so lÃ¶sen, also als Observer wenn sich in PlaylistView was Ã¤ndert
-
 	}
 
 	private static void configureFileChooser(final FileChooser fileChooser) {

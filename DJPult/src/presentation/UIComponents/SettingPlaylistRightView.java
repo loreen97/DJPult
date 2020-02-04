@@ -66,7 +66,7 @@ public class SettingPlaylistRightView extends HBox {
 			}
 		});
 		
-		rightPlaylistList = mischPult.getManager().getAllNames();
+		rightPlaylistList = mischPult.getManager().getAllLists();
 		rightPlaylistView.setItems(rightPlaylistList);
 		
 		rightSongList = FXCollections.observableArrayList();

@@ -1,13 +1,9 @@
 package business;
 
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 public class MischPult extends Observable implements Observer {
 	/*
@@ -15,34 +11,34 @@ public class MischPult extends Observable implements Observer {
 	 * lists; //statt 3 einzelne Playlists
 	 */
 
-	private SimpleObjectProperty<Player> pla;
 	
 	// evtl fuer jeden sample button einen...
 	private Player playerLeft;
 	private Player playerRight;
 	private PlaylistManager manager;
-	private Samples sample1, sample2, sample3, sample4, sample5, sample6;
+	private Sample sample1, sample2, sample3, sample4, sample5, sample6;
 	private HashMap<String, Player> players = new HashMap<String, Player>();
-	private HashMap<String, Samples> samples = new  HashMap<String, Samples>();
+	private HashMap<String, Sample> samples = new  HashMap<String, Sample>();
+	private Playlist sampleList;
 
 	public MischPult() {
 		this.manager = new PlaylistManager();
 		Playlist first = new Playlist("first");
+		first.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
 		first.addSingleSong("Apache_207.mp3");
 		first.addSingleSong("02DreiWorte.mp3");
-		first.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
 		first.addSingleSong("Bring Mich Nach Hause.mp3");
-		this.manager.getAllLists().put("first", first);
-		this.manager.getAllNames().add(first);
+		this.manager.getAllHashLists().put("first", first);
+		this.manager.getAllLists().add(first);
 		
 		//evtl aus Playlists fuer Player rausnehmen
-		Playlist sampleList = new Playlist("Samples");
-		this.manager.getAllLists().put("Samples", sampleList);
-		this.manager.getAllNames().add(sampleList);
+		sampleList = new Playlist("Samples");
+		//this.manager.getAllLists().put("Samples", sampleList);
+		//this.manager.getAllNames().add(sampleList);
 		
 		// if Playlist not null
-		playerLeft = new Player("links", manager.getAllLists().get("first"));
-		playerRight = new Player("rechts", manager.getAllLists().get("first"));
+		playerLeft = new Player("links", manager.getAllHashLists().get("first"));
+		playerRight = new Player("rechts", manager.getAllHashLists().get("first"));
 		players.put(playerLeft.getName(), playerLeft);
 		players.put(playerRight.getName(), playerRight);
 		
@@ -50,12 +46,12 @@ public class MischPult extends Observable implements Observer {
 		playerRight.addObserver(this);
 		manager.addObserver(this);
 		
-		sample1 = new Samples("sample1");
-		sample2 = new Samples("sample2");
-		sample3 = new Samples("sample3");
-		sample4 = new Samples("sample4");
-		sample5 = new Samples("sample5");
-		sample6 = new Samples("sample6");
+		sample1 = new Sample("sample1");
+		sample2 = new Sample("sample2");
+		sample3 = new Sample("sample3");
+		sample4 = new Sample("sample4");
+		sample5 = new Sample("sample5");
+		sample6 = new Sample("sample6");
 		
 		samples.put(sample1.getName(), sample1);
 		samples.put(sample2.getName(), sample2);
@@ -230,4 +226,25 @@ public class MischPult extends Observable implements Observer {
 		setChanged();
 		notifyObservers(arg);
 	}
+	
+	public Sample getSample(String name) {
+		return samples.get(name);
+	}
+	
+	public Playlist getSampleList() {
+		return this.sampleList;
+	}
+	public double getTune1(String name) {
+		return players.get(name).getTune1();
+	}
+	
+	public double getTune2(String name) {
+		return players.get(name).getTune2();
+	}
+	
+	public double getTune3(String name) {
+		return players.get(name).getTune3();
+	}
+	
+	
 }

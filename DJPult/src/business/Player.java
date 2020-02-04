@@ -4,7 +4,6 @@ import java.nio.file.Paths;
 import java.util.Observable;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.media.EqualizerBand;
 import javafx.scene.media.Media;
@@ -17,13 +16,16 @@ public class Player extends Observable {
 	private Media media;
 	private Playlist list;
 	private double currVolume;
-	private static final int BAND_COUNT = 3;
+	private static final int BAND_COUNT = 7;
+	private static final int BAND_1 = 0;
+	private static final int BAND_2 = 1;
+	private static final int BAND_3 = 4;
 	private static final double Start_FREQ = 250.0;
 	private int posInList;
 	private SimpleIntegerProperty index;
 	// Evtl in Playlist statt in Players, dumm weil man dann nicht die
 	// selbe Playlist doppelt nehmen kann, also hier
-	ObservableList<EqualizerBand> bands;
+	private ObservableList<EqualizerBand> bands;
 	private boolean isLooping;
 	private Duration duration;
 	
@@ -65,20 +67,20 @@ public class Player extends Observable {
 			double gain = min + mid + (mid * scale);
 			bands.add(new EqualizerBand(freq, freq / 2, gain));
 			freq *= 2;
-			// }
+			System.out.println(i + " " + bands.get(i).getBandwidth());
 		}
 	}
 
 	public void tune1Slider(double value) {
-		bands.get(0).setGain(value);
+		bands.get(BAND_1).setGain(value);
 	}
 
 	public void tune2Slider(double value) {
-		bands.get(1).setGain(value);
+		bands.get(BAND_2).setGain(value);
 	}
 
 	public void tune3Slider(double value) {
-		bands.get(2).setGain(value);
+		bands.get(BAND_3).setGain(value);
 	}
 
 	public void play() {
@@ -105,6 +107,7 @@ public class Player extends Observable {
 			this.index.set(posInList);
 			loadSong();
 			setVolume(currVolume);
+			setBands();
 			/*setChanged();
 			notifyObservers("neu");*/
 			this.play();
@@ -219,5 +222,17 @@ public class Player extends Observable {
 
 	public MediaPlayer getMediaPlayer() {
 		return mediaPlayer;
+	}
+
+	public double getTune1() {
+		return bands.get(BAND_1).getGain();
+	}
+	
+	public double getTune2() {
+		return bands.get(BAND_2).getGain();
+	}
+	
+	public double getTune3() {
+		return bands.get(BAND_3).getGain();
 	}
 }

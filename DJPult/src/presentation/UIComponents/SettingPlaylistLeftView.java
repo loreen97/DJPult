@@ -71,7 +71,7 @@ public class SettingPlaylistLeftView extends HBox {
 			}
 		});
 		
-		leftPlaylistList = mischPult.getManager().getAllNames();
+		leftPlaylistList = mischPult.getManager().getAllLists();
 		leftPlaylistView.setItems(leftPlaylistList);
 		
 		leftSongList = FXCollections.observableArrayList();

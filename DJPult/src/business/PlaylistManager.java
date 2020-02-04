@@ -1,7 +1,6 @@
 package business;
 
-import java.io.File;
-import java.nio.file.Path;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -10,25 +9,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class PlaylistManager extends Observable {
-	private HashMap<String, Playlist> playlists;
-	ObservableList<Playlist> playlistNames;
+	private HashMap<String, Playlist> hashlists;
+	ObservableList<Playlist> playlists;
 
 	public PlaylistManager() {
-		playlists = new HashMap<String, Playlist>();
-		playlistNames = FXCollections.observableArrayList(); // um NullPointer zu vermeiden
+		hashlists = new HashMap<String, Playlist>();
+		playlists = FXCollections.observableArrayList(); // um NullPointer zu vermeiden
 	}
 
 	public void createPlaylist(String name, ArrayList<Track> songs) {
-		// File fir = new File(pfad);
-		// String[] list = fir.list();
 		Playlist tempList = new Playlist(name);
 		for (Track n : songs) {
 			tempList.addSingleTrack(n);
-			// System.out.println(n.getTitle());
 		}
 		try {
-			this.playlists.put(name, tempList);
-			this.playlistNames.add(tempList);
+			this.hashlists.put(name, tempList);
+			this.playlists.add(tempList);
 		} catch (NullPointerException ez) {
 			System.out.println("Something went wrong with the Playlist " + name);
 		}
@@ -36,22 +32,26 @@ public class PlaylistManager extends Observable {
 		setChanged();
 		notifyObservers("neue playlist");
 	}
-
+	//wird aktuell benoetigt um alle Tracks zu bekommen
 	public Playlist getList(Playlist newValue) {
-		return playlists.get(newValue.getTitle());
+		return hashlists.get(newValue.getTitle());
+	}
+	//Test
+	public Playlist getListByString(String newValue) {
+		return hashlists.get(newValue);
 	}
 
-	public HashMap<String, Playlist> getAllLists() {
-		return playlists;
+	public HashMap<String, Playlist> getAllHashLists() {
+		return hashlists;
 	}
 
-	public ObservableList<Playlist> getAllNames() {
-		return this.playlistNames;
+	public ObservableList<Playlist> getAllLists() {
+		return this.playlists;
 	}
 
 	public Playlist getSampleList() {
 		try {
-			return playlists.get("Samples");
+			return hashlists.get("Samples");
 		} catch (NullPointerException ez) {
 			ez.printStackTrace();
 		}
@@ -59,9 +59,14 @@ public class PlaylistManager extends Observable {
 	}
 
 	//funktioniert noch nicht
-	public void deletePlaylist(String name) {
+	public void deletePlaylist(Playlist name) {
 		//test
+		try {
+		hashlists.remove(name.getTitle());
 		playlists.remove(name);
+		} catch (NullPointerException ez) {
+			System.out.println("Es ist keine Playlist vorhanden, die geloescht werden koennte!");
+		}
 
 	}
 }

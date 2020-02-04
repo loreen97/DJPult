@@ -354,11 +354,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 			}
 		});
 
-		// Tune Slider
-		tune1Left.valueProperty().addListener((observable, oldValue, newValue) -> {
-			if (userInteraction)
-				mischPult.changeTune1("links", tune1Left.getValue());
-		});
+
 		/*
 		 * tune1Left.setOnMousePressed(new EventHandler<MouseEvent>() {
 		 * 
@@ -369,6 +365,30 @@ public class PultViewController extends ViewController<Main> implements Observer
 		 * @Override public void handle(MouseEvent event) { userInteraction = false;
 		 * System.out.println(userInteraction); } });
 		 */
+		//Koennte auch in ein Array und dann mit for loop
+		//Don't change a slider value in a loop.
+		tune1Left.setValue(mischPult.getTune1("links"));
+		tune2Left.setValue(mischPult.getTune2("links"));
+		tune3Left.setValue(mischPult.getTune3("links"));
+		
+		tune1Right.setValue(mischPult.getTune1("rechts"));
+		tune2Right.setValue(mischPult.getTune2("rechts"));
+		tune3Right.setValue(mischPult.getTune3("rechts"));
+		
+		// Tune Slider
+		/*tune1Left.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (userInteraction)
+				mischPult.changeTune1("links", tune1Left.getValue());
+		});*/
+		//Alternativ
+		tune1Left.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override public void changed(ObservableValue<? extends Number> arg0, Number oldValue, Number newValue) {
+                if (mischPult.getLeftPlayer() != null) {
+                	mischPult.getLeftPlayer().getMediaPlayer().getAudioEqualizer().getBands().get(0).setGain(newValue.doubleValue());
+                }
+            }
+        });
+		
 		tune1Left.setOnMousePressed(event -> userInteraction = true);
 		tune1Left.setOnMouseReleased(event -> userInteraction = false);
 
@@ -543,6 +563,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 	// Wahrscheinlich durch die obere Methode ersetzen
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		
 		if (arg1 == "neu") {
 			updateSlider("links");
 			songSliderLeft.setOnMouseClicked(songSlider("links"));
@@ -554,7 +575,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 			waves("rechts");
 		} else if(arg1 == "new Playlist"){
 			trackListViewLeft.setItems(mischPult.getLeftPlayer().getPlaylist().getAllObsTracks());
-			//läd in beide rein
+			//laed in beide rein
 			trackListViewRight.setItems(mischPult.getRightPlayer().getPlaylist().getAllObsTracks());
 		}
 		Platform.runLater(() -> {

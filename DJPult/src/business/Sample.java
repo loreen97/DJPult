@@ -7,23 +7,30 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-public class Samples {
+public class Sample {
 	private MediaPlayer mediaPlayer;
 	private String name;
 	private Media media;
 	private Track track;
 	//private static Duration dur;
 	
-	public Samples(String name) {
+	public Sample(String name) {
 		this.name = name;
 		//test
 		//media = new Media(Paths.get("sms-alert-2-daniel_simon.mp3").toUri().toString());
 		//mediaPlayer = new MediaPlayer(media);
 	}
 	
-	public void setSample(String name) {
-		mediaPlayer.dispose();
-		media = new Media(Paths.get(name).toUri().toString());
+	public void setSample(Track name) {
+		if(mediaPlayer != null){
+			mediaPlayer.dispose();
+		}
+		try {
+			
+		media = new Media(Paths.get(name.getSoundFile()).toUri().toString());
+		} catch (NullPointerException ez) {
+			ez.printStackTrace();
+		}
 		mediaPlayer = new MediaPlayer(media);
 	}
 	
