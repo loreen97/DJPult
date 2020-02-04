@@ -25,6 +25,8 @@ public class TitleView extends VBox{
 		
 		title = new Label();
 		title.setId("title");
+		title.setMaxWidth(200);
+		title.setAlignment(Pos.CENTER);
 		
 		this.getChildren().addAll(title,songSlider);
 		this.setAlignment(Pos.BOTTOM_CENTER);

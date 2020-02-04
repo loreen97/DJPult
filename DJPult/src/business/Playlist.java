@@ -23,6 +23,9 @@ public class Playlist {
 			return this.obsTracks.get(no);
 		} catch(NullPointerException ez) {
 			System.out.println("Playlist zu Ende");
+		} catch (ArrayIndexOutOfBoundsException ar) {
+			//Wenn leere Liste angeklickt wird ist die Seite danach tot
+			System.out.println("Der Klick ging ins Leere!");
 		} return null;
 	}
 

@@ -139,7 +139,7 @@ public class Player extends Observable {
 			this.media = new Media(Paths.get(list.getTrack(posInList).getSoundFile()).toUri().toString());
 			this.mediaPlayer = new MediaPlayer(media);
 			setChanged();
-			notifyObservers("neu");
+			notifyObservers(name);
 		} catch (NullPointerException ez) {
 			System.out.println("Es gibt noch keinen Media Player oder keinen Song, welchen er spielen könnte!");
 		}
@@ -199,7 +199,8 @@ public class Player extends Observable {
 		this.list = name;
 		posInList = 0;
 		setChanged();
-		notifyObservers("new Playlist");
+		notifyObservers("new Playlist" + name);
+		System.out.println("Neue Playlist " + name.getTitle() + " geladen.");
 		loadSong();	
 	}
 

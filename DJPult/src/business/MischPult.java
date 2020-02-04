@@ -24,10 +24,10 @@ public class MischPult extends Observable implements Observer {
 	public MischPult() {
 		this.manager = new PlaylistManager();
 		Playlist first = new Playlist("first");
+		first.addSingleSong("Bring Mich Nach Hause.mp3");
 		first.addSingleSong("500 Hz Tone-SoundBible.com-1963773923.mp3");
 		first.addSingleSong("Apache_207.mp3");
 		first.addSingleSong("02DreiWorte.mp3");
-		first.addSingleSong("Bring Mich Nach Hause.mp3");
 		this.manager.getAllHashLists().put("first", first);
 		this.manager.getAllLists().add(first);
 		

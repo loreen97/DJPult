@@ -196,7 +196,11 @@ public class SecondViewController extends ViewController<Main> implements Observ
 			@Override
 			public void handle(ActionEvent event) {
 				if (selected) {
+					try{
 					System.out.println(rightPlaylistView.getSelectionModel().getSelectedItem().getTitle());
+					} catch (NullPointerException ez) {
+						System.out.println("Es ist keine Playlist vorhanden, die geladen werden koennte!");
+					}
 					try{
 						mischPult.getRightPlayer()
 							.setPlaylist(rightPlaylistView.getSelectionModel().getSelectedItem().getList());
@@ -270,23 +274,31 @@ public class SecondViewController extends ViewController<Main> implements Observ
 				selectSample(lastClicked, newValue);
 			}
 		});
+		sampleListSelected = false;
 	}
 	
-	public void deletePlaylist(Playlist list) {
-		mischPult.getManager().deletePlaylist(list);
-	}
 	
+	//Selbes Lied hintereinander weg setzen -> letztgesetztes Sample wird wieder belegt, nicht das neue
 	public void selectSample(int num, Track tname) {
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				if (sampleListSelected && lastClicked > 0) {
-					mischPult.getSample("sample"+num).setSample(tname);
-					System.out.println("Sample" +num + " gesetzt!");
+					try {
+						mischPult.getSample("sample"+num).setSample(tname);
+						System.out.println("Sample" +num + " gesetzt!");
+					} catch (NullPointerException ez) {
+						System.out.println("Bitte erst den Button und dann das Lied auswaehlen!");
+					}
 					lastClicked = -1;
+					
 				}
 			}
 		});
+	}
+	
+	public void deletePlaylist(Playlist list) {
+		mischPult.getManager().deletePlaylist(list);
 	}
 	
 	public void updatePlaylists() {
