@@ -21,6 +21,9 @@ import presentation.UIComponents.Visualizer;
 import presentation.UIComponents.VolumeView;
 
 public class PultView extends BorderPane {
+	
+	//WICHTIG vvvvvv
+	SideView left, right;
 
 	SamplesView samplesView;
 	TitleView titleViewLeft, titleViewRight;
@@ -40,6 +43,11 @@ public class PultView extends BorderPane {
 	public VBox boxWavesLeft, boxWavesRight;
 
 	public PultView() throws FileNotFoundException {
+		
+		left = new SideView(false);
+		right = new SideView(true);
+		
+		
 		samplesView = new SamplesView();
 		titleViewLeft = new TitleView();
 		titleViewRight = new TitleView();

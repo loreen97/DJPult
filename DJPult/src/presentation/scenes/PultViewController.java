@@ -37,6 +37,8 @@ import presentation.UIComponents.VolumeView;
 
 public class PultViewController extends ViewController<Main> implements Observer {
 	// text
+	
+	//Hier SideViewController erstellen
 	private Button sample1;
 	private Button sample2;
 	private Button sample3;
@@ -478,35 +480,6 @@ public class PultViewController extends ViewController<Main> implements Observer
 						mischPult.getAPlaylist("rechts").getTrack((Integer) newValue))));
 	}
 
-	public void selectSong(String name) {
-		ListView<Track> v;
-		Player m;
-		Button b;
-		if (name == "links") {
-			v = trackListViewLeft;
-			m = mischPult.getLeftPlayer();
-			b = playLeft;
-		} else {
-			v = trackListViewRight;
-			m = mischPult.getRightPlayer();
-			b = playRight;
-		}
-		v.setOnMouseClicked(event -> {
-			if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2)
-				m.getMediaPlayer().stop();
-			m.loadFromIndex(v.getSelectionModel().getSelectedIndex());
-			
-			m.play();
-			b.getStyleClass().clear();
-			b.getStyleClass().addAll("control-button", "pause");
-			if (name == "links") {
-				playingLeft = true;
-			} else {
-				playingRight = true;
-			}
-		});
-		update(null, "neu");
-	}
 
 	// Zum Updaten des titels bei Songwechsel
 	public void changeableGuiElements(String name, Track song) {
@@ -554,6 +527,35 @@ public class PultViewController extends ViewController<Main> implements Observer
 				s.setValue(time.toMillis() / total.toMillis() * 100);
 			}
 		});
+	}
+	public void selectSong(String name) {
+		ListView<Track> v;
+		Player m;
+		Button b;
+		if (name == "links") {
+			v = trackListViewLeft;
+			m = mischPult.getLeftPlayer();
+			b = playLeft;
+		} else {
+			v = trackListViewRight;
+			m = mischPult.getRightPlayer();
+			b = playRight;
+		}
+		v.setOnMouseClicked(event -> {
+			if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2)
+				m.getMediaPlayer().stop();
+			m.loadFromIndex(v.getSelectionModel().getSelectedIndex());
+			
+			m.play();
+			b.getStyleClass().clear();
+			b.getStyleClass().addAll("control-button", "pause");
+			if (name == "links") {
+				playingLeft = true;
+			} else {
+				playingRight = true;
+			}
+		});
+		update(null, "neu");
 	}
 
 	// Wahrscheinlich durch die obere Methode ersetzen

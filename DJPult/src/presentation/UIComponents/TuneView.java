@@ -31,13 +31,17 @@ public class TuneView extends HBox {
 		tune1.setShowTickMarks(true);
 		tune1.setShowTickLabels(false);
 		tune1.getStyleClass().add("tune");
-	
+		System.out.println("max: " + tune1.getMax());
+		tune1.setMin(-24);
+		tune1.setMax(12);
 		
 		tune2 = new Slider();
 		tune2.setOrientation(Orientation.VERTICAL);
 		tune2.setShowTickMarks(true);
 		tune2.setShowTickLabels(false);
 		tune2.getStyleClass().add("tune");
+		tune2.setMin(-24);
+		tune2.setMax(12);
 		
 		tune3 = new Slider();
 		tune3.setOrientation(Orientation.VERTICAL);

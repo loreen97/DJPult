@@ -58,7 +58,7 @@ public class Player extends Observable {
 		getMediaPlayer().getAudioEqualizer().getBands();
 		double min = EqualizerBand.MIN_GAIN;
 		double max = EqualizerBand.MAX_GAIN;
-		double mid = (max - min) / 2;
+		double mid = (max + min) / 2;
 		double freq = Start_FREQ;
 
 		for (int i = 0; i < BAND_COUNT; i++) {
