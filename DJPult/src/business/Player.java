@@ -199,7 +199,7 @@ public class Player extends Observable {
 		this.list = name;
 		posInList = 0;
 		setChanged();
-		notifyObservers("new Playlist" + name);
+		notifyObservers("new Playlist" + name); //playlist.getName()
 		System.out.println("Neue Playlist " + name.getTitle() + " geladen.");
 		loadSong();	
 	}

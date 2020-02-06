@@ -555,7 +555,7 @@ public class PultViewController extends ViewController<Main> implements Observer
 				playingRight = true;
 			}
 		});
-		update(null, "neu");
+		update(mischPult.getLeftPlayer(), "neu");
 	}
 
 	// Wahrscheinlich durch die obere Methode ersetzen
