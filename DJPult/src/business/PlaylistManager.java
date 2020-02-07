@@ -14,7 +14,7 @@ public class PlaylistManager extends Observable {
 
 	public PlaylistManager() {
 		hashlists = new HashMap<String, Playlist>();
-		playlists = FXCollections.observableArrayList(); // um NullPointer zu vermeiden
+		playlists = FXCollections.observableArrayList(); 
 	}
 
 	public void createPlaylist(String name, ArrayList<Track> songs) {
@@ -32,13 +32,9 @@ public class PlaylistManager extends Observable {
 		setChanged();
 		notifyObservers("neue playlist");
 	}
-	//wird aktuell benoetigt um alle Tracks zu bekommen
+
 	public Playlist getList(Playlist newValue) {
 		return hashlists.get(newValue.getTitle());
-	}
-	//Test
-	public Playlist getListByString(String newValue) {
-		return hashlists.get(newValue);
 	}
 
 	public HashMap<String, Playlist> getAllHashLists() {
@@ -58,9 +54,7 @@ public class PlaylistManager extends Observable {
 		return null;
 	}
 
-	//funktioniert noch nicht
 	public void deletePlaylist(Playlist name) {
-		//test
 		try {
 		hashlists.remove(name.getTitle());
 		playlists.remove(name);

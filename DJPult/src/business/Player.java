@@ -10,6 +10,12 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+/**
+ * Die Klasse für die zwei Player, Links& Rechts
+ * Laden zu Beginn automatisch die Playlist "first", die im MischPult erstellt wird
+ * @author Elisabeth Volk, Loreen Bies
+ *
+ */
 public class Player extends Observable {
 	private MediaPlayer mediaPlayer;
 	private String name;
@@ -22,22 +28,17 @@ public class Player extends Observable {
 	private static final int BAND_3 = 4;
 	private static final double Start_FREQ = 250.0;
 	private int posInList;
-	private SimpleIntegerProperty index;
-	// Evtl in Playlist statt in Players, dumm weil man dann nicht die
-	// selbe Playlist doppelt nehmen kann, also hier
 	private ObservableList<EqualizerBand> bands;
 	private boolean isLooping;
 	private Duration duration;
 	
- 
+	
 
 	public Player(String name, Playlist list) {
 		this.name = name;
 		posInList = 0;
-		this.index = new SimpleIntegerProperty(0);
 		isLooping = false;
 		this.list = list;
-		// if list not null
 		media = new Media(Paths.get(list.getFirst().getSoundFile()).toUri().toString());
 		mediaPlayer = new MediaPlayer(media);
 		bands = getMediaPlayer().getAudioEqualizer().getBands();
@@ -45,14 +46,10 @@ public class Player extends Observable {
 		currVolume = this.getVolume();
 		setBands();
 	}
-
-	// Tets methode
-	// google books Pro JavaFX 8: A
-	// Definitive Guide to Building Desktop, Mobile, and Embedded ...
-	// oder
-	// http://what-when-how.com/javafx-2/playing-audio-using-the-media-classes-javafx-2-part-4/
+	/**
+	 * Setzt die Bands, deren Werte über die Tune Slider geändert werden
+	 */
 	public void setBands() {
-		// if(name == "links") { //test/ vergleich
 		bands = getMediaPlayer().getAudioEqualizer().getBands();
 		bands.clear();
 		getMediaPlayer().getAudioEqualizer().getBands();
@@ -83,11 +80,7 @@ public class Player extends Observable {
 		bands.get(BAND_3).setGain(value);
 	}
 
-	public void play() {
-		if (mediaPlayer != null) {
-			//mediaPlayer.stop(); //Wenn das drin ist geht loop nicht, evtl && looping
-		}
-		
+	public void play() {		
 		setVolume(currVolume);
 		this.mediaPlayer.play();
 		this.mediaPlayer.setOnEndOfMedia(() -> this.skip());
@@ -104,32 +97,14 @@ public class Player extends Observable {
 			} else {
 				posInList++;
 			}
-			this.index.set(posInList);
 			loadSong();
 			setVolume(currVolume);
 			setBands();
-			/*setChanged();
-			notifyObservers("neu");*/
 			this.play();
-
-		} else { // selben Song nochmal laden irgendwie
+		} else { 
 			this.mediaPlayer.seek(Duration.ZERO);
 			this.play();
 		}
-	}
-
-	// überflüssig?
-	public void skipBack() {
-		getMediaPlayer().stop();
-		if (posInList != 0) {
-			posInList--;
-		} else {
-			posInList = list.getLength();
-		}
-		index.set(posInList);
-		loadSong();
-		mediaPlayer.seek(Duration.ZERO);
-		play();
 	}
 
 	public void loadSong() {
@@ -167,9 +142,6 @@ public class Player extends Observable {
 		return getMediaPlayer().getVolume();
 	}
 
-	public SimpleIntegerProperty getIndex() {
-		return this.index;
-	}
 
 	public void changeBySlider(double slidervalue) {
 		getMediaPlayer().seek(duration.multiply(slidervalue / 100.0));
@@ -183,7 +155,7 @@ public class Player extends Observable {
 		getMediaPlayer().setRate(value);
 	}
 
-	public void loop() { // oder boolean mitgebenm und isLooping = bool;
+	public void loop() { 
 		if (isLooping) {
 			this.isLooping = false;
 		} else {
@@ -191,34 +163,13 @@ public class Player extends Observable {
 		}
 	}
 
-	public Duration getDuration() {
-		return this.duration;
-	}
-
 	public void setPlaylist(Playlist name) {
 		this.list = name;
 		posInList = 0;
 		setChanged();
-		notifyObservers("new Playlist" + name); //playlist.getName()
+		notifyObservers("new Playlist" + name); 
 		System.out.println("Neue Playlist " + name.getTitle() + " geladen.");
 		loadSong();	
-	}
-
-	// Sets the number of bands in the audio spectrum. Must be > 2
-	public void setAudioSpectrumNumBands(int n) {
-		if (n > 2) {
-			this.getMediaPlayer().setAudioSpectrumNumBands(n);
-		}
-	}
-
-	// Sets the value of the audio spectrum notification interval in seconds.
-	public void setAudioSpectrumInterval(double value) {
-		this.getMediaPlayer().setAudioSpectrumInterval(value);
-	}
-
-	// The sensitivity threshold in decibels; must be non-positive.
-	public final void setAudioSpectrumThreshold(int value) {
-		this.getMediaPlayer().setAudioSpectrumThreshold(value);
 	}
 
 	public MediaPlayer getMediaPlayer() {

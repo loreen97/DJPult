@@ -12,13 +12,9 @@ public class Sample {
 	private String name;
 	private Media media;
 	private Track track;
-	//private static Duration dur;
 	
 	public Sample(String name) {
 		this.name = name;
-		//test
-		//media = new Media(Paths.get("sms-alert-2-daniel_simon.mp3").toUri().toString());
-		//mediaPlayer = new MediaPlayer(media);
 	}
 	
 	public void setSample(Track name) {

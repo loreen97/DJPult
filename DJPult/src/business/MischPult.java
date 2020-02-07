@@ -4,15 +4,16 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Die Mischpult Klasse, dient hauptsächlich zum Aufrufen und
+ * Verwalten der zwei Player (Links& Rechts), sowie deren Funktionalitäten
+ *  
+ * @author Elisabeth Volk, Loreen Bies
+ *
+ */
 
 public class MischPult extends Observable implements Observer {
-	/*
-	 * private MediaPlayer[] mediaPlayer; private Media[] media; private Playlist[]
-	 * lists; //statt 3 einzelne Playlists
-	 */
 
-	
-	// evtl fuer jeden sample button einen...
 	private Player playerLeft;
 	private Player playerRight;
 	private PlaylistManager manager;
@@ -31,12 +32,8 @@ public class MischPult extends Observable implements Observer {
 		this.manager.getAllHashLists().put("first", first);
 		this.manager.getAllLists().add(first);
 		
-		//evtl aus Playlists fuer Player rausnehmen
 		sampleList = new Playlist("Samples");
-		//this.manager.getAllLists().put("Samples", sampleList);
-		//this.manager.getAllNames().add(sampleList);
 		
-		// if Playlist not null
 		playerLeft = new Player("links", manager.getAllHashLists().get("first"));
 		playerRight = new Player("rechts", manager.getAllHashLists().get("first"));
 		players.put(playerLeft.getName(), playerLeft);
@@ -59,15 +56,27 @@ public class MischPult extends Observable implements Observer {
 		samples.put(sample4.getName(), sample4);
 		samples.put(sample5.getName(), sample5);
 		samples.put(sample6.getName(), sample6);
-
-		/**
-		 * You should also keep in mind that the AudioClip constructor will block the
-		 * current thread until the sound is completely loaded. For this reason, you
-		 * should consider loading your sound effects on a background thread if you are
-		 * loading a lot of files or if the files are large.
-		 * http://what-when-how.com/javafx-2/working-with-audio-clips-using-the-media-classes-javafx-2/
-		 */
 	}
+	
+	/**
+	 * Methode zum Abspielen eines Liedes
+	 * @param name Welche Seite, Links oder Rechts
+	 */
+
+	public void play(String name) {
+		players.get(name).play();
+		setChanged();
+		notifyObservers();
+	}
+	
+	/**
+	 * Methode zum Pausieren eines Liedes
+	 * @param name
+	 */
+	public void pause(String name) {
+		players.get(name).pause();
+	}
+	
 	/**
 	 * Zum Abspielen eines Samples
 	 * 
@@ -108,7 +117,6 @@ public class MischPult extends Observable implements Observer {
 	
 	/**
 	 * Zum Ändern des Songfortschritts anhand eines Sliders
-	 * Springt also im Lied
 	 * @param name Welche Seite, Links oder Rechts
 	 * @param value die neue Position im Lied
 	 */
@@ -116,46 +124,21 @@ public class MischPult extends Observable implements Observer {
 		players.get(name).changeBySlider(value);
 	}
 	
-	/**
-	 * Methode zum Abspielen eines Liedes
-	 * @param name Welche Seite, Links oder Rechts
-	 */
-
-	public void play(String name) {
-		players.get(name).play();
-		setChanged();
-		notifyObservers();
-	}
-	/**
-	 * Methode zum Pausieren eines Liedes
-	 * @param name
-	 */
-	public void pause(String name) {
-		players.get(name).pause();
-	}
 	
 	/**
-	 * Zum skippen, bisher nur wenn Lied zu ende und automatisch
-	 * In Zukunft auch anhand der Titel der Songs der aktiven Playlist
-	 * TO DO ^^^^
+	 * Zum automatischen Skippen bei Lied Ende
 	 * @param name Links oder Rechts
 	 */
 	public void skip(String name) {
 		players.get(name).skip();
 	}
-	/**
-	 * Wahrscheinlich irrelevant da wir keine Skip BUTTONS haben
-	 * @param name Links oder Rechts
-	 */
-	public void skipBack(String name) {
-		players.get(name).skipBack();
-	}
+
 	/**
 	 * Gibt den aktiven Song des gewählten Players zurück
 	 * @param name Links oder Rechts
 	 * @return aktiver Song
 	 */
-	public Track getActSong(String name) { // Playlist mitgeben um zu wissen welche?
+	public Track getActSong(String name) {
 		return players.get(name).getActSong();
 	}
 	/**
@@ -163,7 +146,7 @@ public class MischPult extends Observable implements Observer {
 	 * @param name Links oder Rechts
 	 * @return aktive Playlist
 	 */
-	public Playlist getAPlaylist(String name) {// Playlist mitgeben um zu wissen welche?
+	public Playlist getAPlaylist(String name) {
 		return players.get(name).getPlaylist();
 	}
 	/**
@@ -174,52 +157,72 @@ public class MischPult extends Observable implements Observer {
 	public void setVolume(String name, double val) {
 		players.get(name).setVolume(val);
 	}
-
+	
+	/**
+	 * Gibt die Lautstärke des gewählten Players zurück
+	 * @param name Links oder Rechts
+	 * @return die aktuelle Lautstärke
+	 */
 	public double getVolume(String name) {
 		return players.get(name).getVolume();
 	}
-
+	
+	/**
+	 * Verändert den boolean Wert "isLooping" des gewählten Players
+	 * @param name Links oder Rechts
+	 */
 	public void loop(String name) {
 		players.get(name).loop();
 	}
 	
+	/**
+	 * Gibt den linken Player zurück
+	 * @return linker Player aus der Player Hasmap
+	 */
 	public Player getLeftPlayer() {
 		return this.players.get("links");
 	}
 	
+	/**
+	 * Gibt den rechten Player zurück
+	 * @return rechter Player aus der Player Hasmap
+	 */
 	public Player getRightPlayer() {
 		return this.players.get("rechts");
 	}
 
-	// Aus Praktikum
-	/*
-	 * public static MediaPlayer getMediaPlayer() { return player; } //Aus Praktikum
-	 * public static MediaPlayer getMediaPlayer(Media media) { player = new
-	 * MediaPlayer(media); return player; }
+	/**
+	 * Verändert die Geschwindigkeit des aktuell gespielten
+	 * Liedes eines Players
+	 * @param name Links oder Rechts
+	 * @param value die neue Geschwindigkeit
 	 */
-
 	public void speed(String name, double value) {
 		players.get(name).setSpeed(value);
 	}
 
+	/**
+	 * Gibt den Playlist Manager zurück, den sich der
+	 * Nutzbarkeit halber beide Player teilen
+	 * @return der PlaylistManager
+	 */
 	public PlaylistManager getManager() {
 		return this.manager;
 	}
 	
 	/**
-	 * Soll über die Settings eine Playlist setzen
-	 * @param name
+	 * Setzt eine neue Playlist für den gewählten Player
+	 * Kommt von der SecondView 
+	 * @param name Links oder Rechts
+	 * @param list Die neue Playlist
 	 */
-	//Hier geht noch irgendwas schief
-	//Play button geht dann nicht mehr richtig, er resetted nur
 	public void setPlaylist(Playlist list, String name) {
 		players.get(name).setPlaylist(list);
 	}
 	
-	//useless
-	public MischPult getMischPult() {
-		return this;
-	}
+	/**
+	 * Gibt Updates von den Playern weiter nach Oben
+	 */
 	
 	@Override
 	public void update(Observable o, Object arg) {
@@ -227,20 +230,49 @@ public class MischPult extends Observable implements Observer {
 		notifyObservers(arg);
 	}
 	
+	/**
+	 * Gibt ein Sample anhand seines Namens zurück
+	 * Aus der Samples HashMap
+	 * @param name Name des Samples
+	 * @return des gesuchte Sample
+	 */
 	public Sample getSample(String name) {
 		return samples.get(name);
 	}
 	
+	/**
+	 * Gibt die komplette Sample Playlist zurück
+	 * @return die Samples Playlist
+	 */
 	public Playlist getSampleList() {
 		return this.sampleList;
 	}
+	
+	/**
+	 * Gibt den Wert des 1. Tune(Sliders) zurück
+	 * @param name Links oder Rechts
+	 * @return Wert des 1. Tunes
+	 */
+	
 	public double getTune1(String name) {
 		return players.get(name).getTune1();
 	}
 	
+	/**
+	 * Gibt den Wert des 2. Tune(Sliders) zurück
+	 * @param name Links oder Rechts
+	 * @return Wert des 2. Tunes
+	 */
+	
 	public double getTune2(String name) {
 		return players.get(name).getTune2();
 	}
+	
+	/**
+	 * Gibt den Wert des 3. Tune(Sliders) zurück
+	 * @param name Links oder Rechts
+	 * @return Wert des 3. Tunes
+	 */
 	
 	public double getTune3(String name) {
 		return players.get(name).getTune3();

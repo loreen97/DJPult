@@ -9,13 +9,11 @@ import javafx.collections.ObservableList;
 
 public class Playlist {
 	private String title;
-	//ObservableList<String> songNames;
 	ObservableList<Track> obsTracks;
 	
 	public Playlist(String name) {
 		this.title = name;
 		obsTracks = FXCollections.observableArrayList();
-		//songNames =  FXCollections.observableArrayList(); 
 	}
 	
 	public Track getTrack(int no) {
@@ -24,7 +22,6 @@ public class Playlist {
 		} catch(NullPointerException ez) {
 			System.out.println("Playlist zu Ende");
 		} catch (ArrayIndexOutOfBoundsException ar) {
-			//Wenn leere Liste angeklickt wird ist die Seite danach tot
 			System.out.println("Der Klick ging ins Leere!");
 		} return null;
 	}
