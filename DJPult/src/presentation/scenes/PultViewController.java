@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -80,6 +81,8 @@ public class PultViewController extends ViewController<Main> implements Observer
 
 	RotateTransition rotateLeft, rotateRight;
 	ImageView imgViewLeft, imgViewRight;
+	
+	private Tooltip toolTipLeft, toolTipRight;
 	
 	public PultViewController(Main application, MischPult mischPult, Stage primaryStage) throws FileNotFoundException {
 		super(application);
@@ -486,9 +489,11 @@ public class PultViewController extends ViewController<Main> implements Observer
 		if (name == "links") {
 			try {
 				titleLeft.setText(mischPult.getActSong("links").getTitle());
+				toolTipLeft = new Tooltip();
+				toolTipLeft.textProperty().bind(titleLeft.textProperty());
+				toolTipLeft.install(titleLeft, toolTipLeft);
 				songSlider("links");
-				// Nur eine optische Änderung:
-				songSliderLeft.setValue(0);
+				//songSliderLeft.setValue(0);
 			} finally {
 				if (song.getTitle() == null) {
 					titleLeft.setText("Unbekannter Titel");
@@ -497,6 +502,10 @@ public class PultViewController extends ViewController<Main> implements Observer
 		} else if (name == "rechts") {
 			try {
 				titleRight.setText(mischPult.getActSong("rechts").getTitle());
+				toolTipRight = new Tooltip();
+				toolTipRight.textProperty().bind(titleRight.textProperty());
+				toolTipRight.install(titleRight, toolTipRight);
+				
 				songSlider("rechts");
 			} finally {
 				if (song.getTitle() == null) {
