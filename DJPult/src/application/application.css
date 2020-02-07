@@ -81,7 +81,6 @@
 	-fx-min-width: 48.0px; 
 	-fx-min-height: 43.0px;
 	-fx-effect: dropshadow( three-pass-box , rgba(10,10,10,10) , 4, 2 ,2, 2);
-	
 }
 .tune .thumb{
 	-fx-background-image: url("/image/regulator.png");

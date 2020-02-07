@@ -159,7 +159,7 @@ public class SecondViewController extends ViewController<Main> implements Observ
 			@Override
 			public void handle(ActionEvent event) {
 				if (selected) {
-					mischPult.getManager().deletePlaylist(leftPlaylistView.getSelectionModel().getSelectedItem());
+					mischPult.getManager().deletePlaylist(leftPlaylistView.getSelectionModel().getSelectedItem());			
 					System.out.println("loeschen");
 				}
 			}

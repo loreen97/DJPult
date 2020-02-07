@@ -43,9 +43,6 @@ public class PultView extends BorderPane {
 
 	public PultView() throws FileNotFoundException {
 		
-		
-		
-		
 		samplesView = new SamplesView();
 		titleViewLeft = new TitleView();
 		titleViewRight = new TitleView();
